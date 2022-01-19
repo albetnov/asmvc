@@ -39,3 +39,24 @@ function vdd(...$dump)
 {
     die(var_dump($dump));
 }
+
+function get_http_protocol()
+{
+    if (!empty($_SERVER['HTTPS'])) {
+        return "https";
+    } else {
+        return "http";
+    }
+}
+
+/**
+ * Function untuk mengambil asset
+ */
+function asset($asset = null)
+{
+    if (is_null($asset)) {
+        return get_http_protocol() . '://' . $_SERVER['SERVER_NAME'] . '/public/';
+    } else {
+        return get_http_protocol() . '://' . $_SERVER['SERVER_NAME'] . "/public/{$asset}";
+    }
+}

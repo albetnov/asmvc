@@ -13,15 +13,16 @@ class Router extends BaseRouter
     public function defineRouter(): void
     {
         /**
-         * Ada 2 method yang bisa anda gunakan. inline() dan add().
+         * Ada 2 method yang bisa anda gunakan. inline($path, $function, $http_method) dan 
+         * add($path, [controller::class, 'method'], $http_method).
          */
         self::inline('/inline', function () {
             echo "Hello World";
         });
-        self::inline('/testhelpers', function() {
+        self::inline('/testhelpers', function () {
             v_include("testing.test", ['title' => 'working']);
         });
-        self::add('/testmodel', HomeController::class, 'testModel');
+        self::add('/testmodel', [HomeController::class, 'testModel']);
 
         /**
          * Menjalankan routing
