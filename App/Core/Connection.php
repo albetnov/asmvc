@@ -2,7 +2,8 @@
 
 namespace Albet\Ppob\Core;
 
-class Connection {
+class Connection
+{
 
     /**
      * Definisikan koneksi anda disini.
@@ -14,8 +15,8 @@ class Connection {
          */
         return [
             'db_host' => 'localhost',
-            'db_name' => 'listrik',
-            'db_user' => 'root', 
+            'db_name' => 'ppob',
+            'db_user' => 'root',
             'db_pass' => ''
         ];
     }
