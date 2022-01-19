@@ -23,6 +23,7 @@ class HomeController extends BaseController
 
     public function testModel()
     {
-        echo $this->testmodel->test();
+        $data = ['data' => $this->testmodel->test()];
+        $this->view('testmodel', $data);
     }
 }

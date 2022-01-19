@@ -10,6 +10,6 @@ class TestModel extends BaseModel
     // }
     public function test()
     {
-        return $this->db->table('testing')->where('id', 1)->delete();
+        return $this->db->table('testing')->orderBy(['id'], 'ASC')->get();
     }
 }

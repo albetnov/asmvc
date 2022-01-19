@@ -101,7 +101,6 @@ class BaseRouter
             if ($_SERVER['REQUEST_URI'] == '/') {
                 self::baseController();
             } else if ($_SERVER['REQUEST_URI'] == $route['path']) {
-                var_dump($route['middleware']);
                 if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
                     throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
                 }

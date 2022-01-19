@@ -7,7 +7,7 @@ class CoreModel
     /**
      * Mendifinisikan tabel, field, dan juga value
      */
-    protected $table, $data, $whereStmt = null;
+    protected $table, $data, $whereStmt = null, $orderStmt;
     private $pdo;
 
     /**
@@ -64,16 +64,50 @@ class CoreModel
     }
 
     /**
-     * Melakukan validasi apakah ada where atau tidak.
+     * Fungsi Order By SQL
      */
-    private function validateWhere()
+    public function orderBy(array $column, $order)
     {
-        if (!is_null($this->whereStmt)) {
-            return $this->whereStmt;
+        if (count($column) > 1) {
+            $join = implode(',', $column);
+            $string = "ORDER BY {$join}, {$order}";
         } else {
-            return "";
+            $string = "ORDER BY {$column[0]} {$order}";
         }
+        $this->orderStmt = $string;
+        return $this;
     }
+
+    /**
+     * Melakukan validasi apakah ada optional atau tidak.
+     */
+    private function validateOptional()
+    {
+        $string = "";
+        if (!is_null($this->whereStmt)) {
+            $string .= $this->whereStmt . " ";
+        }
+        if (!is_null($this->orderStmt)) {
+            $string .= $this->orderStmt . " ";
+        }
+        return trim($string);
+    }
+
+    /**
+     * Fetching data
+     */
+    public function get($fields = [])
+    {
+        $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()}");
+        if ($fields != []) {
+            $fields = implode(',', $fields);
+            $sql =  $this->pdo->query("SELECT {$fields} FROM {$this->table} {$this->validateOptional()}");
+        }
+        $sql->execute();
+        return $sql->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+
 
     /**
      * Fungsi insert
@@ -99,7 +133,7 @@ class CoreModel
         for ($i = 0; $i < count($data); $i++) {
             $prepare .= "{$field[$i]} = ?,";
         }
-        $prepare = rtrim($prepare, ',') . " {$this->validateWhere()}";
+        $prepare = rtrim($prepare, ',') . " {$this->validateOptional()}";
         $prepare = $this->pdo->prepare("UPDATE {$this->table} {$prepare}");
         $attempt = $prepare->execute(array_values($data));
         if ($attempt) {
@@ -112,7 +146,7 @@ class CoreModel
      */
     public function delete()
     {
-        $prepare = $this->pdo->prepare("DELETE FROM {$this->table} {$this->validateWhere()}");
+        $prepare = $this->pdo->prepare("DELETE FROM {$this->table} {$this->validateOptional()}");
         $attempt = $prepare->execute();
         if ($attempt) {
             return true;
