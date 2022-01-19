@@ -1,0 +1,17 @@
+{
+    "name": "albet/ppob",
+    "description": "a simple ppob",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Albet\\Ppob\\": "App/"
+        }
+    },
+    "authors": [
+        {
+            "name": "albetnovendo",
+            "email": "ryxinfrvr@gmail.com"
+        }
+    ],
+    "require": {}
+}
