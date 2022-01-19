@@ -21,28 +21,61 @@ class BaseRouter
     /**
      * Menambahkan routing ke dalam array.
      */
-    public static function add($path, $controllerandmethod, $http_method = 'GET')
+    public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
     {
+
         self::block($path);
+        $http_method = 'GET';
+        $middleware = null;
+        if ($http_method_or_middleware != []) {
+            if (count($http_method_or_middleware) > 1) {
+                $http_method = $http_method_or_middleware[0];
+                $middleware = $http_method_or_middleware[1];
+            } else if (count($http_method_or_middleware) > 3) {
+                throw new \Exception("Argumen maksimal add hanya ada 4");
+            }
+            if (class_exists($http_method_or_middleware[0])) {
+                $middleware = $http_method_or_middleware[0];
+            } else {
+                $http_method = $http_method_or_middleware[0];
+            }
+        }
         array_push(self::$routes, [
             'path' => $path,
             'controller' => $controllerandmethod[0],
             'method' => $controllerandmethod[1],
-            'http_method' => $http_method
+            'http_method' => $http_method,
+            'middleware' => $middleware
         ]);
     }
 
     /**
      * Memungkin kan anda untuk menggunakan inline routing.
      */
-    public static function inline($path, $inline, $http_method = 'GET')
+    public static function inline($path, $inline, ...$http_method_or_middleware)
     {
         self::block($path);
+        $http_method = 'GET';
+        $middleware = null;
+        if ($http_method_or_middleware != []) {
+            if (count($http_method_or_middleware) > 1) {
+                $http_method = $http_method_or_middleware[0];
+                $middleware = $http_method_or_middleware[1];
+            } else if (count($http_method_or_middleware) > 3) {
+                throw new \Exception("Argumen maksimal add hanya ada 4");
+            }
+            if (class_exists($http_method_or_middleware[0])) {
+                $middleware = $http_method_or_middleware[0];
+            } else {
+                $http_method = $http_method_or_middleware[0];
+            }
+        }
         array_push(self::$routes, [
             'path' => $path,
             'controller' => 'inline',
             'method' => $inline,
-            'http_method' => $http_method
+            'http_method' => $http_method,
+            'middleware' => $middleware
         ]);
     }
 
@@ -68,8 +101,13 @@ class BaseRouter
             if ($_SERVER['REQUEST_URI'] == '/') {
                 self::baseController();
             } else if ($_SERVER['REQUEST_URI'] == $route['path']) {
+                var_dump($route['middleware']);
                 if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
                     throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
+                }
+                if (!is_null($route['middleware'])) {
+                    $middleware = new $route['middleware'];
+                    $middleware->middleware();
                 }
                 if ($route['controller'] !== 'inline') {
                     $controller = new $route['controller'];

@@ -75,3 +75,9 @@ function base_url()
 {
     return $_SERVER['SERVER_NAME'];
 }
+
+function redirect($to)
+{
+    header("location:$to");
+    exit();
+}

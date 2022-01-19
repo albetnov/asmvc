@@ -4,6 +4,7 @@ namespace Albet\Ppob\Router;
 
 use Albet\Ppob\Controllers\HomeController;
 use Albet\Ppob\Core\BaseRouter;
+use Albet\Ppob\Middleware\LoggedIn;
 
 class Router extends BaseRouter
 {
@@ -18,12 +19,11 @@ class Router extends BaseRouter
          */
         self::inline('/inline', function () {
             echo "Hello World";
-        });
+        }, LoggedIn::class);
         self::inline('/testhelpers', function () {
             v_include("testing.test", ['title' => 'working']);
         });
         self::add('/testmodel', [HomeController::class, 'testModel']);
-
         /**
          * Menjalankan routing
          */
