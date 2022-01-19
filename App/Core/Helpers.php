@@ -60,3 +60,18 @@ function asset($asset = null)
         return get_http_protocol() . '://' . $_SERVER['SERVER_NAME'] . "/public/{$asset}";
     }
 }
+
+function public_path()
+{
+    return __DIR__ . '/../../public/';
+}
+
+function base_path()
+{
+    return __DIR__ . '/../../';
+}
+
+function base_url()
+{
+    return $_SERVER['SERVER_NAME'];
+}
