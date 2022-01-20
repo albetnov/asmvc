@@ -7,7 +7,7 @@ class CoreModel
     /**
      * Mendifinisikan tabel, field, dan juga value
      */
-    protected $table, $data, $whereStmt = null, $orderStmt;
+    private $table, $data, $whereStmt = null, $orderStmt;
     private $pdo;
 
     /**
@@ -43,6 +43,7 @@ class CoreModel
      */
     public function table($name)
     {
+        noSelfChained($this->table, 'table');
         $this->table = $name;
         return $this;
     }
@@ -52,14 +53,18 @@ class CoreModel
      */
     public function where($field, $value, $operator = null)
     {
-        $string = "WHERE {$field} ";
+        if ($this->whereStmt) {
+            $string = " AND {$field} ";
+        } else {
+            $string = "WHERE {$field} ";
+        }
         if (!is_null($operator)) {
             $string .= "{$operator} ";
         } else {
             $string .= "= ";
         }
         $string .= "{$value}";
-        $this->whereStmt = $string;
+        $this->whereStmt .= $string;
         return $this;
     }
 
@@ -68,6 +73,7 @@ class CoreModel
      */
     public function orderBy(array $column, $order)
     {
+        noSelfChained($this->orderStmt, 'orderBy');
         if (count($column) > 1) {
             $join = implode(',', $column);
             $string = "ORDER BY {$join}, {$order}";
@@ -98,6 +104,7 @@ class CoreModel
      */
     public function get($fields = [])
     {
+        // vdd("SELECT * FROM {$this->table} {$this->validateOptional()}");
         $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()}");
         if ($fields != []) {
             $fields = implode(',', $fields);
