@@ -7,7 +7,8 @@ class CoreModel
     /**
      * Mendifinisikan tabel, field, dan juga value
      */
-    private $table, $data, $whereStmt = null, $orderStmt;
+    private $table, $data;
+    private $whereStmt = null, $orderStmt, $limitStmt;
     private $pdo;
 
     /**
@@ -63,7 +64,28 @@ class CoreModel
         } else {
             $string .= "= ";
         }
-        $string .= "{$value}";
+        $string .= "'{$value}'";
+        $this->whereStmt .= $string;
+        return $this;
+    }
+
+    /**
+     * Fungsi orWhere
+     */
+    public function orWhere($field, $value, $operator = null)
+    {
+        if(!$this->whereStmt) {
+            throw new \Exception("Tolong gunakan orWhere() sebelum where()");
+        }
+        if ($this->whereStmt) {
+            $string = " OR {$field} ";
+        }
+        if (!is_null($operator)) {
+            $string .= "{$operator} ";
+        } else {
+            $string .= "= ";
+        }
+        $string .= "'{$value}'";
         $this->whereStmt .= $string;
         return $this;
     }
@@ -71,16 +93,27 @@ class CoreModel
     /**
      * Fungsi Order By SQL
      */
-    public function orderBy(array $column, $order)
+    public function orderBy($column, $order)
     {
         noSelfChained($this->orderStmt, 'orderBy');
-        if (count($column) > 1) {
+        if(!is_array($column)) {
+            $string = "ORDER BY {$column} {$order}";
+        } else if (is_array($column) && count($column) > 1) {
             $join = implode(',', $column);
-            $string = "ORDER BY {$join}, {$order}";
-        } else {
-            $string = "ORDER BY {$column[0]} {$order}";
+            $string = "ORDER BY {$join} {$order}";
         }
         $this->orderStmt = $string;
+        return $this;
+    }
+
+    /**
+     * Fungsi untuk menentukan seberapa banyak limit
+     */
+    public function limit(int $limit)
+    {
+        noSelfChained($this->limitStmt, 'limit');
+        $string = "LIMIT {$limit}";
+        $this->limitStmt = $string;
         return $this;
     }
 
@@ -95,6 +128,9 @@ class CoreModel
         }
         if (!is_null($this->orderStmt)) {
             $string .= $this->orderStmt . " ";
+        }
+        if(!is_null($this->limitStmt)) {
+            $string .= $this->limitStmt . " ";
         }
         return trim($string);
     }

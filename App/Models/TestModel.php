@@ -10,6 +10,6 @@ class TestModel extends BaseModel
     // }
     public function test()
     {
-        return $this->db->table('testing')->where('id', 2)->where('harga', 3224)->orderBy(['id'], 'ASC')->get();
+        return $this->db->table('testing')->where('tipe', 'hui')->orWhere('tipe', 'hehe')->get();
     }
 }

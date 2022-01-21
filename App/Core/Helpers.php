@@ -1,6 +1,33 @@
 <?php
 
 use Albet\Ppob\Core\Connection;
+use Albet\Ppob\Core\CsrfGenerator;
+use Albet\Ppob\Core\Flash;
+use Albet\Ppob\Core\Requests;
+
+/**
+ * Function untuk mengakses class request.
+ */
+function request()
+{
+    return new Requests;
+}
+
+/**
+ * Function untuk mengakses class CsrfGenerator.
+ */
+function csrf()
+{
+    return new CsrfGenerator;
+}
+
+/**
+ * Fungsi untuk mendapatkan string setelah karakter tertentu
+ */
+function getStringAfter($char, $string)
+{
+    return substr($string, strpos($string, $char) + 1);
+}
 
 /**
  * Function untuk mengubah directory dari "." ke "/".
@@ -68,9 +95,18 @@ function base_path()
 /**
  * Fungsi untuk mendapatkan base URL.
  */
-function base_url()
+function base_url($portOnly = false)
 {
-    return $_SERVER['SERVER_NAME'];
+    if ($portOnly) {
+        return $_SERVER['SERVER_PORT'];
+    }
+    $port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
+    return $_SERVER['SERVER_NAME'] . $port;
+}
+
+function url($url)
+{
+    return get_http_protocol() . '://' . base_url() . $url;
 }
 
 /**
@@ -107,4 +143,15 @@ function noSelfChained($mark, $method, $custom_msg = null)
     } else {
         return;
     }
+}
+
+function set_old($field)
+{
+    $store = request()->input($field);
+    Flash::flash('old.' . $field, $store);
+}
+
+function old($field_name)
+{
+    return Flash::catchFlash("old.{$field_name}");
 }

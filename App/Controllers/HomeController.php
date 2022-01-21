@@ -2,6 +2,7 @@
 
 namespace Albet\Ppob\Controllers;
 
+use Albet\Ppob\Core\Validator;
 use Albet\Ppob\Models\TestModel;
 
 class HomeController extends BaseController
@@ -25,5 +26,22 @@ class HomeController extends BaseController
     {
         $data = ['data' => $this->testmodel->test()];
         $this->view('testmodel', $data);
+    }
+
+    public function testRequest()
+    {
+        $this->view('testrequest');
+    }
+
+    public function handlePost()
+    {
+        csrf()->validateCsrf();
+        $try = Validator::make([
+            'test' => 'required|min:5'
+        ]);
+        if ($try->fails()) {
+            redirect('/testrequest');
+        }
+        echo request()->input('test');
     }
 }

@@ -17,6 +17,8 @@ class Router extends BaseRouter
          * Ada 2 method yang bisa anda gunakan. inline($path, $function, $http_method) dan 
          * add($path, [controller::class, 'method'], $http_method).
          */
+        self::add('/testrequest', [HomeController::class, 'testRequest']);
+        self::add('/kirim', [HomeController::class, 'handlePost'], 'POST');
         self::inline('/inline', function () {
             echo "Hello World";
         }, LoggedIn::class);
