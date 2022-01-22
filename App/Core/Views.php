@@ -6,8 +6,11 @@ class Views
 {
     private static $sectionList = [], $currentSection, $section = [];
 
-    public function section($name)
+    public function section($name, $content = null)
     {
+        if (!is_null($content)) {
+            self::$section[$name][] = $content;
+        }
         self::$currentSection =  $name;
         self::$sectionList[] = $name;
         ob_start();
