@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-header">Hi!</div>
         <div class="card-body">
-            <h4 class="card-title">A Simle MVC</h4>
+            <h4 class="card-title">A Simple MVC</h4>
             <p class="card-text">Created by Albet Novendo.</p>
             <p>Follow me:</p>
             <a href="https://github.com/albetnov">Github</a> / <a href="https://instagram.com/al_nv4">Instagram</a>

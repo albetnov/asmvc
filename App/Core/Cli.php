@@ -149,7 +149,7 @@ class Cli
                 break;
 
             case 'version':
-                echo 'ASMVC Version 0.5 (Dev)' . PHP_EOL;
+                echo 'ASMVC Version ' . ASMVC_VERSION . ' ' . ASMVC_STATE . PHP_EOL;
                 break;
 
             case 'create:controller':
@@ -218,7 +218,11 @@ class Cli
                 $ask = $this->ask('Apakah anda yakin [Y/n]');
                 if (strtolower($ask) == 'y') {
                     $controller_path = __DIR__ . '/../Controllers/';
-                    $controller = array_diff(scandir($controller_path), ['.', '..', 'BaseController.php']);
+                    $controller_exclude = ['.', '..', 'BaseController.php'];
+                    if (ASMVC_STATE == 'Dev') {
+                        $controller_exclude[] = 'HomeController.php';
+                    }
+                    $controller = array_diff(scandir($controller_path), $controller_exclude);
                     $models_path = __DIR__ . '/../Models/';
                     $models = array_diff(scandir($models_path), ['.', '..', 'BaseModel.php']);
                     $middleware_path = __DIR__ . '/../Middleware/';

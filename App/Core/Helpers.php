@@ -5,6 +5,13 @@ use Albet\Ppob\Core\CsrfGenerator;
 use Albet\Ppob\Core\Flash;
 use Albet\Ppob\Core\Requests;
 use Albet\Ppob\Core\Validator;
+use Albet\Ppob\Core\Views;
+
+/**
+ * Versi dari ASMVC Anda!.
+ */
+define('ASMVC_VERSION', '0.6');
+define('ASMVC_STATE', 'Dev');
 
 /**
  * Function untuk mengakses class request.
@@ -171,4 +178,9 @@ function old($field_name)
 function validateMsg($field)
 {
     return (new Validator)::validMsg($field);
+}
+
+function view()
+{
+    return new Views;
 }
