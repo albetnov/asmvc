@@ -131,6 +131,7 @@ class Cli
                 Selamat datang di ASMVC CLI.
                 Beberapa perintah yang dapat anda gunakan:
 
+                serve | Memulai ASMVC Development Server
                 install:boostrap | Install and use bootstrap with asset()
                 create:controller | Membuat Controller
                 create:model | Membuat model
@@ -168,14 +169,14 @@ class Cli
             case 'create:controller':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
-                    $data = <<<'data'
+                    $data = <<<data
                     <?php
 
                     namespace Albet\Ppob\Controllers;
                     
                     use Albet\Ppob\Core\Requests;
                     
-                    class HomeController extends BaseController
+                    class {$try} extends BaseController
                     {
                         //Your logic
                     }                    
@@ -187,12 +188,12 @@ class Cli
             case 'create:model':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
-                    $data = <<<'data'
+                    $data = <<<data
                     <?php
 
                     namespace Albet\Ppob\Models;
 
-                    class TestModel extends BaseModel
+                    class {$try} extends BaseModel
                     {
                         //Your models logic
                     }
@@ -204,14 +205,14 @@ class Cli
             case 'create:middleware':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
-                    $data = <<<'data'
+                    $data = <<<data
                         <?php
 
                         namespace Albet\Ppob\Middleware;
 
                         use Albet\Ppob\Core\BaseMiddleware;
 
-                        class LoggedIn extends BaseMiddleware
+                        class {$try} extends BaseMiddleware
                         {
                             public function middleware()
                             {
@@ -255,6 +256,13 @@ class Cli
                     echo 'Canceling...' . PHP_EOL;
                 }
                 break;
+
+            case 'serve':
+                if (!function_exists('exec')) {
+                    throw new \Exception("Exec() tidak terdeteksi. Harap aktifkan di php.ini");
+                }
+                echo "ASMVC Development Server Start... (http://localhost:9090)\n";
+                exec('php -S localhost:9090');
 
             default:
                 echo 'Command not found. Please run "php asmvc help"' . PHP_EOL;
