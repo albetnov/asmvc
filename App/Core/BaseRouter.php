@@ -89,7 +89,7 @@ class BaseRouter
         $mainController = "Albet\\Ppob\\Controllers\\{$base->mainController()}";
         $call_main = new $mainController();
         $method = $base->defaultMethod();
-        return $call_main->$method();
+        return $call_main->$method(new Requests);
     }
 
     /**
@@ -111,7 +111,7 @@ class BaseRouter
                 if ($route['controller'] !== 'inline') {
                     $controller = new $route['controller'];
                     $method = $route['method'];
-                    $controller->$method();
+                    $controller->$method(new Requests);
                 } else {
                     call_user_func($route['method']);
                 }

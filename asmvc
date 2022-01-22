@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * A Simple MVC
+ * Cretaed by: Albet Novendo
+ * File: ASMVC CLI
+ * ASMVC is protected by GNU GPL v2.
+ */
+
+use Albet\Ppob\Core\Cli;
+
+define('ASMVC_START', microtime());
+
+/**
+ * Memanggil dependecies
+ */
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/App/Core/Helpers.php';
+require_once __DIR__ . '/App/Core/Cli.php';
+
+/**
+ * Validasi dimana ASMVC dijalankan.
+ */
+if (PHP_SAPI !== 'cli') {
+    exit('ASMVC hanya bisa dijalankan dengan CLI' . PHP_EOL);
+}
+
+/**
+ * Mendapatkan argument
+ */
+$cli = new Cli;
+$cli->argument_parse($argv);

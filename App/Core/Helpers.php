@@ -4,6 +4,7 @@ use Albet\Ppob\Core\Connection;
 use Albet\Ppob\Core\CsrfGenerator;
 use Albet\Ppob\Core\Flash;
 use Albet\Ppob\Core\Requests;
+use Albet\Ppob\Core\Validator;
 
 /**
  * Function untuk mengakses class request.
@@ -19,6 +20,11 @@ function request()
 function csrf()
 {
     return new CsrfGenerator;
+}
+
+function csrf_field()
+{
+    return (new CsrfGenerator)->field();
 }
 
 /**
@@ -154,4 +160,9 @@ function set_old($field)
 function old($field_name)
 {
     return Flash::catchFlash("old.{$field_name}");
+}
+
+function validateMsg($field)
+{
+    return (new Validator)::validMsg($field);
 }
