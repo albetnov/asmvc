@@ -15,7 +15,13 @@ define('ASMVC_START', microtime());
 /**
  * Memanggil dependecies
  */
-require_once __DIR__ . '/vendor/autoload.php';
+if (is_dir(__DIR__ . '/vendor/')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+    $install = false;
+} else {
+    echo "ASMVC akan melakukan instalisasi. Harap pastikan anda memiliki composer dan exec() bisa digunakan\n";
+    $install = true;
+}
 require_once __DIR__ . '/App/Core/Helpers.php';
 require_once __DIR__ . '/App/Core/Cli.php';
 
@@ -30,4 +36,8 @@ if (PHP_SAPI !== 'cli') {
  * Mendapatkan argument
  */
 $cli = new Cli;
-$cli->argument_parse($argv);
+if ($install) {
+    $cli->install();
+} else {
+    $cli->argument_parse($argv);
+}

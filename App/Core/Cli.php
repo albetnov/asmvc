@@ -109,6 +109,19 @@ class Cli
         file_put_contents(base_path() . 'index.php', $data);
     }
 
+    public function install()
+    {
+        if (!function_exists('exec')) {
+            throw new \Exception("Exec() tidak terdektsi. Harap aktifkan di php.ini");
+        }
+        exec('composer install');
+        if (!is_dir(base_path('vendor'))) {
+            throw new \Exception("Composer install gagal dijalankan!");
+        } else {
+            echo "Instalisasi selesai!";
+        }
+    }
+
     public function argument_parse($args)
     {
         $first = strtolower($this->getArgsStarts($args));
