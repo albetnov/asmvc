@@ -10,7 +10,8 @@ class BaseController
     public function view($name, array $data = [])
     {
         extract($data);
-        require_once __DIR__ . '/../Views/' . $name . '.php';
+        $final = dotSupport($name);
+        require_once __DIR__ . '/../Views/' . $final . '.php';
     }
 
     /**
