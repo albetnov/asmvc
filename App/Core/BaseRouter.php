@@ -97,27 +97,32 @@ class BaseRouter
      */
     public static function triggerRouter()
     {
-        foreach (self::$routes as $route) {
-            if ($_SERVER['REQUEST_URI'] == '/') {
-                self::baseController();
-            } else if ($_SERVER['REQUEST_URI'] == $route['path']) {
-                if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
-                    throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
-                }
-                if (!is_null($route['middleware'])) {
-                    $middleware = new $route['middleware'];
-                    $middleware->middleware();
-                }
-                if ($route['controller'] !== 'inline') {
-                    $controller = new $route['controller'];
-                    $method = $route['method'];
-                    $controller->$method(new Requests);
-                } else {
-                    call_user_func($route['method']);
-                }
-                exit;
-            } else if ($_SERVER['REQUEST_URI'] != $route['path']) {
+        if ($_SERVER['REQUEST_URI'] == '/') {
+            self::baseController();
+        } else {
+            if (empty(self::$routes)) {
                 self::$pagenotfound = true;
+            }
+            foreach (self::$routes as $route) {
+                if ($_SERVER['REQUEST_URI'] == $route['path']) {
+                    if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
+                        throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
+                    }
+                    if (!is_null($route['middleware'])) {
+                        $middleware = new $route['middleware'];
+                        $middleware->middleware();
+                    }
+                    if ($route['controller'] !== 'inline') {
+                        $controller = new $route['controller'];
+                        $method = $route['method'];
+                        $controller->$method(new Requests);
+                    } else {
+                        call_user_func($route['method']);
+                    }
+                    exit;
+                } else if ($_SERVER['REQUEST_URI'] != $route['path']) {
+                    self::$pagenotfound = true;
+                }
             }
         }
         if (self::$pagenotfound) {

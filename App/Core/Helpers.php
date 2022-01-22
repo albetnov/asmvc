@@ -85,16 +85,22 @@ function get_http_protocol()
 /**
  * Fungsi untuk mengakses path publik.
  */
-function public_path()
+function public_path($path = null)
 {
+    if ($path) {
+        return __DIR__ . '/../../public/' . $path;
+    }
     return __DIR__ . '/../../public/';
 }
 
 /**
  * Fungsi untuk  mengakses path awal dari project.
  */
-function base_path()
+function base_path($path = null)
 {
+    if ($path) {
+        return __DIR__ . '/../../' . $path;
+    }
     return __DIR__ . '/../../';
 }
 

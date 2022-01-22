@@ -44,7 +44,7 @@ class Cli
             }
             if (!is_null($dirtho)) {
                 foreach ($dirtho as $dir) {
-                    rmdir($path . $dir);
+                    @rmdir($path . $dir);
                 }
             }
         }
@@ -90,6 +90,25 @@ class Cli
         file_put_contents(__DIR__ . "/../Router/Router.php", $data);
     }
 
+    private function resetIndex()
+    {
+        $data = <<<'data'
+        <?php
+
+        require_once __DIR__ . '/vendor/autoload.php';
+        require_once __DIR__ . '/App/Core/Helpers.php';
+
+        use Albet\Ppob\Router\Router;
+
+        csrf()->generateCsrf();
+        define('BS5_CSS', 'css/bootstrap.min.css');
+        define('BS5_JS', 'css/bootstrap.min.js');
+        $router = new Router;
+        $router->defineRouter();
+        data;
+        file_put_contents(base_path() . 'index.php', $data);
+    }
+
     public function argument_parse($args)
     {
         $first = strtolower($this->getArgsStarts($args));
@@ -125,6 +144,7 @@ class Cli
                 foreach ($pathjs as $js) {
                     copy(__DIR__ . '/bs5_integration/js/' . $js, public_path() . 'js/' . $js);
                 }
+                $this->resetIndex();
                 echo 'Bootstrap installed successfully!' . PHP_EOL;
                 break;
 
@@ -205,11 +225,14 @@ class Cli
                     $middleware = array_diff(scandir($middleware_path), ['.', '..']);
                     $views_path = __DIR__ . '/../Views/';
                     $views = array_diff(scandir($views_path), ['..', '.', '404.php', 'home.php']);
+                    $public = array_diff(scandir(public_path()), ['.', '..', '.gitignore']);
                     $this->cleanUp($controller_path, $controller);
                     $this->cleanUp($views_path, $views);
                     $this->cleanUp($models_path, $models);
                     $this->cleanUp($middleware_path, $middleware);
+                    $this->cleanUp(public_path(), $public);
                     $this->resetRouter();
+                    $this->resetIndex();
                     echo 'Cleaned successfully!' . PHP_EOL;
                 } else {
                     echo 'Canceling...' . PHP_EOL;
