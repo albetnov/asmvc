@@ -10,7 +10,7 @@ use Albet\Ppob\Core\Views;
 /**
  * Versi dari ASMVC Anda!.
  */
-define('ASMVC_VERSION', '0.6');
+define('ASMVC_VERSION', '0.8');
 define('ASMVC_STATE', 'Dev');
 
 /**

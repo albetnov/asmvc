@@ -26,6 +26,8 @@ class Cli
         $i += $this->getArgsStarts($args, true);
         if (isset($args[$i])) {
             return $args[$i];
+        } else {
+            return false;
         }
     }
 
@@ -93,22 +95,38 @@ class Cli
         file_put_contents(__DIR__ . "/../Router/Router.php", $data);
     }
 
-    private function resetIndex()
+    private function resetIndex($options = null)
     {
-        $data = <<<'data'
-        <?php
+        if ($options == 'add_bs') {
+            $data = <<<'data'
+            <?php
+    
+            require_once __DIR__ . '/App/Core/init.php';
+    
+            use Albet\Ppob\Router\Router;
+    
+            csrf()->generateCsrf();
+            define('BS5_CSS', 'css/bootstrap.min.css');
+            define('BS5_JS', 'js/bootstrap.min.js');
+            $router = new Router;
+            $router->defineRouter();
+    
+            data;
+        } else {
+            $data = <<<'data'
+            <?php
+    
+            require_once __DIR__ . '/App/Core/init.php';
+    
+            use Albet\Ppob\Router\Router;
+    
+            csrf()->generateCsrf();
+            $router = new Router;
+            $router->defineRouter();
+    
+            data;
+        }
 
-        require_once __DIR__ . '/vendor/autoload.php';
-        require_once __DIR__ . '/App/Core/Helpers.php';
-
-        use Albet\Ppob\Router\Router;
-
-        csrf()->generateCsrf();
-        define('BS5_CSS', 'css/bootstrap.min.css');
-        define('BS5_JS', 'css/bootstrap.min.js');
-        $router = new Router;
-        $router->defineRouter();
-        data;
         file_put_contents(base_path() . 'index.php', $data);
     }
 
@@ -136,9 +154,11 @@ class Cli
 
                 serve | Memulai ASMVC Development Server
                 install:boostrap | Install and use bootstrap with asset()
-                create:controller | Membuat Controller
-                create:model | Membuat model
-                create:middleware | Membuat Middleware
+                create:controller {controller} | Membuat Controller
+                create:model {model} | Membuat model
+                create:middleware {middleware} | Membuat Middleware
+                create:test {test} | Membuat Tests
+                run:tests {test?} | Menjalankan Test
                 reset:router | Menganti file router dengan yang baru
                 cleanup | Membersihkan asmvc ke keandaan awal. (Controller, Models, Middleware, dan View akan hilang).
                 version | Menampilkan versi ASMVC.
@@ -161,7 +181,7 @@ class Cli
                 foreach ($pathjs as $js) {
                     copy(__DIR__ . '/bs5_integration/js/' . $js, public_path() . 'js/' . $js);
                 }
-                $this->resetIndex();
+                $this->resetIndex('add_bs');
                 echo 'Bootstrap installed successfully!' . PHP_EOL;
                 break;
 
@@ -247,13 +267,20 @@ class Cli
                     $views_path = __DIR__ . '/../Views/';
                     $views = array_diff(scandir($views_path), ['..', '.', '404.php', 'home.php']);
                     $public = array_diff(scandir(public_path()), ['.', '..', '.gitignore']);
+                    $tests_path = __DIR__ . '/../Tests/';
+                    $tests = array_diff(scandir($tests_path), ['.', '..', 'ExampleTest.php']);
                     $this->cleanUp($controller_path, $controller);
                     $this->cleanUp($views_path, $views);
                     $this->cleanUp($models_path, $models);
                     $this->cleanUp($middleware_path, $middleware);
                     $this->cleanUp(public_path(), $public);
+                    $this->cleanUp($tests_path, $tests);
                     $this->resetRouter();
                     $this->resetIndex();
+                    $try = @unlink(base_path() . '.phpunit.result.cache');
+                    if ($try) {
+                        echo 'Deleted: .phpunit.result.cache';
+                    }
                     echo 'Cleaned successfully!' . PHP_EOL;
                 } else {
                     echo 'Canceling...' . PHP_EOL;
@@ -266,6 +293,57 @@ class Cli
                 }
                 echo "ASMVC Development Server Start... (http://localhost:9090)\n";
                 exec('php -S localhost:9090');
+                break;
+
+            case 'create:test':
+                $try = $this->next_arguments($args, 1);
+                if ($try) {
+                    if (str_contains('Test', $try)) {
+                        $data = <<<data
+                        <?php
+    
+                        namespace Albet\Ppob\Tests;
+    
+                        require_once __DIR__ . '/../Core/init.php';
+                        use PHPUnit\Framework\TestCase;
+    
+                        class {$try} extends TestCase
+                        {
+                            //Your logic
+                        }
+    
+                        data;
+                        file_put_contents(__DIR__ . "/../Tests/{$try}.php", $data);
+                    } else {
+                        $data = <<<data
+                        <?php
+
+                        namespace Albet\Ppob\Tests;
+
+                        require_once __DIR__ . '/../Core/init.php';
+                        use PHPUnit\Framework\TestCase;
+
+                        class {$try}Test extends TestCase
+                        {
+                            //Your logic
+                        }
+
+                        data;
+                        file_put_contents(__DIR__ . "/../Tests/{$try}Test.php", $data);
+                    }
+                }
+                break;
+
+            case 'run:test':
+                $try = $this->next_arguments($args, 1);
+                if ($try) {
+                    system('vendor\bin\phpunit --configuration phpunit.xml App/Tests/' . $try . '.php', $result);
+                    echo $result;
+                } else {
+                    system('vendor\bin\phpunit --configuration phpunit.xml', $result);
+                    echo $result;
+                }
+                break;
 
             default:
                 echo 'Command not found. Please run "php asmvc help"' . PHP_EOL;
