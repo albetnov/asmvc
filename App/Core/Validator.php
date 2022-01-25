@@ -5,35 +5,38 @@ namespace Albet\Ppob\Core;
 class Validator
 {
     private static $status = true;
-    public static function validate($validate, $field)
+
+    private static function put($field, $value)
     {
+        $_SESSION['validation'][$field] = $value;
+    }
+
+    private static function validate($field, $validate)
+    {
+        set_old($field);
         if ($validate == 'required') {
             if (empty(request()->input($field))) {
-                Flash::flash($field, 'Kolom wajib diisi');
-                set_old($field);
+                self::put($field, "{$field} wajib diisi");
                 self::$status = false;
             }
         }
         if ($validate == 'file') {
             if (empty(request()->upload($field))) {
-                Flash::flash($field, 'Kolom wajib diisi');
-                set_old($field);
+                self::put($field, "{$field} wajib diisi");
                 self::$status = false;
             }
         }
         if (str_starts_with($validate, 'min')) {
             $min = getStringAfter(':', $validate);
             if (strlen(request()->input($field)) < $min) {
-                Flash::flash($field, 'Minimal karakter hanya boleh ' . $min);
-                set_old($field);
+                self::put($field, "{$field} Minimal karakter hanya boleh " . $min);
                 self::$status = false;
             }
         }
         if (str_starts_with($validate, 'max')) {
             $max = getStringAfter(':', $validate);
             if (strlen(request()->input($field)) < $max) {
-                Flash::flash($field, 'Maksimal karakter hanya boleh ' . $max);
-                set_old($field);
+                self::put($field, "{$field} Maksimal karakter hanya boleh " . $max);
                 self::$status = false;
             }
         }
@@ -41,17 +44,12 @@ class Validator
 
     public static function make(array $validate)
     {
-        $field = array_keys($validate);
-        $validation = array_values($validate);
-        foreach ($validation as $validate) {
-            foreach ($field as $field) {
-                if (str_contains($validate, '|')) {
-                    $exploded = explode('|', $validate);
-                    foreach ($exploded as $exploded) {
-                        self::validate($exploded, $field);
-                    }
-                } else {
-                    self::validate($validate, $field);
+        foreach ($validate as $key => $value) {
+            if (is_string($value)) {
+                self::validate($key, $value);
+            } else {
+                foreach ($value as $value) {
+                    self::validate($key, $value);
                 }
             }
         }
@@ -60,7 +58,18 @@ class Validator
 
     public static function validMsg($field)
     {
-        return Flash::catchFlash($field);
+        $return = $_SESSION['validation'][$field];
+        unset($_SESSION['validation'][$field]);
+        return $return;
+    }
+
+    public static function checkError($field)
+    {
+        if (isset($_SESSION['validation'][$field])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function fails()

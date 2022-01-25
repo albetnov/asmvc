@@ -167,12 +167,22 @@ function noSelfChained($mark, $method, $custom_msg = null)
 function set_old($field)
 {
     $store = request()->input($field);
-    Flash::flash('old.' . $field, $store);
+    $_SESSION['old'][$field] = $store;
 }
 
 function old($field_name)
 {
-    return Flash::catchFlash("old.{$field_name}");
+    if (isset($_SESSION['old'][$field_name])) {
+        $return = $_SESSION['old'][$field_name];
+        unset($_SESSION['old'][$field_name]);
+        return $return;
+    }
+    return;
+}
+
+function checkError($field)
+{
+    return (new Validator)::checkError($field);
 }
 
 function validateMsg($field)

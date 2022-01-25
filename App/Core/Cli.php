@@ -37,13 +37,16 @@ class Cli
                 $dirs = array_diff(scandir($path . $diffed . '/'), ['.', '..']);
                 $dirtho[] = $diffed;
                 foreach ($dirs as $dir) {
+                    echo "Deleted: $dir\n";
                     unlink($path . $diffed . '/' . $dir);
                 }
             } else {
+                echo "Deleted: $diffed\n";
                 unlink($path . $diffed);
             }
             if (!is_null($dirtho)) {
                 foreach ($dirtho as $dir) {
+                    echo "Deleted: $dir\n";
                     @rmdir($path . $dir);
                 }
             }

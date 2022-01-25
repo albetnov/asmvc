@@ -9,6 +9,15 @@ class Flash
         $_SESSION[$name] = $message;
     }
 
+    public static function checkFlash($name)
+    {
+        if (!isset($_SESSION[$name])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public static function catchFlash($name)
     {
         if (!isset($_SESSION[$name])) {
