@@ -139,7 +139,7 @@ class Cli
         if (!is_dir(base_path('vendor'))) {
             throw new \Exception("Composer install gagal dijalankan!");
         } else {
-            echo "Instalisasi selesai!";
+            echo "Instalisasi selesai!\n";
         }
     }
 

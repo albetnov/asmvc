@@ -8,7 +8,7 @@ class CoreModel
      * Mendifinisikan tabel, field, dan juga value
      */
     private $table, $data;
-    private $whereStmt = null, $orderStmt, $limitStmt;
+    private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt;
     private $pdo;
 
     /**
@@ -74,7 +74,7 @@ class CoreModel
      */
     public function orWhere($field, $value, $operator = null)
     {
-        if(!$this->whereStmt) {
+        if (!$this->whereStmt) {
             throw new \Exception("Tolong gunakan orWhere() sebelum where()");
         }
         if ($this->whereStmt) {
@@ -96,7 +96,7 @@ class CoreModel
     public function orderBy($column, $order)
     {
         noSelfChained($this->orderStmt, 'orderBy');
-        if(!is_array($column)) {
+        if (!is_array($column)) {
             $string = "ORDER BY {$column} {$order}";
         } else if (is_array($column) && count($column) > 1) {
             $join = implode(',', $column);
@@ -118,6 +118,20 @@ class CoreModel
     }
 
     /**
+     * Fungsi Join
+     */
+    public function join($table, $from_id, $to_id)
+    {
+        $string = "";
+        if ($this->joinStmt) {
+            $string = " ";
+        }
+        $string .= "INNER JOIN {$table} ON {$from_id} = {$to_id}";
+        $this->joinStmt .= $string;
+        return $this;
+    }
+
+    /**
      * Melakukan validasi apakah ada optional atau tidak.
      */
     private function validateOptional()
@@ -129,8 +143,11 @@ class CoreModel
         if (!is_null($this->orderStmt)) {
             $string .= $this->orderStmt . " ";
         }
-        if(!is_null($this->limitStmt)) {
+        if (!is_null($this->limitStmt)) {
             $string .= $this->limitStmt . " ";
+        }
+        if (!is_null($this->joinStmt)) {
+            $string .= $this->joinStmt . " ";
         }
         return trim($string);
     }
@@ -194,5 +211,10 @@ class CoreModel
         if ($attempt) {
             return true;
         }
+    }
+
+    public function debug()
+    {
+        return "SELECT * FROM {$this->table} {$this->validateOptional()}";
     }
 }
