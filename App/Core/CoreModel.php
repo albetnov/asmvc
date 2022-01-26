@@ -137,9 +137,6 @@ class CoreModel
     private function validateOptional()
     {
         $string = "";
-        if (!is_null($this->whereStmt)) {
-            $string .= $this->whereStmt . " ";
-        }
         if (!is_null($this->orderStmt)) {
             $string .= $this->orderStmt . " ";
         }
@@ -149,7 +146,20 @@ class CoreModel
         if (!is_null($this->joinStmt)) {
             $string .= $this->joinStmt . " ";
         }
+        if (!is_null($this->whereStmt)) {
+            $string .= $this->whereStmt . " ";
+        }
         return trim($string);
+    }
+
+    private function clean()
+    {
+        $this->table = '';
+        $this->data = '';
+        $this->whereStmt = null;
+        $this->orderStmt = null;
+        $this->limitStmt = null;
+        $this->joinStmt = null;
     }
 
     /**
@@ -163,15 +173,21 @@ class CoreModel
             $sql =  $this->pdo->query("SELECT {$fields} FROM {$this->table} {$this->validateOptional()}");
         }
         $sql->execute();
+        $this->clean();
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
 
-    public function first()
+    public function first($fields = [])
     {
         $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()} LIMIT 1");
+        if ($fields != []) {
+            $fields = implode(',', $fields);
+            $sql = $this->pdo->query("SELECT {$fields} FROM {$this->table} {$this->validateOptional()} LIMIT 1");
+        }
         $sql->execute();
         foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $result) {
         }
+        $this->clean();
         return $result;
     }
 
@@ -186,6 +202,7 @@ class CoreModel
         if ($last_insert_id) {
             self::$last_insert_id =  $this->pdo->lastInsertId();
         }
+        $this->clean();
         if ($attempt) {
             return true;
         }
@@ -210,6 +227,7 @@ class CoreModel
         $prepare = rtrim($prepare, ',') . " {$this->validateOptional()}";
         $prepare = $this->pdo->prepare("UPDATE {$this->table} {$prepare}");
         $attempt = $prepare->execute(array_values($data));
+        $this->clean();
         if ($attempt) {
             return true;
         }
@@ -222,6 +240,7 @@ class CoreModel
     {
         $prepare = $this->pdo->prepare("DELETE FROM {$this->table} {$this->validateOptional()}");
         $attempt = $prepare->execute();
+        $this->clean();
         if ($attempt) {
             return true;
         }

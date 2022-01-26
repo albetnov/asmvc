@@ -32,7 +32,7 @@ class Requests
     public function query($name)
     {
         if (isset($_GET[$name])) {
-            return $_GET[$name];
+            return htmlspecialchars($_GET[$name]);
         } else {
             return;
         }
