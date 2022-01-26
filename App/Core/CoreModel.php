@@ -10,6 +10,7 @@ class CoreModel
     private $table, $data;
     private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt;
     private $pdo;
+    private static $last_insert_id;
 
     /**
      * Iniliasisasi Koneksi
@@ -44,7 +45,6 @@ class CoreModel
      */
     public function table($name)
     {
-        noSelfChained($this->table, 'table');
         $this->table = $name;
         return $this;
     }
@@ -157,7 +157,6 @@ class CoreModel
      */
     public function get($fields = [])
     {
-        // vdd("SELECT * FROM {$this->table} {$this->validateOptional()}");
         $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()}");
         if ($fields != []) {
             $fields = implode(',', $fields);
@@ -167,19 +166,34 @@ class CoreModel
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
 
-
+    public function first()
+    {
+        $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()} LIMIT 1");
+        $sql->execute();
+        foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $result) {
+        }
+        return $result;
+    }
 
     /**
      * Fungsi insert
      */
-    public function insert(array $data)
+    public function insert(array $data, $last_insert_id = false)
     {
         $this->data = $data;
         $prepare = $this->pdo->prepare("INSERT INTO {$this->table} ({$this->processField()}) VALUES ({$this->totalPrepare()})");
         $attempt = $prepare->execute(array_values($data));
+        if ($last_insert_id) {
+            self::$last_insert_id =  $this->pdo->lastInsertId();
+        }
         if ($attempt) {
             return true;
         }
+    }
+
+    public function lastInsertId()
+    {
+        return self::$last_insert_id;
     }
 
     /**

@@ -229,20 +229,20 @@ class Cli
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
                     $data = <<<data
-                        <?php
+                    <?php
 
-                        namespace Albet\Ppob\Middleware;
+                     namespace Albet\Ppob\Middleware;
 
-                        use Albet\Ppob\Core\BaseMiddleware;
+                     use Albet\Ppob\Core\BaseMiddleware;
 
-                        class {$try} extends BaseMiddleware
-                        {
-                            public function middleware()
-                            {
+                     class {$try} extends BaseMiddleware
+                     {
+                         public function middleware()
+                         {
                             
-                            }
-                        }   
-                     data;
+                         }
+                     }  
+                    data;
                     file_put_contents(__DIR__ . "/../Middleware/{$try}.php", $data);
                 }
                 break;

@@ -47,4 +47,14 @@ class Views
     {
         return v_include($path);
     }
+
+    public function match($expected, $classname)
+    {
+        $expected = url() . $expected;
+        if ($expected == GetCurrentUrl()) {
+            return $classname;
+        } else {
+            return '';
+        }
+    }
 }

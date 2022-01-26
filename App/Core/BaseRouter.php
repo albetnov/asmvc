@@ -86,9 +86,14 @@ class BaseRouter
     protected static function baseController()
     {
         $base = new BaseController;
+        if (!empty($base->defaultMiddleware())) {
+            $middleware_path = "Albet\\Ppob\\Middleware\\{$base->defaultMiddleware()}";
+            $middleware = new $middleware_path();
+        }
         $mainController = "Albet\\Ppob\\Controllers\\{$base->mainController()}";
         $call_main = new $mainController();
         $method = $base->defaultMethod();
+        $middleware->middleware();
         return $call_main->$method(new Requests);
     }
 
@@ -97,14 +102,19 @@ class BaseRouter
      */
     public static function triggerRouter()
     {
-        if ($_SERVER['REQUEST_URI'] == '/') {
+        if (str_contains($_SERVER['REQUEST_URI'], '?')) {
+            $server = strtok($_SERVER['REQUEST_URI'], '?');
+        } else {
+            $server = $_SERVER['REQUEST_URI'];
+        }
+        if ($server == '/') {
             self::baseController();
         } else {
             if (empty(self::$routes)) {
                 self::$pagenotfound = true;
             }
             foreach (self::$routes as $route) {
-                if ($_SERVER['REQUEST_URI'] == $route['path']) {
+                if ($server == $route['path']) {
                     if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
                         throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
                     }
@@ -120,7 +130,7 @@ class BaseRouter
                         call_user_func($route['method']);
                     }
                     exit;
-                } else if ($_SERVER['REQUEST_URI'] != $route['path']) {
+                } else if ($server != $route['path']) {
                     self::$pagenotfound = true;
                 }
             }

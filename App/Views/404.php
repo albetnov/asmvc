@@ -19,7 +19,7 @@
                 Page Not Found
             </div>
             <div class="card-body">
-                <button class="btn btn-sm btn-primary" onclick="location.href='/'">Go Home</button>
+                <button class="btn btn-sm btn-primary" onclick="<?= back(true); ?>">Go Home</button>
             </div>
         </div>
     </div>

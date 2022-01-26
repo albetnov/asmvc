@@ -123,9 +123,12 @@ function base_url($portOnly = false)
     return $_SERVER['SERVER_NAME'] . $port;
 }
 
-function url($url)
+function url($url = null)
 {
-    return get_http_protocol() . '://' . base_url() . $url;
+    if (!is_null($url)) {
+        return get_http_protocol() . '://' . base_url() . $url;
+    }
+    return get_http_protocol() . '://' . base_url();
 }
 
 /**
@@ -170,12 +173,14 @@ function set_old($field)
     $_SESSION['old'][$field] = $store;
 }
 
-function old($field_name)
+function old($field_name, $data = null)
 {
     if (isset($_SESSION['old'][$field_name])) {
         $return = $_SESSION['old'][$field_name];
         unset($_SESSION['old'][$field_name]);
         return $return;
+    } else if (!is_null($data)) {
+        return $data;
     }
     return;
 }
@@ -193,4 +198,23 @@ function validateMsg($field)
 function view()
 {
     return new Views;
+}
+
+function back($jsonly = false)
+{
+    if ($jsonly) {
+        return "history.go(-1)";
+    }
+    return "javascript://history.go(-1)";
+}
+
+function GetCurrentUrl()
+{
+    return get_http_protocol() . '://' . base_url() . $_SERVER['REQUEST_URI'];
+}
+
+function ReturnError($num)
+{
+    require_once __DIR__ . '/../Views/' . $num . '.php';
+    exit();
 }

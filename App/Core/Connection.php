@@ -15,7 +15,7 @@ class Connection
          */
         return [
             'db_host' => 'localhost',
-            'db_name' => 'ppob',
+            'db_name' => 'laundry',
             'db_user' => 'root',
             'db_pass' => ''
         ];
