@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Ppob\Core;
+namespace Albet\Asmvc\Core;
 
 class Connection
 {
@@ -15,7 +15,7 @@ class Connection
          */
         return [
             'db_host' => 'localhost',
-            'db_name' => 'laundry',
+            'db_name' => 'asmvc',
             'db_user' => 'root',
             'db_pass' => ''
         ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Ppob\Controllers;
+namespace Albet\Asmvc\Controllers;
 
 class BaseController
 {
@@ -28,5 +28,10 @@ class BaseController
     public function defaultMethod(): string
     {
         return "index";
+    }
+
+    public function defaultMiddleware(): string
+    {
+        return '';
     }
 }

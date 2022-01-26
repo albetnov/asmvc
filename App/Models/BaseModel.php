@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Ppob\Models;
+namespace Albet\Asmvc\Models;
 
-use Albet\Ppob\Core\CoreModel;
+use Albet\Asmvc\Core\CoreModel;
 
 class BaseModel
 {

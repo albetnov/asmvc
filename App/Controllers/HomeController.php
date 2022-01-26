@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Ppob\Controllers;
+namespace Albet\Asmvc\Controllers;
 
-use Albet\Ppob\Core\Requests;
-use Albet\Ppob\Core\Validator;
+use Albet\Asmvc\Core\Requests;
+use Albet\Asmvc\Core\Validator;
 
 class HomeController extends BaseController
 {

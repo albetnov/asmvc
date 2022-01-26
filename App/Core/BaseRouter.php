@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Ppob\Core;
+namespace Albet\Asmvc\Core;
 
-use Albet\Ppob\Controllers\BaseController;
+use Albet\Asmvc\Controllers\BaseController;
 
 class BaseRouter
 {
@@ -87,13 +87,13 @@ class BaseRouter
     {
         $base = new BaseController;
         if (!empty($base->defaultMiddleware())) {
-            $middleware_path = "Albet\\Ppob\\Middleware\\{$base->defaultMiddleware()}";
+            $middleware_path = "Albet\\Asmvc\\Middleware\\{$base->defaultMiddleware()}";
             $middleware = new $middleware_path();
+            $middleware->middleware();
         }
-        $mainController = "Albet\\Ppob\\Controllers\\{$base->mainController()}";
+        $mainController = "Albet\\Asmvc\\Controllers\\{$base->mainController()}";
         $call_main = new $mainController();
         $method = $base->defaultMethod();
-        $middleware->middleware();
         return $call_main->$method(new Requests);
     }
 

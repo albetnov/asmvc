@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Ppob\Core;
+namespace Albet\Asmvc\Core;
 
 class Cli
 {
@@ -66,9 +66,9 @@ class Cli
         $data = <<<'data'
                 <?php
 
-                namespace Albet\Ppob\Router;
+                namespace Albet\Asmvc\Router;
 
-                use Albet\Ppob\Core\BaseRouter;
+                use Albet\Asmvc\Core\BaseRouter;
 
                 class Router extends BaseRouter
                 {
@@ -103,7 +103,7 @@ class Cli
     
             require_once __DIR__ . '/App/Core/init.php';
     
-            use Albet\Ppob\Router\Router;
+            use Albet\Asmvc\Router\Router;
     
             csrf()->generateCsrf();
             define('BS5_CSS', 'css/bootstrap.min.css');
@@ -118,9 +118,11 @@ class Cli
     
             require_once __DIR__ . '/App/Core/init.php';
     
-            use Albet\Ppob\Router\Router;
+            use Albet\Asmvc\Router\Router;
     
             csrf()->generateCsrf();
+            define('BS5_CSS', '');
+            define('BS5_JS', '');
             $router = new Router;
             $router->defineRouter();
     
@@ -195,9 +197,9 @@ class Cli
                     $data = <<<data
                     <?php
 
-                    namespace Albet\Ppob\Controllers;
+                    namespace Albet\Asmvc\Controllers;
                     
-                    use Albet\Ppob\Core\Requests;
+                    use Albet\Asmvc\Core\Requests;
                     
                     class {$try} extends BaseController
                     {
@@ -214,7 +216,7 @@ class Cli
                     $data = <<<data
                     <?php
 
-                    namespace Albet\Ppob\Models;
+                    namespace Albet\Asmvc\Models;
 
                     class {$try} extends BaseModel
                     {
@@ -231,9 +233,9 @@ class Cli
                     $data = <<<data
                     <?php
 
-                     namespace Albet\Ppob\Middleware;
+                     namespace Albet\Asmvc\Middleware;
 
-                     use Albet\Ppob\Core\BaseMiddleware;
+                     use Albet\Asmvc\Core\BaseMiddleware;
 
                      class {$try} extends BaseMiddleware
                      {
@@ -302,7 +304,7 @@ class Cli
                         $data = <<<data
                         <?php
     
-                        namespace Albet\Ppob\Tests;
+                        namespace Albet\Asmvc\Tests;
     
                         require_once __DIR__ . '/../Core/init.php';
                         use PHPUnit\Framework\TestCase;
@@ -318,7 +320,7 @@ class Cli
                         $data = <<<data
                         <?php
 
-                        namespace Albet\Ppob\Tests;
+                        namespace Albet\Asmvc\Tests;
 
                         require_once __DIR__ . '/../Core/init.php';
                         use PHPUnit\Framework\TestCase;

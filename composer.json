@@ -1,20 +1,20 @@
 {
-    "name": "albet/ppob",
-    "description": "a simple ppob",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "Albet\\Ppob\\": "App/"
-        }
-    },
-    "authors": [
-        {
-            "name": "albetnovendo",
-            "email": "ryxinfrvr@gmail.com"
-        }
-    ],
-    "require": {
-        "php": "^8.0",
-        "phpunit/phpunit": "^9.5"
+  "name": "albet/asmvc",
+  "description": "A Simple PHP MVC Framework",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Albet\\Asmvc\\": "App/"
     }
+  },
+  "authors": [
+    {
+      "name": "albetnovendo",
+      "email": "ryxinfrvr@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "phpunit/phpunit": "^9.5"
+  }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Ppob\Core;
+namespace Albet\Asmvc\Core;
 
 class BaseMiddleware
 {

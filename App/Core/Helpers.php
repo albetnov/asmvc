@@ -1,11 +1,11 @@
 <?php
 
-use Albet\Ppob\Core\Connection;
-use Albet\Ppob\Core\CsrfGenerator;
-use Albet\Ppob\Core\Flash;
-use Albet\Ppob\Core\Requests;
-use Albet\Ppob\Core\Validator;
-use Albet\Ppob\Core\Views;
+use Albet\Asmvc\Core\Connection;
+use Albet\Asmvc\Core\CsrfGenerator;
+use Albet\Asmvc\Core\Flash;
+use Albet\Asmvc\Core\Requests;
+use Albet\Asmvc\Core\Validator;
+use Albet\Asmvc\Core\Views;
 
 /**
  * Versi dari ASMVC Anda!.
@@ -183,6 +183,11 @@ function old($field_name, $data = null)
         return $data;
     }
     return;
+}
+
+function flush_old()
+{
+    unset($_SESSION['old']);
 }
 
 function checkError($field)

@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Ppob\Router;
+namespace Albet\Asmvc\Router;
 
-use Albet\Ppob\Core\BaseRouter;
+use Albet\Asmvc\Core\BaseRouter;
 
 class Router extends BaseRouter
 {

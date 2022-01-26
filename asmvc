@@ -8,7 +8,7 @@
  * ASMVC is protected by GNU GPL v2.
  */
 
-use Albet\Ppob\Core\Cli;
+use Albet\Asmvc\Core\Cli;
 
 define('ASMVC_START', microtime());
 

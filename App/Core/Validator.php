@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Ppob\Core;
+namespace Albet\Asmvc\Core;
 
 class Validator
 {
@@ -35,7 +35,7 @@ class Validator
         }
         if (str_starts_with($validate, 'max')) {
             $max = getStringAfter(':', $validate);
-            if (strlen(request()->input($field)) < $max) {
+            if (strlen(request()->input($field)) > $max) {
                 self::put($field, "{$field} Maksimal karakter hanya boleh " . $max);
                 self::$status = false;
             }
@@ -77,6 +77,7 @@ class Validator
         if (!self::$status) {
             return true;
         } else {
+            flush_old();
             return false;
         }
     }
