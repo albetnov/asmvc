@@ -162,6 +162,7 @@ class Cli
                 create:test {test} | Membuat Tests
                 run:tests {test?} | Menjalankan Test
                 reset:router | Menganti file router dengan yang baru
+                export:core | Mengeluarkan beberapa file Core yang bisa anda modifikasi sesuka hati.
                 cleanup | Membersihkan asmvc ke keandaan awal. (Controller, Models, Middleware, dan View akan hilang).
                 version | Menampilkan versi ASMVC.
 
@@ -267,7 +268,7 @@ class Cli
                     $middleware_path = __DIR__ . '/../Middleware/';
                     $middleware = array_diff(scandir($middleware_path), ['.', '..']);
                     $views_path = __DIR__ . '/../Views/';
-                    $views = array_diff(scandir($views_path), ['..', '.', '404.php', 'home.php']);
+                    $views = array_diff(scandir($views_path), ['..', '.', 'home.php']);
                     $public = array_diff(scandir(public_path()), ['.', '..', '.gitignore']);
                     $tests_path = __DIR__ . '/../Tests/';
                     $tests = array_diff(scandir($tests_path), ['.', '..', 'ExampleTest.php']);
@@ -293,8 +294,16 @@ class Cli
                 if (!function_exists('exec')) {
                     throw new \Exception("Exec() tidak terdeteksi. Harap aktifkan di php.ini");
                 }
-                echo "ASMVC Development Server Start... (http://localhost:9090)\n";
-                exec('php -S localhost:9090');
+                $port = 9090;
+                $default = @fsockopen('localhost', $port);
+                while (is_resource($default)) {
+                    echo "Port in use. (:{$port})\n";
+                    $port++;
+                    echo "Forwanding to (:{$port})\n";
+                    fclose($default);
+                }
+                echo "ASMVC Development Server Start... (http://localhost:{$port})\n";
+                exec('php -S localhost:' . $port);
                 break;
 
             case 'create:test':
@@ -344,6 +353,19 @@ class Cli
                 } else {
                     system('vendor\bin\phpunit --configuration phpunit.xml', $result);
                     echo $result;
+                }
+                break;
+
+            case 'export:core':
+                $try = $this->next_arguments($args, 1);
+                if ($try == 'errorPages') {
+                    mkdir(__DIR__ . '/../Views/Errors');
+                    $list = array_diff(scandir(__DIR__ . '/Errors/'), ['.', '..']);
+                    foreach ($list as $file) {
+                        copy(__DIR__ . '/Errors/' . $file, __DIR__ . '/../Views/Errors/' . $file);
+                        echo "Copied: {$file}\n";
+                    }
+                    echo "Exported Successfully!\n";
                 }
                 break;
 

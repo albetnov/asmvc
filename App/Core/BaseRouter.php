@@ -136,8 +136,7 @@ class BaseRouter
             }
         }
         if (self::$pagenotfound) {
-            require_once __DIR__ . '/../Views/404.php';
-            exit();
+            return ReturnError(404);
         }
     }
 }

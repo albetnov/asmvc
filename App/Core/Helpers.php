@@ -222,6 +222,10 @@ function GetCurrentUrl()
 
 function ReturnError($num)
 {
-    require_once __DIR__ . '/../Views/' . $num . '.php';
+    if (is_dir(__DIR__ . '/../Views/Errors')) {
+        require_once __DIR__ . '/../Views/Errors/' . $num . '.php';
+        exit();
+    }
+    require_once __DIR__ . '/Errors/' . $num . '.php';
     exit();
 }
