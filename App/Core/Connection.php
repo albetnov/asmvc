@@ -15,7 +15,7 @@ class Connection
          */
         return [
             'db_host' => 'localhost',
-            'db_name' => 'asmvc',
+            'db_name' => 'laundry',
             'db_user' => 'root',
             'db_pass' => ''
         ];

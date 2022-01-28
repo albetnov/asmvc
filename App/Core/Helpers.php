@@ -69,7 +69,9 @@ function v_include($view, $data = [])
 function rawDB($query)
 {
     $call_pdo = (new Connection)->getConnection();
-    $call_pdo->exec($query);
+    $query = $call_pdo->query($query);
+    $query->execute();
+    return $query->fetchAll();
 }
 
 /**

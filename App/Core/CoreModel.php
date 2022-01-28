@@ -8,7 +8,7 @@ class CoreModel
      * Mendifinisikan tabel, field, dan juga value
      */
     private $table, $data;
-    private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt;
+    private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
     private $pdo;
     private static $last_insert_id;
 
@@ -64,8 +64,24 @@ class CoreModel
         } else {
             $string .= "= ";
         }
-        $string .= "'{$value}'";
+        if ($this->whereNoFormat) {
+            $string .= "{$value}";
+        } else {
+            $string .= "'{$value}'";
+        }
         $this->whereStmt .= $string;
+        return $this;
+    }
+
+    /**
+     * Fungsi where tanpa format.
+     */
+    public function whereNoFormat()
+    {
+        if ($this->whereStmt) {
+            throw new \Exception("Tolong gunakan whereNoFormat sebelum where()");
+        }
+        $this->whereNoFormat = true;
         return $this;
     }
 
@@ -75,7 +91,7 @@ class CoreModel
     public function orWhere($field, $value, $operator = null)
     {
         if (!$this->whereStmt) {
-            throw new \Exception("Tolong gunakan orWhere() sebelum where()");
+            throw new \Exception("Tolong gunakan orWhere() sesudah where()");
         }
         if ($this->whereStmt) {
             $string = " OR {$field} ";
@@ -184,6 +200,16 @@ class CoreModel
             $fields = implode(',', $fields);
             $sql = $this->pdo->query("SELECT {$fields} FROM {$this->table} {$this->validateOptional()} LIMIT 1");
         }
+        $sql->execute();
+        foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $result) {
+        }
+        $this->clean();
+        return $result;
+    }
+
+    public function count()
+    {
+        $sql = $this->pdo->query("SELECT COUNT(*) AS result FROM {$this->table} {$this->validateOptional()}");
         $sql->execute();
         foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $result) {
         }
