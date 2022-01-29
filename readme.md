@@ -18,7 +18,7 @@ Dibuat Oleh Albet Novendo. <br>
 
 # Lisensi
 
-Repository ini dilindungi oleh GNU GPL v2.
+Repository ini dilindungi oleh MIT.
 
 # Kontribusi dan masalah
 

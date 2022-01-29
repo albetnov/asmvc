@@ -2,10 +2,11 @@
 <?php
 
 /**
- * A Simple MVC
+ * A Simple PHP MVC
  * Created by: Albet Novendo
  * File: ASMVC CLI
- * ASMVC is protected by GNU GPL v2.
+ * ASMVC is protected by MIT.
+ * Contribution: https://github.com/albetnov/simple-php-mvc
  */
 
 use Albet\Asmvc\Core\Cli;

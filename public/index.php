@@ -1,8 +1,11 @@
 <?php
 
 /**
- * ASMVC by Albet Novendo.
- * This file is your apps entry point. Every request are redirected to here.
+ * A Simple PHP MVC
+ * Created by: Albet Novendo
+ * File: ASMVC CLI
+ * ASMVC is protected by MIT.
+ * Contribution: https://github.com/albetnov/simple-php-mvc
  */
 
 // Call the autoload.

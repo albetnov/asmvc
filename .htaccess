@@ -14,18 +14,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ /public/index.php [L,QSA]
 
-# Disable access to specific files.
-# <Files "asmvc">  
-#   Require all denied
-# </Files>
-
-# <Files "composer.json">  
-#   Require all denied
-# </Files>
-
-# <Files "composer.lock">  
-#   Require all denied
-# </Files>
+# Disable access to specific files and folder.
 
 <FilesMatch "asmvc|composer\.json|composer\.lock|LICENSE|phpunit\.xml|readme\.md|\.gitignore">
     Deny from all
