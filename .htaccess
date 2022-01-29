@@ -1,14 +1,15 @@
-DirectoryIndex index.php
+#Push web root to enter public index.php
+DirectoryIndex public/index.php
 
-# # enable apache rewrite engine
+# enable apache rewrite engine
 RewriteEngine on
 
-# # Edit this in your init method too if you script lives in a subfolder
+# Edit this in your init method too if you script lives in a subfolder
 RewriteBase /
 
-# # Deliver the folder or file directly if it exists on the server
+# Deliver the folder or file directly if it exists on the server
 Options -indexes
 # Push every request to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ /index.php [L,QSA]
+RewriteRule ^.*$ /public/index.php [L,QSA]

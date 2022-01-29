@@ -17,10 +17,13 @@ class Router extends BaseRouter
          */
 
         //Your route
+        self::inline('/hello', function () {
+            echo "Hello World";
+        });
 
         /**
          * Menjalankan routing
          */
         self::triggerRouter();
     }
-}   
+}

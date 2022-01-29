@@ -303,7 +303,7 @@ class Cli
                     fclose($default);
                 }
                 echo "ASMVC Development Server Start... (http://localhost:{$port})\n";
-                exec('php -S localhost:' . $port);
+                exec('php -S localhost:' . $port . ' public/index.php');
                 break;
 
             case 'create:test':

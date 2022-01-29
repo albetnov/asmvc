@@ -10,13 +10,16 @@
 
 use Albet\Asmvc\Core\Cli;
 
-define('ASMVC_START', microtime());
+/**
+ * Define that ASMVC Cli is started.
+ */
+define('ASMVC_START', true);
 
 /**
- * Memanggil dependecies
+ * Calling autoload. If it's not exist. Install composer's autoload.
  */
 if (is_dir(__DIR__ . '/vendor/')) {
-    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/App/Core/init.php';
     $install = false;
 } else {
     echo "ASMVC akan melakukan instalisasi. Harap pastikan anda memiliki composer dan exec() bisa digunakan\n";
@@ -26,14 +29,14 @@ require_once __DIR__ . '/App/Core/Helpers.php';
 require_once __DIR__ . '/App/Core/Cli.php';
 
 /**
- * Validasi dimana ASMVC dijalankan.
+ * Validate that ASMVC must be running by CLI interface only.
  */
 if (PHP_SAPI !== 'cli') {
     exit('ASMVC hanya bisa dijalankan dengan CLI' . PHP_EOL);
 }
 
 /**
- * Mendapatkan argument
+ * Parsing the argument written by user.
  */
 $cli = new Cli;
 if ($install) {
