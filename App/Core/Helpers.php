@@ -79,7 +79,8 @@ function rawDB($query)
  */
 function vdd(...$dump)
 {
-    die(var_dump($dump));
+    echo "<pre>" . var_dump($dump) . "</pre>";
+    exit();
 }
 
 function get_http_protocol()

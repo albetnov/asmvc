@@ -269,7 +269,7 @@ class Cli
                     $middleware = array_diff(scandir($middleware_path), ['.', '..']);
                     $views_path = __DIR__ . '/../Views/';
                     $views = array_diff(scandir($views_path), ['..', '.', 'home.php']);
-                    $public = array_diff(scandir(public_path()), ['.', '..', '.gitignore']);
+                    $public = array_diff(scandir(public_path()), ['.', '..', '.gitkeep']);
                     $tests_path = __DIR__ . '/../Tests/';
                     $tests = array_diff(scandir($tests_path), ['.', '..', 'ExampleTest.php']);
                     $this->cleanUp($controller_path, $controller);

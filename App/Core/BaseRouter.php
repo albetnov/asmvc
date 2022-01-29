@@ -117,6 +117,10 @@ class BaseRouter
                 if ($server == $route['path']) {
                     if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
                         throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
+                    } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        if (!csrf()->validateCsrf()) {
+                            return ReturnError(500);
+                        };
                     }
                     if (!is_null($route['middleware'])) {
                         $middleware = new $route['middleware'];

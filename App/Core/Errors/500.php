@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>404</title>
+    <title>500</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,7 +21,9 @@
 
             .card-header {
                 font-size: 30px;
-                color: royalblue;
+                color: red;
+                margin-left: 15vw;
+                margin-right: auto;
             }
 
             a {
@@ -62,11 +64,8 @@
 <body>
     <div class="container d-flex 100-vh align-items-center justify-content-center">
         <div class="card">
-            <div class="card-header text-primary">
-                404 | Page Not Found
-            </div>
-            <div class="card-body">
-                <button class="btn btn-sm btn-primary" onclick="location.href='<?= url(); ?>'">Go Home</button>
+            <div class="card-header text-danger">
+                500 | Internal Server Error
             </div>
         </div>
     </div>
