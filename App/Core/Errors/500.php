@@ -65,7 +65,7 @@
     <div class="container d-flex 100-vh align-items-center justify-content-center">
         <div class="card">
             <div class="card-header text-danger">
-                500 | Internal Server Error
+                500 | <?= is_null($message) ? 'Internal Server Error' : $message ?>
             </div>
         </div>
     </div>

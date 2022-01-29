@@ -119,10 +119,13 @@ class BaseRouter
         if ($server == '/' . $exploded[array_key_last($exploded)] . '/') {
             redirect('public/index.php/');
         };
+
         if (str_contains($server, $match)) {
-            $server = explode('/', $server);
-            $server = '/' . $server[array_key_last($server)];
+            $server = explode('/', getStringAfter('/index.php', $server));
+            array_shift($server);
+            $server = '/' . implode('/', $server);
         }
+
         if ($server == '/') {
             self::baseController();
         } else {

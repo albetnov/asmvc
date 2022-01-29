@@ -288,7 +288,7 @@ function GetCurrentUrl()
  * Function to return a error view and kill the app
  * @param int $num
  */
-function ReturnError($num)
+function ReturnError($num, $message = null)
 {
     if (is_dir(__DIR__ . '/../Views/Errors')) {
         require_once __DIR__ . '/../Views/Errors/' . $num . '.php';

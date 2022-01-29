@@ -63,7 +63,7 @@
     <div class="container d-flex 100-vh align-items-center justify-content-center">
         <div class="card">
             <div class="card-header text-primary">
-                404 | Page Not Found
+                404 | <?= is_null($message) ? 'Page not found' : $message ?>
             </div>
             <div class="card-body">
                 <button class="btn btn-sm btn-primary" onclick="location.href='<?= url(); ?>'">Go Home</button>
