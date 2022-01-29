@@ -1,25 +1,26 @@
 # Simple PHP MVC
 
-Dibuat Oleh Albet Novendo. <br>
+Created By Albet Novendo. <br>
 
-# Kebutuhan
+# Requiresment
 
-- Apache2:
+- Apache2 with:
   - Rewrite
   - Override
-- mySQL (tidak wajib)
-- PHP 8.0 keatas
+- MySQL (If you need it. Right now ASMVC Support limited to MySQL only).
+- PHP 8.0 and upper
+- Composer
 
-# Cara pakai
+# How to install?
 
-1. Clone Repsository Ini.
-2. Ketik composer install
-3. Selesai.
+1. Clone this repository;
+2. Type php asmvc (This will perform composer install if you haven't install the dependencies first);
+3. You're good to go.
 
-# Lisensi
+# License
 
-Repository ini dilindungi oleh MIT.
+This project is licensed under MIT. Copyright 2022
 
-# Kontribusi dan masalah
+# Contribution and Issues
 
-Anda bisa berkontribusi dengan melaporkan masalah ataupun menambah/memperbaiki fitur.
+You can contribute to this project freely. It can be feature contributions, bug fix, bug report and many more.
