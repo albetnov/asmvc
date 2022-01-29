@@ -127,7 +127,7 @@ class Cli
             $data = <<<'data'
             <?php
     
-            require_once __DIR__ . '/App/Core/init.php';
+            require_once __DIR__ . '/../App/Core/init.php';
     
             use Albet\Asmvc\Router\Router;
     
@@ -142,7 +142,7 @@ class Cli
             $data = <<<'data'
             <?php
     
-            require_once __DIR__ . '/App/Core/init.php';
+            require_once __DIR__ . '/../App/Core/init.php';
     
             use Albet\Asmvc\Router\Router;
     
@@ -155,7 +155,7 @@ class Cli
             data;
         }
 
-        file_put_contents(base_path() . 'index.php', $data);
+        file_put_contents(base_path() . 'public/index.php', $data);
     }
 
     /**

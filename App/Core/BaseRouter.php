@@ -10,6 +10,7 @@ class BaseRouter
      * @var array $routes, boolean $pagenotfound
      */
     public static $routes = [], $pagenotfound = false;
+    private static $ASMVC_LOCAL_URL = false;
 
     /**
      * Block a path.
@@ -103,6 +104,11 @@ class BaseRouter
         return $call_main->$method(new Requests);
     }
 
+    public static function getAsmvcUrlLocal()
+    {
+        return self::$ASMVC_LOCAL_URL;
+    }
+
     /**
      * Run the routing
      * @return returnError
@@ -124,6 +130,8 @@ class BaseRouter
             $server = explode('/', getStringAfter('/index.php', $server));
             array_shift($server);
             $server = '/' . implode('/', $server);
+            // Define where your url start with.
+            self::$ASMVC_LOCAL_URL =  $exploded[array_key_last($exploded)];
         }
 
         if ($server == '/') {

@@ -1,8 +1,8 @@
 <?php
 
+use Albet\Asmvc\Core\BaseRouter;
 use Albet\Asmvc\Core\Connection;
 use Albet\Asmvc\Core\CsrfGenerator;
-use Albet\Asmvc\Core\Flash;
 use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Core\Views;
@@ -143,6 +143,9 @@ function base_url($portOnly = false)
         return $_SERVER['SERVER_PORT'];
     }
     $port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
+    if (BaseRouter::getAsmvcUrlLocal()) {
+        return $_SERVER['SERVER_NAME'] . $port . '/' . BaseRouter::getAsmvcUrlLocal();
+    }
     return $_SERVER['SERVER_NAME'] . $port;
 }
 
