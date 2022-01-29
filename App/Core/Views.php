@@ -8,6 +8,7 @@ class Views
      * @var array $sectionList, $section,string $currentSection
      */
     private static $sectionList = [], $currentSection, $section = [];
+    private static $path;
 
     /**
      * Function to define a section
@@ -37,6 +38,9 @@ class Views
             self::$section[$section] = [];
         }
         self::$section[$section][] = $content;
+        if (self::$path) {
+            return v_include(self::$path);
+        }
     }
 
     /**
@@ -58,10 +62,23 @@ class Views
     }
 
     /**
-     * Function to extends or include another views.
+     * Function to extends another views. A section calling is required to make sure everything run just fine.
      * @param string $path
      */
     public function extends($path)
+    {
+        if (self::$currentSection) {
+            return v_include($path);
+        }
+
+        self::$path = $path;
+    }
+
+    /**
+     * Function to include a view
+     * @param string $path
+     */
+    public function include($path)
     {
         return v_include($path);
     }

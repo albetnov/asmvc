@@ -27,7 +27,7 @@ class Router extends BaseRouter
 
         //Your route
         self::inline('/hello', function () {
-            ReturnError(404, 'Halaman tidak ditemukan');
+            return v_include('cth2');
         });
 
         self::inline('/hello/world/again', function () {
