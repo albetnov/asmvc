@@ -13,3 +13,25 @@ Options -indexes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ /public/index.php [L,QSA]
+
+# Disable access to specific files.
+# <Files "asmvc">  
+#   Require all denied
+# </Files>
+
+# <Files "composer.json">  
+#   Require all denied
+# </Files>
+
+# <Files "composer.lock">  
+#   Require all denied
+# </Files>
+
+<FilesMatch "asmvc|composer\.json|composer\.lock|LICENSE|phpunit\.xml|readme\.md|\.gitignore">
+    Deny from all
+</FilesMatch>
+
+RewriteRule ^vendor/$ - [R=403,L]
+
+ErrorDocument 403 /App/Core/Errors/404.php
+

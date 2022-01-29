@@ -107,6 +107,16 @@ class BaseRouter
         } else {
             $server = $_SERVER['REQUEST_URI'];
         }
+        $exploded = explode('\\', realpath('../'));
+        $match = $exploded[array_key_last($exploded)] . '/public/index.php';
+        if ($server == '/' . $exploded[array_key_last($exploded)] . '/') {
+            header('location:public/index.php/');
+            exit();
+        };
+        if (str_contains($server, $match)) {
+            $server = explode('/', $server);
+            $server = '/' . $server[array_key_last($server)];
+        }
         if ($server == '/') {
             self::baseController();
         } else {
@@ -114,6 +124,7 @@ class BaseRouter
                 self::$pagenotfound = true;
             }
             foreach (self::$routes as $route) {
+
                 if ($server == $route['path']) {
                     if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
                         throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
