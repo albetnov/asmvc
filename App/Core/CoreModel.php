@@ -5,7 +5,7 @@ namespace Albet\Asmvc\Core;
 class CoreModel
 {
     /**
-     * Mendifinisikan tabel, field, dan juga value
+     * Define require variables
      */
     private $table, $data;
     private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
@@ -13,7 +13,7 @@ class CoreModel
     private static $last_insert_id;
 
     /**
-     * Iniliasisasi Koneksi
+     * Initiating Connection
      */
     public function __construct()
     {
@@ -21,7 +21,7 @@ class CoreModel
     }
 
     /**
-     * Melakukan proses pada field
+     * Format the field to be used.
      */
     private function processField()
     {
@@ -29,7 +29,7 @@ class CoreModel
     }
 
     /**
-     * Menghitung jumlah prepare.
+     * Count required prepare statement
      */
     private function totalPrepare()
     {
@@ -41,7 +41,9 @@ class CoreModel
     }
 
     /**
-     * Memasukkan tabel ke dalam variabel
+     * Define Table Function
+     * @param string $name
+     * @return self
      */
     public function table($name)
     {
@@ -50,7 +52,9 @@ class CoreModel
     }
 
     /**
-     * Fungsi where.
+     * Where function
+     * @param string $field, $value, $operator
+     * @return self
      */
     public function where($field, $value, $operator = null)
     {
@@ -74,24 +78,27 @@ class CoreModel
     }
 
     /**
-     * Fungsi where tanpa format.
+     * Where function without formatted strings.
+     * @return self
      */
     public function whereNoFormat()
     {
         if ($this->whereStmt) {
-            throw new \Exception("Tolong gunakan whereNoFormat sebelum where()");
+            throw new \Exception("Please use whereNoFormat before where()");
         }
         $this->whereNoFormat = true;
         return $this;
     }
 
     /**
-     * Fungsi orWhere
+     * orWhere function
+     * @param string $field, $value, $operator
+     * @return self
      */
     public function orWhere($field, $value, $operator = null)
     {
         if (!$this->whereStmt) {
-            throw new \Exception("Tolong gunakan orWhere() sesudah where()");
+            throw new \Exception("Please use orWhere() after where()");
         }
         if ($this->whereStmt) {
             $string = " OR {$field} ";
@@ -107,7 +114,9 @@ class CoreModel
     }
 
     /**
-     * Fungsi Order By SQL
+     * Order by function
+     * @param string $column, $order
+     * @return self
      */
     public function orderBy($column, $order)
     {
@@ -123,7 +132,9 @@ class CoreModel
     }
 
     /**
-     * Fungsi untuk menentukan seberapa banyak limit
+     * Limit function
+     * @param int $limit
+     * @return self
      */
     public function limit(int $limit)
     {
@@ -134,7 +145,9 @@ class CoreModel
     }
 
     /**
-     * Fungsi Join
+     * Join Function
+     * @param string $table, $from_id, $to_id
+     * @return self
      */
     public function join($table, $from_id, $to_id)
     {
@@ -148,7 +161,8 @@ class CoreModel
     }
 
     /**
-     * Melakukan validasi apakah ada optional atau tidak.
+     * Run and format every possible query statement in use
+     * @return string
      */
     private function validateOptional()
     {
@@ -168,6 +182,9 @@ class CoreModel
         return trim($string);
     }
 
+    /**
+     * Clean function to clean the entire variables.
+     */
     private function clean()
     {
         $this->table = '';
@@ -180,6 +197,7 @@ class CoreModel
 
     /**
      * Fetching data
+     * @param array $fields
      */
     public function get($fields = [])
     {
@@ -193,6 +211,10 @@ class CoreModel
         return $sql->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    /**
+     * Get the first data from fetch
+     * @param array $fields
+     */
     public function first($fields = [])
     {
         $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()} LIMIT 1");
@@ -207,6 +229,9 @@ class CoreModel
         return $result;
     }
 
+    /**
+     * Count a table
+     */
     public function count()
     {
         $sql = $this->pdo->query("SELECT COUNT(*) AS result FROM {$this->table} {$this->validateOptional()}");
@@ -218,7 +243,8 @@ class CoreModel
     }
 
     /**
-     * Fungsi insert
+     * Insert a data
+     * @param array $data, boolean $last_insert_id
      */
     public function insert(array $data, $last_insert_id = false)
     {
@@ -234,13 +260,17 @@ class CoreModel
         }
     }
 
+    /**
+     * Get Last Insert Id
+     */
     public function lastInsertId()
     {
         return self::$last_insert_id;
     }
 
     /**
-     * Fungsi update
+     * Update function
+     * @param array $data
      */
     public function update(array $data)
     {
@@ -260,7 +290,7 @@ class CoreModel
     }
 
     /**
-     * Fungsi delete
+     * Delete function
      */
     public function delete()
     {
@@ -272,6 +302,10 @@ class CoreModel
         }
     }
 
+    /**
+     * Debug function
+     * @return string
+     */
     public function debug()
     {
         return "SELECT * FROM {$this->table} {$this->validateOptional()}";

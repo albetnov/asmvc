@@ -6,23 +6,25 @@ class Connection
 {
 
     /**
-     * Definisikan koneksi anda disini.
+     * Define your database connection 
+     * @return array
      */
     public function defineConnection(): array
     {
         /**
-         * Sihlakan ubah sesuai konfigurasi database anda.
+         * You're free to configure this array.
          */
         return [
             'db_host' => 'localhost',
-            'db_name' => 'laundry',
+            'db_name' => 'asmvc',
             'db_user' => 'root',
             'db_pass' => ''
         ];
     }
 
     /**
-     * Function untuk mendapatkan koneksi
+     * Function to get a connection
+     * @return \PDO
      */
     public function getConnection(): \PDO
     {

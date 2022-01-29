@@ -8,13 +8,14 @@ use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Core\Views;
 
 /**
- * Versi dari ASMVC Anda!.
+ * ASMVC Version and State
  */
 define('ASMVC_VERSION', '0.8');
 define('ASMVC_STATE', 'Dev');
 
 /**
- * Function untuk mengakses class request.
+ * Function to access Requests Class immediately.
+ * @return Requests
  */
 function request()
 {
@@ -22,20 +23,26 @@ function request()
 }
 
 /**
- * Function untuk mengakses class CsrfGenerator.
+ * Function to access CsrfGenerator Class immediately.
+ * @return CsrfGenerator
  */
 function csrf()
 {
     return new CsrfGenerator;
 }
 
+/**
+ * Function to access CsrfGenerator's field method immediately.
+ * @return CsrfGenerator
+ */
 function csrf_field()
 {
     return (new CsrfGenerator)->field();
 }
 
 /**
- * Fungsi untuk mendapatkan string setelah karakter tertentu
+ * Function to get a string after specific character.
+ * @param string $char, $string
  */
 function getStringAfter($char, $string)
 {
@@ -43,7 +50,8 @@ function getStringAfter($char, $string)
 }
 
 /**
- * Function untuk mengubah directory dari "." ke "/".
+ * Function to change '.' to '/'.
+ * @param string $text
  */
 function dotSupport($text)
 {
@@ -54,7 +62,8 @@ function dotSupport($text)
 }
 
 /**
- * Function untuk include sebuah view.
+ * Function to include a view
+ * @param string $view, array $data
  */
 function v_include($view, $data = [])
 {
@@ -64,7 +73,8 @@ function v_include($view, $data = [])
 }
 
 /**
- * Function untuk mengakses PDO Query secara langsung
+ * Function to access PDO immediately
+ * @param string $query
  */
 function rawDB($query)
 {
@@ -75,7 +85,8 @@ function rawDB($query)
 }
 
 /**
- * Function untuk melakukan var_dump dan die.
+ * Function to do var_dump then die.
+ * @param $dump
  */
 function vdd(...$dump)
 {
@@ -83,6 +94,9 @@ function vdd(...$dump)
     exit();
 }
 
+/**
+ * Function to get if server is running on HTTPS or HTTP.
+ */
 function get_http_protocol()
 {
     if (!empty($_SERVER['HTTPS'])) {
@@ -93,7 +107,9 @@ function get_http_protocol()
 }
 
 /**
- * Fungsi untuk mengakses path publik.
+ * Function to access public folder.
+ * @param string $path
+ * @return string
  */
 function public_path($path = null)
 {
@@ -104,7 +120,9 @@ function public_path($path = null)
 }
 
 /**
- * Fungsi untuk  mengakses path awal dari project.
+ * Function to access base path of project
+ * @param string $path
+ * @return string
  */
 function base_path($path = null)
 {
@@ -115,7 +133,9 @@ function base_path($path = null)
 }
 
 /**
- * Fungsi untuk mendapatkan base URL.
+ * Function to access base url of project
+ * @param boolean $portOnly
+ * @return string
  */
 function base_url($portOnly = false)
 {
@@ -126,6 +146,11 @@ function base_url($portOnly = false)
     return $_SERVER['SERVER_NAME'] . $port;
 }
 
+/**
+ * Function to access base url of project
+ * @param string $url
+ * @return string
+ */
 function url($url = null)
 {
     if (!is_null($url)) {
@@ -135,7 +160,9 @@ function url($url = null)
 }
 
 /**
- * Function untuk mengambil asset
+ * Function to access public folder
+ * @param string $asset
+ * @return string
  */
 function asset($asset = null)
 {
@@ -147,7 +174,7 @@ function asset($asset = null)
 }
 
 /**
- * Fungsi untuk redirect ke halaman
+ * Function to redirect an user to specific location
  */
 function redirect($to)
 {
@@ -156,7 +183,9 @@ function redirect($to)
 }
 
 /**
- * Fungsi untuk sistem agar tidak ada method chain yang dipanggil lebih dari 1 kali.
+ * Function to tell developer if there's a method being chained more than one.
+ * @param $mark, string $method, string $custom_msg
+ * @throws Exception
  */
 function noSelfChained($mark, $method, $custom_msg = null)
 {
@@ -170,12 +199,21 @@ function noSelfChained($mark, $method, $custom_msg = null)
     }
 }
 
+/**
+ * Function to set old to a field
+ * @param string $field
+ */
 function set_old($field)
 {
     $store = request()->input($field);
     $_SESSION['old'][$field] = $store;
 }
 
+/**
+ * Function to get old value of field.
+ * @param string $field_name, $data
+ * @return string
+ */
 function old($field_name, $data = null)
 {
     if (isset($_SESSION['old'][$field_name])) {
@@ -188,26 +226,48 @@ function old($field_name, $data = null)
     return;
 }
 
+/**
+ * Function to flush entire session old if there's no validation error
+ */
 function flush_old()
 {
     unset($_SESSION['old']);
 }
 
+/**
+ * Function to access Validator's checkError method immediately
+ * @param string $field
+ * @return Validator
+ */
 function checkError($field)
 {
     return (new Validator)::checkError($field);
 }
 
+/**
+ * Function to access Validator's validMsg method immediately
+ * @param string $field
+ * @return Validator
+ */
 function validateMsg($field)
 {
     return (new Validator)::validMsg($field);
 }
 
+/**
+ * Function to access Views class immediately
+ * @return Views
+ */
 function view()
 {
     return new Views;
 }
 
+/**
+ * Function to return javascript history -1.
+ * @param boolean $jsonly
+ * @return string
+ */
 function back($jsonly = false)
 {
     if ($jsonly) {
@@ -216,11 +276,18 @@ function back($jsonly = false)
     return "javascript://history.go(-1)";
 }
 
+/**
+ * Function to access Requests's currentURL method.
+ */
 function GetCurrentUrl()
 {
-    return get_http_protocol() . '://' . base_url() . $_SERVER['REQUEST_URI'];
+    return request()->currentURL();
 }
 
+/**
+ * Function to return a error view and kill the app
+ * @param int $num
+ */
 function ReturnError($num)
 {
     if (is_dir(__DIR__ . '/../Views/Errors')) {

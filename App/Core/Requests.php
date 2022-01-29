@@ -4,6 +4,11 @@ namespace Albet\Asmvc\Core;
 
 class Requests
 {
+    /**
+     * Get an input field value
+     * @param string $field
+     * @return string
+     */
     public function input($field)
     {
         if (isset($_POST[$field])) {
@@ -15,11 +20,19 @@ class Requests
         }
     }
 
+    /**
+     * Get user's current URL
+     * @return string
+     */
     public function currentURL()
     {
-        get_http_protocol() . '://' . base_url() . $_SERVER['REQUEST_URI'];
+        return get_http_protocol() . '://' . base_url() . $_SERVER['REQUEST_URI'];
     }
 
+    /**
+     * Get form file uploads
+     * @param string $name
+     */
     public function upload($name)
     {
         if (isset($_FILES[$name])) {
@@ -29,6 +42,11 @@ class Requests
         }
     }
 
+    /**
+     * Get url query parameter values
+     * @param string $name
+     * @return string
+     */
     public function query($name)
     {
         if (isset($_GET[$name])) {

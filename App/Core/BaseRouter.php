@@ -7,19 +7,25 @@ use Albet\Asmvc\Controllers\BaseController;
 class BaseRouter
 {
     /**
-     * Definisian variabel routing dan juga halaman tidak ditemukan.
+     * @var array $routes, boolean $pagenotfound
      */
     public static $routes = [], $pagenotfound = false;
 
+    /**
+     * Block a path.
+     * @param string $path
+     * @throws Exception
+     */
     private static function block($path)
     {
         if ($path == '/') {
-            throw new \Exception("Overriding '/' URL Path tidak disarankan. Sebaiknya anda mengkonfigurasinya di BaseController saja.");
+            throw new \Exception("Overriding URL '/' is not recommended. You should configure it on BaseController only.");
         }
     }
 
     /**
-     * Menambahkan routing ke dalam array.
+     * Add routing to the array
+     * @param string $path, Class|String $controllerandmethod, Class|String $http_method_or_middleware
      */
     public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
     {
@@ -50,7 +56,8 @@ class BaseRouter
     }
 
     /**
-     * Memungkin kan anda untuk menggunakan inline routing.
+     * Add routing to the array but for anonymous function only.
+     * @param string $path, Callable $inline, Class|String $http_method_or_middleware.
      */
     public static function inline($path, $inline, ...$http_method_or_middleware)
     {
@@ -80,8 +87,7 @@ class BaseRouter
     }
 
     /**
-     * Anda bisa mengubah settingan default untuk path /. 
-     * Saya sendiri menyarankan untuk megubah method dan controller saja ada BaseController.php
+     * Default settings for url '/'.
      */
     protected static function baseController()
     {
@@ -98,7 +104,8 @@ class BaseRouter
     }
 
     /**
-     * Method yang digunakan untuk menjalankan routing 
+     * Run the routing
+     * @return returnError
      */
     public static function triggerRouter()
     {
@@ -110,8 +117,7 @@ class BaseRouter
         $exploded = explode('\\', realpath('../'));
         $match = $exploded[array_key_last($exploded)] . '/public/index.php';
         if ($server == '/' . $exploded[array_key_last($exploded)] . '/') {
-            header('location:public/index.php/');
-            exit();
+            redirect('public/index.php/');
         };
         if (str_contains($server, $match)) {
             $server = explode('/', $server);

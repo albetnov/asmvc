@@ -4,6 +4,9 @@ namespace Albet\Asmvc\Core;
 
 class CsrfGenerator
 {
+    /**
+     * Generate a csrf
+     */
     public function generateCsrf()
     {
         session_start();
@@ -12,6 +15,10 @@ class CsrfGenerator
         }
     }
 
+    /**
+     * Validate the csrf
+     * @return boolean
+     */
     public function validateCsrf()
     {
         $token = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
@@ -21,6 +28,10 @@ class CsrfGenerator
         return true;
     }
 
+    /**
+     * Echo a csrf field html
+     * @return string
+     */
     public function field()
     {
         return '<input name="token" type="hidden" value="' . $_SESSION['token'] . '" />';

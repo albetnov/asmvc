@@ -7,13 +7,22 @@ use Albet\Asmvc\Core\BaseRouter;
 class Router extends BaseRouter
 {
     /**
-     * Anda bisa mendefinisikan routing anda disini.
+     * You can define your routing in here
+     * @return void
      */
     public function defineRouter(): void
     {
         /**
-         * Ada 2 method yang bisa anda gunakan. inline($path, $function, $http_method) dan 
-         * add($path, [controller::class, 'method'], $http_method).
+         * You can use following method for routing:
+         * self::add($urlPath, [Controller::class, 'methodName'], $HttpMethod, $Middleware).
+         * self::inline($urlPath, $CallableFunction, $httpMethod, $Middleware).
+         * $httpMethod and $middleWare can be optional.
+         * It can either be
+         * self::add($urlPath, [Controller::class, 'methodName'], $HttpMethod) for Http method only
+         * or
+         * self::add($urlPath, [Controller::class, 'methodName'], $Middleware) for Middleware only.
+         * or both of them.
+         * The same rules applies for inline. 
          */
 
         //Your route
@@ -22,7 +31,7 @@ class Router extends BaseRouter
         });
 
         /**
-         * Menjalankan routing
+         * Run the routing
          */
         self::triggerRouter();
     }

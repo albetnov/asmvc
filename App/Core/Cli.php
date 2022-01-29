@@ -4,6 +4,11 @@ namespace Albet\Asmvc\Core;
 
 class Cli
 {
+    /**
+     * Get where the arguments start
+     * @param $args, boolean $get_counter
+     * @return int | string
+     */
     private function getArgsStarts($args, $get_counter = false)
     {
         if ($args[0] == 'asmvc') {
@@ -21,6 +26,11 @@ class Cli
         }
     }
 
+    /**
+     * Get the next argument
+     * @param $args, int $i
+     * @return string | boolean
+     */
     private function next_arguments($args, $i)
     {
         $i += $this->getArgsStarts($args, true);
@@ -31,6 +41,10 @@ class Cli
         }
     }
 
+    /**
+     * Delete files or directory in specific folder to cleanup.
+     * @param string $path, array $diffed.
+     */
     private function cleanUp($path, $diffed)
     {
         $dirtho = [];
@@ -55,12 +69,20 @@ class Cli
         }
     }
 
+    /**
+     * Ask a question in CLI.
+     * @param string $question
+     * @return string $q
+     */
     private function ask($question)
     {
         $q = readline($question . ' ? ');
         return $q;
     }
 
+    /**
+     * Reset Router.php to clear state.
+     */
     private function resetRouter()
     {
         $data = <<<'data'
@@ -95,6 +117,10 @@ class Cli
         file_put_contents(__DIR__ . "/../Router/Router.php", $data);
     }
 
+    /**
+     * Reset Index.php to Boostrap Ready/Not state.
+     * @param string $options
+     */
     private function resetIndex($options = null)
     {
         if ($options == 'add_bs') {
@@ -132,6 +158,9 @@ class Cli
         file_put_contents(base_path() . 'index.php', $data);
     }
 
+    /**
+     * Function to do composer install automatically
+     */
     public function install()
     {
         if (!function_exists('exec')) {
@@ -145,30 +174,35 @@ class Cli
         }
     }
 
+    /**
+     * Parsing the argument
+     * @param $args
+     */
     public function argument_parse($args)
     {
         $first = strtolower($this->getArgsStarts($args));
         switch ($first) {
             case 'help':
                 echo <<<Help
-                Selamat datang di ASMVC CLI.
-                Beberapa perintah yang dapat anda gunakan:
+                Welcome to ASMVC CLI.
+                Some commands you can use:
 
-                serve | Memulai ASMVC Development Server
+                serve | Start a ASMVC Development Server
                 install:boostrap | Install and use bootstrap with asset()
-                create:controller {controller} | Membuat Controller
-                create:model {model} | Membuat model
-                create:middleware {middleware} | Membuat Middleware
-                create:test {test} | Membuat Tests
-                run:tests {test?} | Menjalankan Test
-                reset:router | Menganti file router dengan yang baru
-                export:core | Mengeluarkan beberapa file Core yang bisa anda modifikasi sesuka hati.
-                cleanup | Membersihkan asmvc ke keandaan awal. (Controller, Models, Middleware, dan View akan hilang).
-                version | Menampilkan versi ASMVC.
+                create:controller {controller} | Creating Controller
+                create:model {model} | Creating model
+                create:middleware {middleware} | Creating Middleware
+                create:test {test} | Creating Tests
+                run:tests {test?} | Running Test
+                reset:router | Switching route file with the fresh install state
+                export:core | Exporting specific core files.
+                cleanup | Clean up ASMVC to fresh install state. (Controller, Models, Middleware, dan View will get deleted).
+                version | Show ASMVC Version.
 
                 Help;
                 break;
 
+                // Install a bootstrap to public folder
             case 'install:bootstrap':
                 $path = array_diff(scandir(__DIR__ . '/bs5_integration/css/'), ['.', '..']);
                 if (!is_dir(public_path() . 'css/')) {
@@ -188,10 +222,12 @@ class Cli
                 echo 'Bootstrap installed successfully!' . PHP_EOL;
                 break;
 
+                //Display current ASMVC Version.
             case 'version':
                 echo 'ASMVC Version ' . ASMVC_VERSION . ' ' . ASMVC_STATE . PHP_EOL;
                 break;
 
+                //Create a controller. Required name.
             case 'create:controller':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
@@ -211,6 +247,7 @@ class Cli
                 }
                 break;
 
+                //Create a model. Required name.
             case 'create:model':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
@@ -228,6 +265,7 @@ class Cli
                 }
                 break;
 
+                //Create a middleware. Required name.
             case 'create:middleware':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
@@ -250,12 +288,14 @@ class Cli
                 }
                 break;
 
+                // Reset router to fresh state
             case 'reset:router':
                 $this->resetRouter();
                 break;
 
+                // Clean up entire framework to fresh install state.
             case 'cleanup':
-                $ask = $this->ask('Apakah anda yakin [Y/n]');
+                $ask = $this->ask('Are you sure [Y/n]');
                 if (strtolower($ask) == 'y') {
                     $controller_path = __DIR__ . '/../Controllers/';
                     $controller_exclude = ['.', '..', 'BaseController.php'];
@@ -290,9 +330,10 @@ class Cli
                 }
                 break;
 
+                // Run app with PHP Built in server
             case 'serve':
                 if (!function_exists('exec')) {
-                    throw new \Exception("Exec() tidak terdeteksi. Harap aktifkan di php.ini");
+                    throw new \Exception("Exec() is not detected. Please activate it in php.ini");
                 }
                 $port = 9090;
                 $default = @fsockopen('localhost', $port);
@@ -306,6 +347,7 @@ class Cli
                 exec('php -S localhost:' . $port . ' public/index.php');
                 break;
 
+                // Create a tests file
             case 'create:test':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
@@ -345,6 +387,7 @@ class Cli
                 }
                 break;
 
+                // Run a test file. Optional name
             case 'run:test':
                 $try = $this->next_arguments($args, 1);
                 if ($try) {
@@ -356,6 +399,7 @@ class Cli
                 }
                 break;
 
+                // Export a core specific supported Core Files. Required name.
             case 'export:core':
                 $try = $this->next_arguments($args, 1);
                 if ($try == 'errorPages') {
@@ -369,6 +413,7 @@ class Cli
                 }
                 break;
 
+                //Return this if the command is unrecognized.
             default:
                 echo 'Command not found. Please run "php asmvc help"' . PHP_EOL;
                 break;

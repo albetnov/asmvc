@@ -4,13 +4,24 @@ namespace Albet\Asmvc\Core;
 
 class Validator
 {
+    /**
+     * @var boolean $status
+     */
     private static $status = true;
 
+    /**
+     * Function to put a validation
+     * @param string $field, $value
+     */
     private static function put($field, $value)
     {
         $_SESSION['validation'][$field] = $value;
     }
 
+    /**
+     * Function to validate the field based from the validate parameter
+     * @param string $field, $validate
+     */
     private static function validate($field, $validate)
     {
         set_old($field);
@@ -42,6 +53,10 @@ class Validator
         }
     }
 
+    /**
+     * Function to make a validation
+     * @param array $validate
+     */
     public static function make(array $validate)
     {
         foreach ($validate as $key => $value) {
@@ -56,6 +71,11 @@ class Validator
         return new static;
     }
 
+    /**
+     * Function to get validation error message
+     * @param string $field
+     * @return string
+     */
     public static function validMsg($field)
     {
         $return = $_SESSION['validation'][$field];
@@ -63,6 +83,11 @@ class Validator
         return $return;
     }
 
+    /**
+     * Function to check whenever validation's error or not per field.
+     * @param string $field
+     * @return boolean
+     */
     public static function checkError($field)
     {
         if (isset($_SESSION['validation'][$field])) {
@@ -72,6 +97,10 @@ class Validator
         }
     }
 
+    /**
+     * Function to check whenever validation's fails or not. For globals not per field.
+     * @return boolean
+     */
     public static function fails()
     {
         if (!self::$status) {

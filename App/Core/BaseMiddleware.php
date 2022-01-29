@@ -4,15 +4,21 @@ namespace Albet\Asmvc\Core;
 
 class BaseMiddleware
 {
+    /**
+     * @var CoreModel $db
+     */
     protected CoreModel $db;
 
+    /**
+     * Consturctor to Query Builder
+     */
     public function __construct()
     {
         $this->db = new CoreModel;
     }
 
     /**
-     * Ganti isi dari method ini dengan overriding!
+     * Default method of denied.
      */
     public function denied()
     {

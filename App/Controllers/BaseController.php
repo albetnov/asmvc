@@ -5,7 +5,8 @@ namespace Albet\Asmvc\Controllers;
 class BaseController
 {
     /**
-     * Function view
+     * View Functions
+     * @param string $name, array $data
      */
     public function view($name, array $data = [])
     {
@@ -15,7 +16,8 @@ class BaseController
     }
 
     /**
-     * Disini kita bisa mengganti nama controller.
+     * Define main controller or entry point controller name here.
+     * @return string
      */
     public function mainController(): string
     {
@@ -23,13 +25,20 @@ class BaseController
     }
 
     /**
-     * Disini kita bisa mengganti method default yang dipanggil.
+     * Define default method of entry controller here.
+     * Does not apply to all controllers. Limited to main or entry controller only
+     * @return string
      */
     public function defaultMethod(): string
     {
         return "index";
     }
 
+    /**
+     * Define default middleware used for entry controller here.
+     * Does not apply to all controllers. Limited to main or entry controller only
+     * @return string
+     */
     public function defaultMiddleware(): string
     {
         return '';

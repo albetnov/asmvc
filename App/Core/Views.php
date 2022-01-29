@@ -4,8 +4,15 @@ namespace Albet\Asmvc\Core;
 
 class Views
 {
+    /**
+     * @var array $sectionList, $section,string $currentSection
+     */
     private static $sectionList = [], $currentSection, $section = [];
 
+    /**
+     * Function to define a section
+     * @param string $name, $content
+     */
     public function section($name, $content = null)
     {
         if (!is_null($content)) {
@@ -16,6 +23,9 @@ class Views
         ob_start();
     }
 
+    /**
+     * Function to end a section
+     */
     public function endSection()
     {
         $content = ob_get_clean();
@@ -29,6 +39,10 @@ class Views
         self::$section[$section][] = $content;
     }
 
+    /**
+     * Function to get a section
+     * @param string $name
+     */
     public function getSection($name)
     {
         if (!isset(self::$section[$name])) {
@@ -43,11 +57,21 @@ class Views
         }
     }
 
+    /**
+     * Function to extends or include another views.
+     * @param string $path
+     */
     public function extends($path)
     {
         return v_include($path);
     }
 
+    /**
+     * Function to matching user's url and server expected url then
+     * if match return following classname.
+     * @param string $expected, $classname
+     * @return string
+     */
     public function match($expected, $classname)
     {
         $expected = url() . $expected;
