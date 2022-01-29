@@ -1,2 +1,3 @@
 Options -Indexes
 deny from all
+ErrorDocument 403 /Core/Errors/404.php
