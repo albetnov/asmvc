@@ -31,7 +31,7 @@ class Views
     {
         $content = ob_get_clean();
         if (self::$sectionList === []) {
-            throw new \Exception("Section anda kosong.");
+            throw new \Exception("Section undefined.");
         }
         $section = array_pop(self::$sectionList);
         if (!array_key_exists($section, self::$section)) {

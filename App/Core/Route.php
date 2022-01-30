@@ -39,7 +39,7 @@ class Route
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
             } else if (count($http_method_or_middleware) > 3) {
-                throw new \Exception("Argumen maksimal add hanya ada 4");
+                throw new \Exception("Max arguments for add() only allowed 2");
             }
             if (class_exists($http_method_or_middleware[0])) {
                 $middleware = $http_method_or_middleware[0];
@@ -70,7 +70,7 @@ class Route
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
             } else if (count($http_method_or_middleware) > 3) {
-                throw new \Exception("Argumen maksimal add hanya ada 4");
+                throw new \Exception("Max arguments for inline() only allowed 2");
             }
             if (class_exists($http_method_or_middleware[0])) {
                 $middleware = $http_method_or_middleware[0];
@@ -147,7 +147,7 @@ class Route
 
                 if ($server == $route['path']) {
                     if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
-                        throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} tidak didukung. Harap gunakan {$route['http_method']}!");
+                        throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} is not support for this url. Instead use {$route['http_method']}!");
                     } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if (!csrf()->validateCsrf()) {
                             return ReturnError(500);
