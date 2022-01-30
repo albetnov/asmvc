@@ -308,7 +308,7 @@ class Cli
                     }
                     $controller = array_diff(scandir($controller_path), $controller_exclude);
                     $models_path = __DIR__ . '/../Models/';
-                    $models = array_diff(scandir($models_path), ['.', '..', 'BaseModel.php']);
+                    $models = array_diff(scandir($models_path), ['.', '..']);
                     $middleware_path = __DIR__ . '/../Middleware/';
                     $middleware = array_diff(scandir($middleware_path), ['.', '..']);
                     $views_path = __DIR__ . '/../Views/';
