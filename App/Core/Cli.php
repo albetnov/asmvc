@@ -164,11 +164,11 @@ class Cli
     public function install()
     {
         if (!function_exists('exec')) {
-            throw new \Exception("Exec() tidak terdektsi. Harap aktifkan di php.ini");
+            throw new \Exception("Exec() function not detected. Please activate it in php.ini");
         }
         exec('composer install');
         if (!is_dir(base_path('vendor'))) {
-            throw new \Exception("Composer install gagal dijalankan!");
+            throw new \Exception("Composer install failed to ran.");
         } else {
             echo "Instalisasi selesai!\n";
         }

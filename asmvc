@@ -23,7 +23,7 @@ if (is_dir(__DIR__ . '/vendor/')) {
     require_once __DIR__ . '/App/Core/init.php';
     $install = false;
 } else {
-    echo "ASMVC akan melakukan instalisasi. Harap pastikan anda memiliki composer dan exec() bisa digunakan\n";
+    echo "ASMVC will try to install dependencies by running composer install...\n";
     $install = true;
 }
 require_once __DIR__ . '/App/Core/Helpers.php';
@@ -33,7 +33,7 @@ require_once __DIR__ . '/App/Core/Cli.php';
  * Validate that ASMVC must be running by CLI interface only.
  */
 if (PHP_SAPI !== 'cli') {
-    exit('ASMVC hanya bisa dijalankan dengan CLI' . PHP_EOL);
+    exit('ASMVC Only limited to run in CLI Environment Only' . PHP_EOL);
 }
 
 /**
