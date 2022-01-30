@@ -6,7 +6,8 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class CreateMiddleware extends BaseCli
 {
-    protected $command = "create:middleware {middleware}";
+    protected $command = "create:middleware";
+    protected $hint = "middleware";
     protected $desc = "Creating Middleware";
 
     public function register()
@@ -29,6 +30,7 @@ class CreateMiddleware extends BaseCli
              }  
             data;
             file_put_contents(base_path() . "App/Middleware/{$try}.php", $data);
+            echo "Middleware Created: {$try}.php\n";
         }
     }
 }

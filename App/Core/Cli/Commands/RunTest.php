@@ -6,7 +6,8 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class RunTest extends BaseCli
 {
-    protected $command = 'run:test {test?}';
+    protected $command = 'run:test';
+    protected $hint = "test?";
     protected $desc = 'Running Test';
 
     public function register()

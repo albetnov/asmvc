@@ -6,7 +6,8 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class CreateTest extends BaseCli
 {
-    protected $command = 'create:test {test}';
+    protected $command = 'create:test';
+    protected $hint = "test";
     protected $desc = 'Creating test';
 
     public function register()
@@ -28,6 +29,9 @@ class CreateTest extends BaseCli
                         }
     
                         data;
+                file_put_contents(base_path() . "App/Tests/{$try}.php", $data);
+                echo "Test Created: {$try}.php\n";
+                exit;
             } else {
                 $data = <<<data
                         <?php
@@ -43,8 +47,10 @@ class CreateTest extends BaseCli
                         }
 
                         data;
+                file_put_contents(base_path() . "App/Tests/{$try}Test.php", $data);
+                echo "Test Created: {$try}Test.php\n";
+                exit;
             }
-            file_put_contents(base_path() . "App/Tests/{$try}.php", $data);
         }
     }
 }

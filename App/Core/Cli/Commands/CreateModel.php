@@ -6,7 +6,8 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class CreateModel extends BaseCli
 {
-    protected $command = "create:model {model}";
+    protected $command = "create:model";
+    protected $hint = "model";
     protected $desc = "Creating Model";
     public function register()
     {
@@ -26,6 +27,7 @@ class CreateModel extends BaseCli
 
                     data;
             file_put_contents(base_path() . "App/Models/{$try}.php", $data);
+            echo "Model Created: {$try}.php\n";
         }
     }
 }

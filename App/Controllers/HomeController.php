@@ -3,8 +3,8 @@
 namespace Albet\Asmvc\Controllers;
 
 use Albet\Asmvc\Core\Requests;
-use Albet\Asmvc\Models\TestModel;
 use Albet\Asmvc\Core\Validator;
+use Albet\Asmvc\Models\TestModel;
 
 class HomeController extends BaseController
 {
@@ -21,6 +21,6 @@ class HomeController extends BaseController
 
     public function testModel()
     {
-        print_r($this->testmodel->db()->where('id', 2)->first());
+        print_r($this->testmodel->get());
     }
 }

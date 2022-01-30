@@ -7,7 +7,8 @@ class BaseCli
     /**
      * @var $args
      */
-    protected $args;
+    protected static $args = [];
+    protected $hint;
 
     /**
      * Get where the arguments start
@@ -16,17 +17,17 @@ class BaseCli
      */
     protected function getArgsStarts($get_counter = false)
     {
-        if ($this->args[0] == 'asmvc') {
+        if (self::$args[0] == 'asmvc') {
             if ($get_counter) {
                 return 1;
             } else {
-                return $this->args[1];
+                return self::$args[1];
             }
         } else {
             if ($get_counter) {
                 return 0;
             } else {
-                return $this->args[0];
+                return self::$args[0];
             }
         }
     }
@@ -38,9 +39,9 @@ class BaseCli
      */
     protected function next_arguments($i)
     {
-        $i += $this->getArgsStarts($this->args, true);
-        if (isset($this->args[$i])) {
-            return $this->args[$i];
+        $i += $this->getArgsStarts(true);
+        if (isset(self::$args[$i])) {
+            return self::$args[$i];
         } else {
             return false;
         }
@@ -79,7 +80,7 @@ class BaseCli
      */
     protected function baseparse($args)
     {
-        $this->args = $args;
+        self::$args = $args;
     }
 
     /**
@@ -98,5 +99,18 @@ class BaseCli
     public function getDesc()
     {
         return $this->desc;
+    }
+
+    /**
+     * Get hint
+     * @return string
+     */
+    public function getHint()
+    {
+        if (isset($this->hint)) {
+            return $this->hint;
+        } else {
+            return;
+        }
     }
 }

@@ -3,14 +3,10 @@
 namespace Albet\Asmvc\Core;
 
 use Albet\Asmvc\Core\Cli\BaseCli;
-use Albet\Asmvc\Core\Cli\Cleanup;
 use Albet\Asmvc\Core\Cli\Loader;
-use Albet\Asmvc\Core\Cli\ResetIndex;
-use Albet\Asmvc\Core\Cli\ResetRouter;
 
 class Cli extends BaseCli
 {
-    use Cleanup, ResetRouter, ResetIndex;
 
     /**
      * Parsing the argument
@@ -18,7 +14,6 @@ class Cli extends BaseCli
      */
     public function argument_parse($args)
     {
-        $this->baseparse($args);
         $command_lists = [];
         $loader = new Loader;
         $lists = $loader->load();
@@ -27,6 +22,7 @@ class Cli extends BaseCli
             $command_lists[] = [
                 'command' => $call_cli->getCommand(),
                 'desc' => $call_cli->getDesc(),
+                'hint' => $call_cli->getHint(),
                 'objectclass' => $call_cli
             ];
         }
@@ -35,21 +31,26 @@ class Cli extends BaseCli
         Some commands you can use:\n\n
         Help;
         foreach ($command_lists as $command_list) {
-            $help .= "{$command_list['command']} | {$command_list['desc']}\n";
+            $hint = !empty($command_list['hint']) ? " {{$command_list['hint']}} " : ' ';
+            $help .= "{$command_list['command']}{$hint}| {$command_list['desc']}\n";
         }
+        $this->baseparse($args);
+        $first = strtolower($this->getArgsStarts());
         foreach ($command_lists as $command_list) {
-            $first = strtolower($this->getArgsStarts());
+            $command_found = false;
             if ($first == 'help') {
+                $command_found = true;
                 echo $help . PHP_EOL;
                 break;
-            } else if ($first == $command_list['command']) {
+            }
+            if ($first == $command_list['command']) {
                 $command_list['objectclass']->register();
-                break;
-            } else {
-                echo 'Command not found. Please run "php asmvc help"' . PHP_EOL;
-                exit;
+                $command_found = true;
                 break;
             }
+        }
+        if ($command_found != true) {
+            echo "Command not found. Please run 'php asmvc help'";
         }
     }
 }

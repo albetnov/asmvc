@@ -2,12 +2,11 @@
 
 namespace Albet\Asmvc\Core;
 
-class BaseModel
+class BaseModel extends Database
 {
     /**
      * @var Database $db, string $table
      */
-    protected Database $db;
     protected $table;
 
     /**
@@ -15,14 +14,14 @@ class BaseModel
      */
     public function __construct()
     {
-        $this->db = new Database;
+        parent::__construct();
         if ($this->table) {
-            $this->db->defineTable($this->table);
+            $this->defineTable($this->table);
         }
     }
 
-    public function db()
-    {
-        return $this->db;
-    }
+    // public function db()
+    // {
+    //     return $this->db;
+    // }
 }
