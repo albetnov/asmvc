@@ -5,16 +5,16 @@ namespace Albet\Asmvc\Core;
 class BaseMiddleware
 {
     /**
-     * @var CoreModel $db
+     * @var Database $db
      */
-    protected CoreModel $db;
+    protected Database $db;
 
     /**
      * Consturctor to Query Builder
      */
     public function __construct()
     {
-        $this->db = new CoreModel;
+        $this->db = new Database;
     }
 
     /**

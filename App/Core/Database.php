@@ -2,7 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
-class CoreModel
+class Database
 {
     /**
      * Define require variables
@@ -11,6 +11,15 @@ class CoreModel
     private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
     private $pdo;
     private static $last_insert_id;
+
+    /**
+     * Defining your table
+     * @param string $table
+     */
+    public function defineTable($table)
+    {
+        $this->table = $table;
+    }
 
     /**
      * Initiating Connection
