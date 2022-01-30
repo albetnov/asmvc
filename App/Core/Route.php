@@ -4,7 +4,7 @@ namespace Albet\Asmvc\Core;
 
 use Albet\Asmvc\Controllers\BaseController;
 
-class BaseRouter
+class Route
 {
     /**
      * @var array $routes, boolean $pagenotfound
@@ -104,6 +104,9 @@ class BaseRouter
         return $call_main->$method(new Requests);
     }
 
+    /**
+     * Get ASMVC_LOCAL_URL value
+     */
     public static function getAsmvcUrlLocal()
     {
         return self::$ASMVC_LOCAL_URL;

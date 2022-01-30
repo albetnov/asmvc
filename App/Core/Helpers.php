@@ -1,6 +1,6 @@
 <?php
 
-use Albet\Asmvc\Core\BaseRouter;
+use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
 use Albet\Asmvc\Core\CsrfGenerator;
 use Albet\Asmvc\Core\Requests;
@@ -10,7 +10,7 @@ use Albet\Asmvc\Core\Views;
 /**
  * ASMVC Version and State
  */
-define('ASMVC_VERSION', '0.8');
+define('ASMVC_VERSION', '0.9');
 define('ASMVC_STATE', 'Dev');
 
 /**
@@ -143,8 +143,8 @@ function base_url($portOnly = false)
         return $_SERVER['SERVER_PORT'];
     }
     $port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
-    if (BaseRouter::getAsmvcUrlLocal()) {
-        return $_SERVER['SERVER_NAME'] . $port . '/' . BaseRouter::getAsmvcUrlLocal();
+    if (Route::getAsmvcUrlLocal()) {
+        return $_SERVER['SERVER_NAME'] . $port . '/' . Route::getAsmvcUrlLocal();
     }
     return $_SERVER['SERVER_NAME'] . $port;
 }
