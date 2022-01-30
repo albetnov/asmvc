@@ -257,10 +257,13 @@ class Cli
 
                     namespace Albet\Asmvc\Models;
 
+                    use Albet\Asmvc\Core\BaseModel;
+
                     class {$try} extends BaseModel
                     {
-                        //Your models logic
+                        protected \$table = '';
                     }
+
                     data;
                     file_put_contents(__DIR__ . "/../Models/{$try}.php", $data);
                 }
