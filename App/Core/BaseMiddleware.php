@@ -2,7 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
-class BaseMiddleware
+abstract class BaseMiddleware
 {
     /**
      * @var Database $db
@@ -24,4 +24,9 @@ class BaseMiddleware
     {
         return redirect('/login');
     }
+
+    /**
+     * Add an abstact about required baseMiddleware
+     */
+    abstract function middleware();
 }
