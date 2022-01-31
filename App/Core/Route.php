@@ -92,16 +92,30 @@ class Route
      */
     protected static function baseController()
     {
-        $base = new BaseController;
-        if (!empty($base->defaultMiddleware())) {
-            $middleware_path = "Albet\\Asmvc\\Middleware\\{$base->defaultMiddleware()}";
-            $middleware = new $middleware_path();
+        // $base = new BaseController;
+        // if (!empty($base->defaultMiddleware())) {
+        //     $middleware_path = "Albet\\Asmvc\\Middleware\\{$base->defaultMiddleware()}";
+        //     $middleware = new $middleware_path();
+        //     $middleware->middleware();
+        // }
+        // $mainController = "Albet\\Asmvc\\Controllers\\{$base->mainController()}";
+        // $call_main = new $mainController();
+        // $method = $base->defaultMethod();
+        // return $call_main->$method(new Requests);
+        $config = (new Config)->entryPoint();
+        if (!empty($config['middleware'])) {
+            $middleware = new $config['middleware'];
             $middleware->middleware();
         }
-        $mainController = "Albet\\Asmvc\\Controllers\\{$base->mainController()}";
-        $call_main = new $mainController();
-        $method = $base->defaultMethod();
-        return $call_main->$method(new Requests);
+        if (isset($config['controller'])) {
+            $call_main = new $config['controller'];
+            $method = $config['method'];
+            return $call_main->$method(new Requests);
+        } else if (isset($config['path'])) {
+            return view($config['path']);
+        } else {
+            throw new \Exception("Invalid entry point!");
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Models\TestModel;
 
-class HomeController extends BaseController
+class HomeController
 {
 
     public function __construct()
@@ -16,7 +16,7 @@ class HomeController extends BaseController
 
     public function index()
     {
-        return $this->view('home');
+        return view('home');
     }
 
     public function testModel()

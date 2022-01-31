@@ -1,10 +1,15 @@
 <?php
 
+//Include csrf Helper
+require_once __DIR__ . '/Helpers/csrf.php';
+//Include strAlter Helper
+require_once __DIR__ . '/Helpers/strAlter.php';
+// Include validator Helper
+require_once __DIR__ . '/Helpers/validator.php';
+
 use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
-use Albet\Asmvc\Core\CsrfGenerator;
 use Albet\Asmvc\Core\Requests;
-use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Core\Views;
 
 /**
@@ -23,49 +28,10 @@ function request()
 }
 
 /**
- * Function to access CsrfGenerator Class immediately.
- * @return CsrfGenerator
- */
-function csrf()
-{
-    return new CsrfGenerator;
-}
-
-/**
- * Function to access CsrfGenerator's field method immediately.
- * @return CsrfGenerator
- */
-function csrf_field()
-{
-    return (new CsrfGenerator)->field();
-}
-
-/**
- * Function to get a string after specific character.
- * @param string $char, $string
- */
-function getStringAfter($char, $string)
-{
-    return substr($string, strpos($string, $char) + 1);
-}
-
-/**
- * Function to change '.' to '/'.
- * @param string $text
- */
-function dotSupport($text)
-{
-    if (!str_contains($text, '.')) {
-        return $text; // mengemembalikkan text karena tidak ada '.'
-    }
-    return str_replace('.', '/', $text);
-}
-
-/**
  * Function to include a view
  * @param string $view, array $data
  */
-function v_include($view, $data = [])
+function view($view, $data = [])
 {
     $final = dotSupport($view);
     extract($data);
@@ -179,10 +145,14 @@ function asset($asset = null)
 /**
  * Function to redirect an user to specific location
  */
-function redirect($to)
+function redirect($to, $outside = true)
 {
+    if (!$outside) {
+        header("location:" . base_path() . "$to");
+        exit;
+    }
     header("location:$to");
-    exit();
+    exit;
 }
 
 /**
@@ -196,72 +166,17 @@ function noSelfChained($mark, $method, $custom_msg = null)
         if (!is_null($custom_msg)) {
             throw new \Exception($custom_msg);
         }
-        throw new \Exception("Metode {$method} tidak boleh di panggil lebih dari sekali.");
+        throw new \Exception("Method {$method} is not allowed to be called more than one.");
     } else {
         return;
     }
 }
 
 /**
- * Function to set old to a field
- * @param string $field
- */
-function set_old($field)
-{
-    $store = request()->input($field);
-    $_SESSION['old'][$field] = $store;
-}
-
-/**
- * Function to get old value of field.
- * @param string $field_name, $data
- * @return string
- */
-function old($field_name, $data = null)
-{
-    if (isset($_SESSION['old'][$field_name])) {
-        $return = $_SESSION['old'][$field_name];
-        unset($_SESSION['old'][$field_name]);
-        return $return;
-    } else if (!is_null($data)) {
-        return $data;
-    }
-    return;
-}
-
-/**
- * Function to flush entire session old if there's no validation error
- */
-function flush_old()
-{
-    unset($_SESSION['old']);
-}
-
-/**
- * Function to access Validator's checkError method immediately
- * @param string $field
- * @return Validator
- */
-function checkError($field)
-{
-    return (new Validator)::checkError($field);
-}
-
-/**
- * Function to access Validator's validMsg method immediately
- * @param string $field
- * @return Validator
- */
-function validateMsg($field)
-{
-    return (new Validator)::validMsg($field);
-}
-
-/**
  * Function to access Views class immediately
  * @return Views
  */
-function view()
+function views()
 {
     return new Views;
 }

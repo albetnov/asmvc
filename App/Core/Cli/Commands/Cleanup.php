@@ -18,7 +18,7 @@ class Cleanup extends BaseCli
         $ask = $this->ask('Are you sure [Y/n]');
         if (strtolower($ask) == 'y') {
             $controller_path = base_path() . 'App/Controllers/';
-            $controller_exclude = ['.', '..', 'BaseController.php'];
+            $controller_exclude = ['.', '..'];
             if (ASMVC_STATE == 'Dev') {
                 $controller_exclude[] = 'HomeController.php';
             }

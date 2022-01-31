@@ -39,7 +39,7 @@ class Views
         }
         self::$section[$section][] = $content;
         if (self::$path) {
-            return v_include(self::$path);
+            return view(self::$path);
         }
     }
 
@@ -68,7 +68,7 @@ class Views
     public function extends($path)
     {
         if (self::$currentSection) {
-            return v_include($path);
+            return view($path);
         }
 
         self::$path = $path;
@@ -80,7 +80,7 @@ class Views
      */
     public function include($path)
     {
-        return v_include($path);
+        return view($path);
     }
 
     /**
