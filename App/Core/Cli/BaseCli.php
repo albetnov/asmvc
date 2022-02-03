@@ -52,9 +52,12 @@ class BaseCli
      * @param string $question
      * @return string $q
      */
-    protected function ask($question)
+    protected function ask($question, $default = null)
     {
         $q = readline($question . ' ? ');
+        if (!$q && $default) {
+            return $default;
+        }
         return $q;
     }
 
@@ -70,6 +73,29 @@ class BaseCli
         if (!is_dir(base_path('vendor'))) {
             throw new \Exception("Composer install failed to ran.");
         } else {
+            if (!is_file(base_path('.env'))) {
+                $prompt_setup = $this->ask("Welcome to ASMVC First Time Setup. Would you like to setup your ASMVC [Y/n]");
+                if (strtolower($prompt_setup) == 'y') {
+                    $db_host = $this->ask("What's your database host (Default: Localhost)", 'localhost');
+                    $db_user = $this->ask("What's your database username (Default: root)", 'root');
+                    $db_pass = $this->ask("What's your database password");
+                    $db_name = $this->ask("What's your database name (Default: asmvc)", 'asmvc');
+                    $data = <<<data
+                    DATABASE_HOST={$db_host}
+                    DATABASE_USERNAME={$db_user}
+                    DATABASE_PASSWORD={$db_pass}
+                    DATABASE_NAME={$db_name}
+
+                    ENTRY_TYPE=controller
+                    ENTRY_CLASS=HomeController
+                    ENTRY_METHOD=index
+                    ENTRY_MIDDLEWARE=
+                    data;
+                    file_put_contents(base_path('.env'), $data);
+                } else {
+                    echo "Skipping...\n";
+                }
+            }
             echo "Instalisasi selesai!\n";
         }
     }

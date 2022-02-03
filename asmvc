@@ -27,6 +27,7 @@ if (is_dir(__DIR__ . '/vendor/')) {
     $install = true;
 }
 require_once __DIR__ . '/App/Core/Helpers.php';
+require_once __DIR__ . '/App/Core/Cli/BaseCli.php';
 require_once __DIR__ . '/App/Core/Cli.php';
 
 /**
