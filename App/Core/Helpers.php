@@ -215,3 +215,21 @@ function ReturnError($num, $message = null)
     require_once __DIR__ . '/Errors/' . $num . '.php';
     exit();
 }
+
+/**
+ * Function to get an env, If there's no env you can put
+ * optional value.
+ * @param string $name
+ * @param string $optional
+ * @return string
+ */
+function env($name, $optional = null)
+{
+    if (isset($_ENV[$name])) {
+        return $_ENV[$name];
+    } else if (!is_null($optional)) {
+        return $optional;
+    } else {
+        return '';
+    }
+}

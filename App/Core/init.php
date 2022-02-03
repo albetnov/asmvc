@@ -6,3 +6,9 @@
  */
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/Helpers.php';
+
+/**
+ * Load DotEnv Library
+ */
+$dotenv = Dotenv\DotEnv::createImmutable(base_path());
+$dotenv->safeLoad();

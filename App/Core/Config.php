@@ -13,13 +13,13 @@ class Config extends EntryPoint
     public function defineConnection(): array
     {
         /**
-         * You're free to configure this array.
+         * Please configure this array at (.env) file.
          */
         return [
-            'db_host' => 'localhost',
-            'db_name' => 'asmvc',
-            'db_user' => 'root',
-            'db_pass' => ''
+            'db_host' => env('DATABASE_HOST', 'localhost'),
+            'db_name' => env('DATABASE_NAME', 'asmvc'),
+            'db_user' => env('DATABASE_USERNAME', 'root'),
+            'db_pass' => env('DATABASE_PASSWORD')
         ];
     }
 
@@ -34,9 +34,31 @@ class Config extends EntryPoint
          * $this->view($path, $middlewareclasss) if you only need view for your entry point.
          * or
          * $this->view([$path, $data], $middlewareclass) if you need data for the view.
+         * $this->inline($inline, $middleware) if you need callable anonymous function only.
          * Example:
          * $this->controller(HomeController::class, 'index', AdminMiddleware::class);
          */
-        return $this->controller(HomeController::class, 'index');
+        $entry_type = env('ENTRY_TYPE', 'controller');
+        $entry_class = env('ENTRY_CLASS', 'HomeController');
+        $entry_method = env("ENTRY_METHOD", 'index');
+        $entry_middleware = env('ENTRY_MIDDLEWARE');
+        if ($entry_type == 'controller') {
+            return $this->controller("\\Albet\\Asmvc\\Controllers\\" . $entry_class, $entry_method, $entry_middleware);
+        } else if ($entry_type == 'view') {
+            if ($entry_method == '') {
+                return $this->view($entry_class, $entry_middleware);
+            }
+            $parsed = [];
+            $parse = explode(',', $entry_method);
+            foreach ($parse as $parse) {
+                $parsing = explode('.', $parse);
+                foreach ($parsing as $parsing) {
+                    $parsed[getStringBefore('.', $parse)] = $parsing;
+                }
+            }
+            return $this->view([$entry_class, $parsed], $entry_middleware);
+        } else {
+            throw new \Exception("Inline not supported to be adjusted in .env. Please adjust in manually in Core/Config.php");
+        }
     }
 }
