@@ -32,6 +32,8 @@ class Config extends EntryPoint
         /**
          * $this->controller($class, $method, $middlewareclass) if you would like to make your controller as entry point.
          * $this->view($path, $middlewareclasss) if you only need view for your entry point.
+         * or
+         * $this->view([$path, $data], $middlewareclass) if you need data for the view.
          * Example:
          * $this->controller(HomeController::class, 'index', AdminMiddleware::class);
          */

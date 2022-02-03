@@ -1,6 +1,5 @@
 <?php
 
-use Albet\Asmvc\Controllers\HomeController;
 use Albet\Asmvc\Core\Route;
 
 /**
@@ -18,4 +17,3 @@ use Albet\Asmvc\Core\Route;
 
 
 //Your route
-Route::add('/test', [HomeController::class, 'testModel']);

@@ -2,8 +2,6 @@
 
 namespace Albet\Asmvc\Core;
 
-use Albet\Asmvc\Controllers\BaseController;
-
 class Route
 {
     /**
@@ -20,7 +18,7 @@ class Route
     private static function block($path)
     {
         if ($path == '/') {
-            throw new \Exception("Overriding URL '/' is not recommended. You should configure it on BaseController only.");
+            throw new \Exception("Overriding URL '/' is not recommended. You should configure it on Core/Config.php only.");
         }
     }
 
@@ -39,7 +37,7 @@ class Route
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
             } else if (count($http_method_or_middleware) > 3) {
-                throw new \Exception("Max arguments for add() only allowed 2");
+                throw new \Exception("Max arguments for add() only allowed 4");
             }
             if (class_exists($http_method_or_middleware[0])) {
                 $middleware = $http_method_or_middleware[0];
@@ -70,7 +68,7 @@ class Route
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
             } else if (count($http_method_or_middleware) > 3) {
-                throw new \Exception("Max arguments for inline() only allowed 2");
+                throw new \Exception("Max arguments for inline() only allowed 4");
             }
             if (class_exists($http_method_or_middleware[0])) {
                 $middleware = $http_method_or_middleware[0];
@@ -88,20 +86,46 @@ class Route
     }
 
     /**
+     * Add routing to the array but for views only.
+     * @param string $path, Array|String $view, Class|String $http_method_or_middleware.
+     */
+    public static function view($path, $view, ...$http_method_or_middleware)
+    {
+        self::block($path);
+        $http_method = 'GET';
+        $middleware = null;
+        if ($http_method_or_middleware != []) {
+            if (count($http_method_or_middleware) > 1) {
+                $http_method = $http_method_or_middleware[0];
+                $middleware = $http_method_or_middleware[1];
+            } else if (count($http_method_or_middleware) > 3) {
+                throw new \Exception("Max arguments for view() only allowed 4");
+            }
+            if (class_exists($http_method_or_middleware[0])) {
+                $middleware = $http_method_or_middleware[0];
+            } else {
+                $http_method = $http_method_or_middleware[0];
+            }
+        }
+        $array = [
+            'path' => $path,
+            'controller' => 'view',
+            'http_method' => $http_method,
+            'middleware' => $middleware
+        ];
+        if (is_array($view)) {
+            $array['method'] = ['view' => $view[0], 'data' => $view[1]];
+        } else {
+            $array['method'] = $view;
+        }
+        array_push(self::$routes, $array);
+    }
+
+    /**
      * Default settings for url '/'.
      */
-    protected static function baseController()
+    protected static function mainEntry()
     {
-        // $base = new BaseController;
-        // if (!empty($base->defaultMiddleware())) {
-        //     $middleware_path = "Albet\\Asmvc\\Middleware\\{$base->defaultMiddleware()}";
-        //     $middleware = new $middleware_path();
-        //     $middleware->middleware();
-        // }
-        // $mainController = "Albet\\Asmvc\\Controllers\\{$base->mainController()}";
-        // $call_main = new $mainController();
-        // $method = $base->defaultMethod();
-        // return $call_main->$method(new Requests);
         $config = (new Config)->entryPoint();
         if (!empty($config['middleware'])) {
             $middleware = new $config['middleware'];
@@ -112,7 +136,12 @@ class Route
             $method = $config['method'];
             return $call_main->$method(new Requests);
         } else if (isset($config['path'])) {
+            if (isset($config['data'])) {
+                return view($config['path'], $config['data']);
+            }
             return view($config['path']);
+        } else if (isset($config['inline'])) {
+            return call_user_func($config['inline']);
         } else {
             throw new \Exception("Invalid entry point!");
         }
@@ -152,7 +181,7 @@ class Route
         }
 
         if ($server == '/') {
-            self::baseController();
+            self::mainEntry();
         } else {
             if (empty(self::$routes)) {
                 self::$pagenotfound = true;
@@ -171,12 +200,18 @@ class Route
                         $middleware = new $route['middleware'];
                         $middleware->middleware();
                     }
-                    if ($route['controller'] !== 'inline') {
+                    if ($route['controller'] == 'view') {
+                        if (isset($route['method']['data'])) {
+                            return view($route['method']['view'], $route['method']['data']);
+                        } else {
+                            return view($route['method']);
+                        }
+                    } else if ($route['controller'] == 'inline') {
+                        return call_user_func($route['method']);
+                    } else {
                         $controller = new $route['controller'];
                         $method = $route['method'];
-                        $controller->$method(new Requests);
-                    } else {
-                        call_user_func($route['method']);
+                        return $controller->$method(new Requests);
                     }
                     exit;
                 } else if ($server != $route['path']) {

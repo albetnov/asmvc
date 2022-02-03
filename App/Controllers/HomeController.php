@@ -8,19 +8,8 @@ use Albet\Asmvc\Models\TestModel;
 
 class HomeController
 {
-
-    public function __construct()
-    {
-        $this->testmodel = new TestModel;
-    }
-
     public function index()
     {
         return view('home');
-    }
-
-    public function testModel()
-    {
-        print_r($this->testmodel->get());
     }
 }

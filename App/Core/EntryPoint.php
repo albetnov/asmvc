@@ -23,12 +23,31 @@ class EntryPoint
 
     /**
      * View entry point function
-     * @param $path, $middleware
+     * @param $view, $middleware
      * @return array
      */
-    protected function view($path, $middleware = null)
+    protected function view($view, $middleware = null)
     {
-        $array['path'] = $path;
+        if (is_array($view)) {
+            $array['path'] = $view[0];
+            $array['data'] = $view[1];
+        } else {
+            $array['path'] = $view;
+        }
+        if (!is_null($middleware)) {
+            $array['middleware'] = $middleware;
+        }
+        return $array;
+    }
+
+    /**
+     * Inline function entry point
+     * @param $inline, $middleware
+     * @return array
+     */
+    protected function inline($inline, $middleware = null)
+    {
+        $array['inline'] = $inline;
         if (!is_null($middleware)) {
             $array['middleware'] = $middleware;
         }
