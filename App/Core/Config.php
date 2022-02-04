@@ -2,8 +2,6 @@
 
 namespace Albet\Asmvc\Core;
 
-use Albet\Asmvc\Controllers\HomeController;
-
 class Config extends EntryPoint
 {
     /**

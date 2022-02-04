@@ -90,6 +90,14 @@ class BaseCli
                     ENTRY_CLASS=HomeController
                     ENTRY_METHOD=index
                     ENTRY_MIDDLEWARE=
+
+                    SESSION_TYPE=redis
+                    REDIS_SERVER=127.0.0.1
+                    REDIS_PORT=6379
+                    REDIS_DB_NUMBER=0
+                    REDIS_AUTH_USER=
+                    REDIS_AUTH_PASS=
+                    REDIS_SSL=false
                     data;
                     file_put_contents(base_path('.env'), $data);
                 } else {
