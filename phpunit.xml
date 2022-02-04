@@ -11,6 +11,7 @@
          stopOnError="false"
          stopOnFailure="false"
          verbose="true"
+         bootstrap="App/Core/init.php"
 >
     <testsuites>
         <testsuite name="ASMVC Test Suite">

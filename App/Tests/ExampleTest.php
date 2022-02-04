@@ -2,29 +2,22 @@
 
 namespace Albet\Asmvc\Tests;
 
-require_once __DIR__ . '/../Core/init.php';
-
-use Albet\Asmvc\Controllers\BaseController;
-use Albet\Asmvc\Controllers\HomeController;
+use Albet\Asmvc\Core\Config;
 use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function testBaseController()
+    public function testConfigIsArray()
     {
-        $base = new BaseController;
+        $cfg = new Config;
 
-        $this->assertIsString($base->mainController(), 'Ini bukan string!');
+        $this->assertIsArray($cfg->defineConnection(), 'Type data of defineConnection() is correct.');
     }
 
-    public function testBaseIsCorrect()
+    public function testConfigFailed()
     {
-        $base = new BaseController;
-        $mainController = "Albet\\Asmvc\\Controllers\\{$base->mainController()}";
-        $call_main = new $mainController();
-        $method = $base->defaultMethod();
-        define('BS5_CSS', 'css/bootstrap.min.css');
-        define('BS5_JS', 'js/bootstrap.min.js');
-        $this->assertInstanceOf($mainController, $call_main, 'Class yang kamu gunakan salah!');
+        $cfg = new Config;
+
+        $this->assertIsString($cfg->defineConnection(), 'Type data of defineConeection() is not string.');
     }
 }

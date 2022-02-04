@@ -20,7 +20,6 @@ class CreateTest extends BaseCli
     
                         namespace Albet\Asmvc\Tests;
     
-                        require_once __DIR__ . '/../Core/init.php';
                         use PHPUnit\Framework\TestCase;
     
                         class {$try} extends TestCase
@@ -38,7 +37,6 @@ class CreateTest extends BaseCli
 
                         namespace Albet\Asmvc\Tests;
 
-                        require_once __DIR__ . '/../Core/init.php';
                         use PHPUnit\Framework\TestCase;
 
                         class {$try}Test extends TestCase
