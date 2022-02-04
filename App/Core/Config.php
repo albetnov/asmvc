@@ -35,30 +35,10 @@ class Config extends EntryPoint
          * or
          * $this->view([$path, $data], $middlewareclass) if you need data for the view.
          * $this->inline($inline, $middleware) if you need callable anonymous function only.
+         * $this->fromEnv() will decide which method to use based from your ENV Configuration.
          * Example:
          * $this->controller(HomeController::class, 'index', AdminMiddleware::class);
          */
-        $entry_type = env('ENTRY_TYPE', 'controller');
-        $entry_class = env('ENTRY_CLASS', 'HomeController');
-        $entry_method = env("ENTRY_METHOD", 'index');
-        $entry_middleware = env('ENTRY_MIDDLEWARE');
-        if ($entry_type == 'controller') {
-            return $this->controller("\\Albet\\Asmvc\\Controllers\\" . $entry_class, $entry_method, $entry_middleware);
-        } else if ($entry_type == 'view') {
-            if ($entry_method == '') {
-                return $this->view($entry_class, $entry_middleware);
-            }
-            $parsed = [];
-            $parse = explode(',', $entry_method);
-            foreach ($parse as $parse) {
-                $parsing = explode('.', $parse);
-                foreach ($parsing as $parsing) {
-                    $parsed[getStringBefore('.', $parse)] = $parsing;
-                }
-            }
-            return $this->view([$entry_class, $parsed], $entry_middleware);
-        } else {
-            throw new \Exception("Inline not supported to be adjusted in .env. Please adjust in manually in Core/Config.php");
-        }
+        return $this->fromEnv();
     }
 }
