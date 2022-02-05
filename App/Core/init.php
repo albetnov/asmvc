@@ -20,12 +20,17 @@ if (env('APP_ENV') == 'testing') {
 }
 $dotenv->safeLoad();
 
-$whoops = new \Whoops\Run;
-if (env('APP_ENV', 'development') != 'production') {
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-} else {
-    $whoops->pushHandler(function ($e) {
-        ReturnError(500);
-    });
+/**
+ * Load Whoops error handler.
+ */
+if (!defined('ASMVC_CLI_START')) {
+    $whoops = new \Whoops\Run;
+    if (env('APP_ENV', 'development') != 'production') {
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    } else {
+        $whoops->pushHandler(function ($e) {
+            ReturnError(500);
+        });
+    }
+    $whoops->register();
 }
-$whoops->register();

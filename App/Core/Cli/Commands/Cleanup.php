@@ -24,9 +24,9 @@ class Cleanup extends BaseCli
             }
             $controller = array_diff(scandir($controller_path), $controller_exclude);
             $models_path = base_path() . 'App/Models/';
-            $models = array_diff(scandir($models_path), ['.', '..']);
+            $models = array_diff(scandir($models_path), ['.', '..', '.gitkeep']);
             $middleware_path = base_path() . 'App/Middleware/';
-            $middleware = array_diff(scandir($middleware_path), ['.', '..']);
+            $middleware = array_diff(scandir($middleware_path), ['.', '..', '.gitkeep']);
             $views_path = base_path() . 'App/Views/';
             $views = array_diff(scandir($views_path), ['..', '.', 'home.php']);
             $public = array_diff(scandir(public_path()), ['.', '..', '.gitkeep']);

@@ -14,7 +14,7 @@ use Albet\Asmvc\Core\Cli;
 /**
  * Define that ASMVC Cli is started.
  */
-define('ASMVC_START', true);
+define('ASMVC_CLI_START', true);
 
 /**
  * Calling autoload. If it's not exist. Install composer's autoload.

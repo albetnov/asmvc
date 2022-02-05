@@ -80,8 +80,12 @@ class BaseCli
                     $db_user = $this->ask("What's your database username (Default: root)", 'root');
                     $db_pass = $this->ask("What's your database password");
                     $db_name = $this->ask("What's your database name (Default: asmvc)", 'asmvc');
+                    do {
+                        $session_default = $this->ask("Which one do you prefer as Session Driver (Default: redis) [php/redis]", 'redis');
+                    } while ($session_default != 'redis' && $session_default != 'php');
                     $data = <<<data
                     APP_ENV=production
+
                     DATABASE_HOST={$db_host}
                     DATABASE_USERNAME={$db_user}
                     DATABASE_PASSWORD={$db_pass}
@@ -92,7 +96,7 @@ class BaseCli
                     ENTRY_METHOD=index
                     ENTRY_MIDDLEWARE=
 
-                    SESSION_TYPE=redis
+                    SESSION_TYPE={$session_default}
                     REDIS_SERVER=127.0.0.1
                     REDIS_PORT=6379
                     REDIS_DB_NUMBER=0
@@ -104,7 +108,7 @@ class BaseCli
                     echo "Skipping...\n";
                 }
             }
-            echo "Instalisasi selesai!\n";
+            echo "Instalilation Completed!\n";
         }
     }
 

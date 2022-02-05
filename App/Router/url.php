@@ -18,4 +18,3 @@ use Albet\Asmvc\Core\Route;
 
 
 //Your route
-Route::view('/', 'home');

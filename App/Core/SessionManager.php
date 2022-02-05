@@ -4,13 +4,22 @@ namespace Albet\Asmvc\Core;
 
 class SessionManager
 {
+    /**
+     * @var string $type
+     */
     private static $type;
 
+    /**
+     * Constructor method
+     */
     public function __construct()
     {
         $this->type = env('SESSION_TYPE', 'redis');
     }
 
+    /**
+     * Configure default session then run it.
+     */
     public static function runSession()
     {
         if (self::$type == 'redis') {
