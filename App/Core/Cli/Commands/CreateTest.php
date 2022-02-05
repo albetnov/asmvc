@@ -14,7 +14,7 @@ class CreateTest extends BaseCli
     {
         $try = $this->next_arguments(1);
         if ($try) {
-            if (str_contains('Test', $try)) {
+            if (str_contains(strtolower($try), 'test')) {
                 $data = <<<data
                         <?php
     
