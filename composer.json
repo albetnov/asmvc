@@ -2,6 +2,8 @@
   "name": "albet/asmvc",
   "description": "A Simple PHP MVC Framework",
   "type": "project",
+  "license": "MIT",
+  "version": "1.0",
   "autoload": {
     "psr-4": {
       "Albet\\Asmvc\\": "App/"
@@ -15,8 +17,10 @@
   ],
   "require": {
     "php": "^8.0",
+    "vlucas/phpdotenv": "^5.4"
+  }, 
+  "require-dev": {
     "phpunit/phpunit": "^9.5",
-    "vlucas/phpdotenv": "^5.4",
     "filp/whoops": "^2.14"
   }
 }
