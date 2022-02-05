@@ -97,7 +97,6 @@ class BaseCli
                     REDIS_DB_NUMBER=0
                     REDIS_AUTH_USER=
                     REDIS_AUTH_PASS=
-                    REDIS_SSL=false
                     data;
                     file_put_contents(base_path('.env'), $data);
                 } else {

@@ -4,7 +4,7 @@ namespace Albet\Asmvc\Core;
 
 class SessionManager
 {
-    private $type;
+    private static $type;
 
     public function __construct()
     {
@@ -13,7 +13,7 @@ class SessionManager
 
     public static function runSession()
     {
-        if (self::$type = 'redis') {
+        if (self::$type == 'redis') {
             ini_set('session.save_handler', 'redis');
             $redisHost = env('REDIS_SERVER', '127.0.0.1');
             $redisDb = env('REDIS_DB_NUMBER', 0);
@@ -27,6 +27,9 @@ class SessionManager
             } else {
                 ini_set('session.save_path', "tcp://{$redisHost}:{$redisPort}?database={$redisDb}");
             }
+        } else {
+            ini_set('session.name', 'ASMVCSESSID');
         }
+        session_start();
     }
 }
