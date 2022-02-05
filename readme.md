@@ -21,7 +21,7 @@ Created By Albet Novendo. <br>
 
 ## Composer Way
 
-`composer create-project albet/asmvc project-name`
+`composer create-project albet/asmvc -s dev project-name`
 
 # License
 
