@@ -18,15 +18,4 @@ use Albet\Asmvc\Core\Route;
 
 
 //Your route
-Route::inline('/test', function () {
-    $_SESSION['logged'] = true;
-    echo "done";
-});
-
-Route::inline('/test2', function () {
-    if (!$_SESSION['logged']) {
-        echo "no access";
-    } else {
-        echo "granted";
-    }
-});
+Route::view('/', 'home');

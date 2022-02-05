@@ -16,6 +16,7 @@
   "require": {
     "php": "^8.0",
     "phpunit/phpunit": "^9.5",
-    "vlucas/phpdotenv": "^5.4"
+    "vlucas/phpdotenv": "^5.4",
+    "filp/whoops": "^2.14"
   }
 }

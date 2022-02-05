@@ -19,3 +19,13 @@ if (env('APP_ENV') == 'testing') {
     $dotenv = Dotenv::createImmutable(base_path());
 }
 $dotenv->safeLoad();
+
+$whoops = new \Whoops\Run;
+if (env('APP_ENV', 'development') != 'production') {
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+} else {
+    $whoops->pushHandler(function ($e) {
+        ReturnError(500);
+    });
+}
+$whoops->register();

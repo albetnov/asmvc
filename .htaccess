@@ -23,4 +23,4 @@ RewriteRule ^.*$ /public/index.php [L,QSA]
 RewriteRule ^vendor/$ - [R=403,L]
 
 ErrorDocument 403 /App/Core/Errors/404.php
-
+ErrorDocument 500 /App/Core/Errors/500.php

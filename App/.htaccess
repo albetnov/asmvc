@@ -1,3 +1,4 @@
 Options -Indexes
 deny from all
 ErrorDocument 403 /Core/Errors/404.php
+ErrorDocument 500 /Core/Errors/500.php

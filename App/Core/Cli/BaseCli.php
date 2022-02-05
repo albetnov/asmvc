@@ -81,6 +81,7 @@ class BaseCli
                     $db_pass = $this->ask("What's your database password");
                     $db_name = $this->ask("What's your database name (Default: asmvc)", 'asmvc');
                     $data = <<<data
+                    APP_ENV=production
                     DATABASE_HOST={$db_host}
                     DATABASE_USERNAME={$db_user}
                     DATABASE_PASSWORD={$db_pass}
