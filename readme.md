@@ -13,9 +13,15 @@ Created By Albet Novendo. <br>
 
 # How to install?
 
+### Manual Way
+
 1. Clone this repository;
 2. Type php asmvc (This will perform composer install if you haven't install the dependencies first);
 3. You're good to go.
+
+## Composer Way
+
+`composer create-project albet/asmvc project-name`
 
 # License
 
