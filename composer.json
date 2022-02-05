@@ -4,6 +4,7 @@
   "type": "project",
   "license": "MIT",
   "version": "1.0",
+  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "Albet\\Asmvc\\": "App/"
