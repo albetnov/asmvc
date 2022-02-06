@@ -9,14 +9,17 @@ class Requests
      * @param string $field
      * @return string
      */
-    public function input($field)
+    public function input($field, $escape = true)
     {
-        if (isset($_POST[$field])) {
-            return $_POST[$field];
-        } else if (isset($_GET[$field])) {
-            return $_GET[$field];
+        if (!$escape) {
+            $check = $_POST[$field];
         } else {
-            return;
+            $check = htmlspecialchars($_POST[$field]);
+        }
+        if (isset($check)) {
+            return $check;
+        } else {
+            return false;
         }
     }
 
