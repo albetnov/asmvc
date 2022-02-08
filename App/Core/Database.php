@@ -7,7 +7,7 @@ class Database
     /**
      * Define require variables
      */
-    private $table, $data;
+    private $table, $data, $tableDefined = false;
     private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
     private $pdo;
     private static $last_insert_id;
@@ -19,6 +19,7 @@ class Database
     public function defineTable($table)
     {
         $this->table = $table;
+        $this->tableDefined = true;
     }
 
     /**
@@ -196,12 +197,14 @@ class Database
      */
     private function clean()
     {
-        $this->table = '';
-        $this->data = '';
-        $this->whereStmt = null;
-        $this->orderStmt = null;
-        $this->limitStmt = null;
-        $this->joinStmt = null;
+        if (!$this->tableDefined) {
+            $this->table = '';
+            $this->data = '';
+            $this->whereStmt = null;
+            $this->orderStmt = null;
+            $this->limitStmt = null;
+            $this->joinStmt = null;
+        }
     }
 
     /**
