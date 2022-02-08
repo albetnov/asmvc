@@ -23,6 +23,6 @@ class Serve extends BaseCli
             fclose($default);
         }
         echo "ASMVC Development Server Start... (http://localhost:{$port})\n";
-        exec('php -S localhost:' . $port . ' public/index.php');
+        exec('php asmvc run:server && php -S localhost:' . $port . ' public/index.php');
     }
 }

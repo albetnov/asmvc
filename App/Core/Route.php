@@ -220,6 +220,21 @@ class Route
             }
         }
         if (self::$pagenotfound) {
+            if (php_sapi_name() == 'cli-server') {
+                $file = public_path($_SERVER['REQUEST_URI']);
+                $requestPath = explode('/', $_SERVER['REQUEST_URI']);
+                $prefetchExt = explode('.', end($requestPath));
+                $extension = end($prefetchExt);
+                if ($extension != 'css' && $extension != 'js') {
+                    ReturnError(500);
+                    exit;
+                }
+                if (file_exists($file)) {
+                    header("Content-Type: text/{$extension}");
+                    readfile($file);
+                    exit;
+                }
+            }
             return ReturnError(404);
         }
     }
