@@ -7,8 +7,8 @@ use Albet\Asmvc\Core\SessionManager;
 
 SessionManager::runSession();
 csrf()->generateCsrf();
-define('BS5_CSS', '');
-define('BS5_JS', '');
+define('BS5_CSS', 'css/bootstrap.min.css');
+define('BS5_JS', 'js/bootstrap.min.js');
 
 /**
  * Calling your route

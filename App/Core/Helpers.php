@@ -136,9 +136,9 @@ function url($url = null)
 function asset($asset = null)
 {
     if (is_null($asset)) {
-        return get_http_protocol() . '://' . base_url() . '/public/';
+        return get_http_protocol() . '://' . base_url() . '/';
     } else {
-        return get_http_protocol() . '://' . base_url() . "/public/{$asset}";
+        return get_http_protocol() . '://' . base_url() . "/{$asset}";
     }
 }
 

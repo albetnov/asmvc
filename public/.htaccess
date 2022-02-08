@@ -1,5 +1,5 @@
 #Push web root to enter public index.php
-DirectoryIndex public/index.php
+DirectoryIndex index.php
 
 # enable apache rewrite engine
 RewriteEngine on
@@ -12,7 +12,7 @@ Options -indexes
 # Push every request to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ /public/index.php [L,QSA]
+RewriteRule ^.*$ index.php [L,QSA]
 
 # Disable access to specific files and folder.
 

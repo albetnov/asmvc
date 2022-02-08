@@ -18,3 +18,7 @@ use Albet\Asmvc\Core\Route;
 
 
 //Your route
+
+Route::inline('/tes', function () {
+    echo 'Hello World';
+});
