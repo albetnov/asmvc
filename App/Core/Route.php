@@ -168,12 +168,9 @@ class Route
         }
         $exploded = explode('\\', realpath('../'));
         $match = $exploded[array_key_last($exploded)] . '/public/index.php';
-        if ($server == '/' . $exploded[array_key_last($exploded)] . '/') {
-            redirect('public/index.php/');
-        };
 
         if (str_contains($server, $match)) {
-            $server = explode('/', getStringAfter('/index.php', $server));
+            $server = explode('/', getStringAfter('index.php', $server));
             array_shift($server);
             $server = '/' . implode('/', $server);
             // Define where your url start with.

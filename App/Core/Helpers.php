@@ -135,10 +135,11 @@ function url($url = null)
  */
 function asset($asset = null)
 {
+    $assetPath = get_http_protocol() . '://' . base_url() . '/public/';
     if (is_null($asset)) {
-        return get_http_protocol() . '://' . base_url() . '/';
+        return $assetPath;
     } else {
-        return get_http_protocol() . '://' . base_url() . "/{$asset}";
+        return $assetPath . $asset;
     }
 }
 
