@@ -9,6 +9,28 @@ class Cli extends BaseCli
 {
 
     /**
+     * Parsing every multiple hint or option.
+     * @param string $string
+     * @return string
+     */
+    private function multiple_parse($string)
+    {
+        $result = "";
+        if (!empty($string)) {
+            if (str_contains($string, ',')) {
+                $split = explode(',', $string);
+                foreach ($split as $split) {
+                    $result .= " {{$split}}";
+                }
+                $result .= " ";
+            } else {
+                $result = " {{$string}} ";
+            }
+            return $result;
+        }
+    }
+
+    /**
      * Parsing the argument
      * @param $args
      */
@@ -31,7 +53,7 @@ class Cli extends BaseCli
         Some commands you can use:\n\n
         Help;
         foreach ($command_lists as $command_list) {
-            $hint = !empty($command_list['hint']) ? " {{$command_list['hint']}} " : ' ';
+            $hint = $this->multiple_parse($command_list['hint']);
             $help .= "{$command_list['command']}{$hint}| {$command_list['desc']}\n";
         }
         $this->baseparse($args);
