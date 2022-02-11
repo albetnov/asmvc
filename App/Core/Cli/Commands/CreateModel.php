@@ -13,19 +13,36 @@ class CreateModel extends BaseCli
     {
         $try = $this->next_arguments(1);
         if ($try) {
-            $data = <<<data
-                    <?php
+            $env = env('APP_MODELS_DRIVER', 'asmvc');
+            if ($env == 'eloquent') {
+                $data = <<<data
+                        <?php
 
-                    namespace Albet\Asmvc\Models;
+                        namespace Albet\Asmvc\Models;
 
-                    use Albet\Asmvc\Core\BaseModel;
+                        use Albet\Asmvc\Core\BaseEloquent;
+                        
+                        class {$try} extends BaseEloquent 
+                        {
+                            protected \$table = '';
+                        }
 
-                    class {$try} extends BaseModel
-                    {
-                        protected \$table = '';
-                    }
-
-                    data;
+                        data;
+            } else {
+                $data = <<<data
+                        <?php
+    
+                        namespace Albet\Asmvc\Models;
+    
+                        use Albet\Asmvc\Core\BaseModel;
+    
+                        class {$try} extends BaseModel
+                        {
+                            protected \$table = '';
+                        }
+    
+                        data;
+            }
             file_put_contents(base_path() . "App/Models/{$try}.php", $data);
             echo "Model Created: {$try}.php\n";
         }

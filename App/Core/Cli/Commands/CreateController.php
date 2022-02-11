@@ -21,7 +21,7 @@ class CreateController extends BaseCli
             
             use Albet\Asmvc\Core\Requests;
             
-            class {$try} extends BaseController
+            class {$try}
             {
                 //Your logic
             }                    

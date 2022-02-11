@@ -27,6 +27,10 @@ class Database
      */
     public function __construct()
     {
+        $env = env('APP_MODELS_DRIVER', 'asmvc');
+        if ($env != 'asmvc') {
+            throw new \Exception("You can't use asmvc driver since your current driver is: {$env}. Please use it with {$env} way.");
+        }
         $this->pdo = (new Connection)->getConnection();
     }
 

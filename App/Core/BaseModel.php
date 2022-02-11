@@ -19,9 +19,4 @@ class BaseModel extends Database
             $this->defineTable($this->table);
         }
     }
-
-    // public function db()
-    // {
-    //     return $this->db;
-    // }
 }

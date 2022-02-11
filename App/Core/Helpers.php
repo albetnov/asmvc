@@ -7,6 +7,7 @@ require_once __DIR__ . '/Helpers/strAlter.php';
 // Include validator Helper
 require_once __DIR__ . '/Helpers/validator.php';
 
+
 use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
 use Albet\Asmvc\Core\Requests;
@@ -224,13 +225,15 @@ function ReturnError($num, $message = null)
  * @param string $optional
  * @return string
  */
-function env($name, $optional = null)
-{
-    if (isset($_ENV[$name])) {
-        return $_ENV[$name];
-    } else if (!is_null($optional)) {
-        return $optional;
-    } else {
-        return '';
+if (!function_exists('env')) {
+    function env($name, $optional = null)
+    {
+        if (isset($_ENV[$name])) {
+            return $_ENV[$name];
+        } else if (!is_null($optional)) {
+            return $optional;
+        } else {
+            return '';
+        }
     }
 }

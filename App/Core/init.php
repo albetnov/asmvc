@@ -5,10 +5,12 @@
  * Powered by Composer's PSR4
  */
 
+use Albet\Asmvc\Core\EloquentDB;
+use Albet\Asmvc\Core\EloquentDriver;
 use Dotenv\Dotenv;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/Helpers.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 /**
  * Load DotEnv Library
@@ -33,4 +35,8 @@ if (!defined('ASMVC_CLI_START')) {
         });
     }
     $whoops->register();
+}
+
+if (env('APP_MODELS_DRIVER', 'asmvc') == 'eloquent') {
+    new EloquentDB;
 }

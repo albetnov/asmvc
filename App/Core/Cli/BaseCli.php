@@ -85,6 +85,7 @@ class BaseCli
                     } while ($session_default != 'redis' && $session_default != 'php');
                     $data = <<<data
                     APP_ENV=production
+                    APP_MODELS_DRIVER=asmvc
 
                     DATABASE_HOST={$db_host}
                     DATABASE_USERNAME={$db_user}

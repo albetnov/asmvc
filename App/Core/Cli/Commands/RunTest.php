@@ -13,11 +13,16 @@ class RunTest extends BaseCli
     public function register()
     {
         $try = $this->next_arguments(1);
+        if (PHP_OS_FAMILY == 'windows') {
+            $path = 'vendor\\bin\\phpunit';
+        } else {
+            $path = 'vendor/bin/phpunit';
+        }
         if ($try) {
-            system('vendor\bin\phpunit --configuration phpunit.xml App/Tests/' . $try . '.php', $result);
+            system("{$path} --configuration phpunit.xml App/Tests/{$try}.php", $result);
             echo $result;
         } else {
-            system('vendor\bin\phpunit --configuration phpunit.xml', $result);
+            system("{$path} --configuration phpunit.xml", $result);
             echo $result;
         }
     }
