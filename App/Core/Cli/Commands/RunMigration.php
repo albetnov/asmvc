@@ -49,27 +49,33 @@ class RunMigration extends BaseCli
         }
     }
 
+    private function noExtension($file)
+    {
+        $result = explode('.', $file);
+        array_pop($result);
+        return implode('.', $result);
+    }
+
     public function register()
     {
         $try = $this->next_arguments(1);
-
         if ($this->next_arguments(2) == 'fresh' || $try == 'fresh') {
             (new EloquentDB)->schema()->dropAllTables();
             echo "Tables Dropped successfully!\n";
             echo "Starting migrating...\n";
         }
-
         if ($try && $try != 'fresh') {
             if ($this->checkHistoryMigration($try)) {
                 echo "Table: {$try} already exist. Skipping...\n";
                 exit;
             }
-            if (!class_exists($try)) {
+            if (!class_exists($this->noExtension($try))) {
                 $get = require_once base_path("App/Database/Migrations/{$try}.php");
                 $get->up();
                 echo "Migrated: {$try}.\n";
             } else {
-                $class = "\Albet\Asmvc\Database\Migrations\{$try}";
+                $noext = $this->noExtension($try);
+                $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                 (new $class())->up();
             }
             $this->fillHistory($try);
@@ -78,18 +84,19 @@ class RunMigration extends BaseCli
             $dirtho = [];
             foreach ($diffed as $diffed) {
                 if (!str_contains($diffed, '.')) {
-                    $dirs = array_diff(scandir($path . $diffed . '/'), ['.', '..']);
+                    $dirs = array_diff(scandir($diffed . '/'), ['.', '..']);
                     $dirtho[] = $diffed;
                     foreach ($dirs as $dir) {
                         if ($this->checkHistoryMigration($dir)) {
                             echo "Table: {$dir} already exist. Skipping...\n";
                         } else {
                             echo "Migrated: {$dir}.\n";
-                            if (!class_exists($dir)) {
+                            $noext = $this->noExtension($dir);
+                            if (!class_exists($noext)) {
                                 $get = require_once base_path("App/Database/Migrations/{$dir}");
                                 $get->up();
                             } else {
-                                $class = "\Albet\Asmvc\Database\Migrations\{$dir}";
+                                $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                                 (new $class())->up();
                             }
                             $this->fillHistory($dir);
@@ -100,11 +107,12 @@ class RunMigration extends BaseCli
                         echo "Table: {$diffed} already exist. Skipping...\n";
                     } else {
                         echo "Migrated: $diffed\n";
-                        if (!class_exists($diffed)) {
+                        $noext = $this->noExtension($diffed);
+                        if (!class_exists($noext)) {
                             $get = require_once base_path("App/Database/Migrations/{$diffed}");
                             $get->up();
                         } else {
-                            $class = "\Albet\Asmvc\Database\Migrations\{$diffed}";
+                            $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                             (new $class())->up();
                         }
                         $this->fillHistory($diffed);

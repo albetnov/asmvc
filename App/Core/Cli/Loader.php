@@ -15,6 +15,8 @@ class Loader
             \Albet\Asmvc\Core\Cli\Commands\CreateMigration::class,
             \Albet\Asmvc\Core\Cli\Commands\RunMigration::class,
             \Albet\Asmvc\Core\Cli\Commands\RollbackMigration::class,
+            \Albet\Asmvc\Core\Cli\Commands\CreateSeeder::class,
+            \Albet\Asmvc\Core\Cli\Commands\RunSeeder::class,
             \Albet\Asmvc\Core\Cli\Commands\CreateTest::class,
             \Albet\Asmvc\Core\Cli\Commands\RunTest::class,
             \Albet\Asmvc\Core\Cli\Commands\ResetRouter::class,

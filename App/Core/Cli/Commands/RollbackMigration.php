@@ -30,18 +30,25 @@ class RollbackMigration extends BaseCli
         }
     }
 
+    private function noExtension($file)
+    {
+        $result = explode('.', $file);
+        array_pop($result);
+        return implode('.', $result);
+    }
+
     public function register()
     {
         $try = $this->next_arguments(1) != "clean" ? $this->next_arguments(1) : true;
         $next = $try ? true : $this->next_arguments(2);
 
         if ($try && $try != "clean") {
-            if (!class_exists($try)) {
+            if (!class_exists($this->noExtension($try))) {
                 $get = require_once base_path("App/Database/Migrations/{$try}.php");
                 $get->down();
                 echo "Rollback: {$try}.\n";
             } else {
-                $class = "\Albet\Asmvc\Database\Migrations\{$try}";
+                $class = "\\Albet\\Asmvc\Database\\Migrations\\{$try}";
                 (new $class())->down();
             }
             if ($next) {
@@ -56,21 +63,23 @@ class RollbackMigration extends BaseCli
                     $dirtho[] = $diffed;
                     foreach ($dirs as $dir) {
                         echo "Rollback: {$dir}.\n";
-                        if (!class_exists($dir)) {
+                        $noext = $this->noExtension($dir);
+                        if (!class_exists($noext)) {
                             $get = require_once base_path("App/Database/Migrations/{$dir}");
                             $get->down();
                         } else {
-                            $class = "\Albet\Asmvc\Database\Migrations\{$dir}";
+                            $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                             (new $class())->down();
                         }
                     }
                 } else {
                     echo "Rollback: $diffed\n";
-                    if (!class_exists($diffed)) {
+                    $noext = $this->noExtension($diffed);
+                    if (!class_exists($noext)) {
                         $get = require_once base_path("App/Database/Migrations/{$diffed}");
                         $get->down();
                     } else {
-                        $class = "\Albet\Asmvc\Database\Migrations\{$diffed}";
+                        $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                         (new $class())->down();
                     }
                 }
