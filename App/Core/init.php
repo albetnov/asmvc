@@ -5,6 +5,7 @@
  * Powered by Composer's PSR4
  */
 
+use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\EloquentDB;
 use Albet\Asmvc\Core\EloquentDriver;
 use Dotenv\Dotenv;
@@ -37,6 +38,6 @@ if (!defined('ASMVC_CLI_START')) {
     $whoops->register();
 }
 
-if (env('APP_MODELS_DRIVER', 'asmvc') == 'eloquent') {
+if (Config::modelDriver() == 'eloquent') {
     new EloquentDB;
 }

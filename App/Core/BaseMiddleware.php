@@ -5,16 +5,20 @@ namespace Albet\Asmvc\Core;
 abstract class BaseMiddleware
 {
     /**
-     * @var Database $db
+     * @var $db
      */
-    protected Database $db;
+    protected $db;
 
     /**
      * Consturctor to Query Builder
      */
     public function __construct()
     {
-        $this->db = new Database;
+        if (Config::modelDriver() == 'eloquent') {
+            $this->db = new EloquentDB;
+        } else {
+            $this->db = new Database;
+        }
     }
 
     /**

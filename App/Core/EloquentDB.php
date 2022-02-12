@@ -8,6 +8,10 @@ use Illuminate\Container\Container;
 
 class EloquentDB extends Eloquent
 {
+    /**
+     * Construct/Making Eloquent instance
+     * @return $this
+     */
     public function __construct()
     {
         parent::__construct();
@@ -22,6 +26,10 @@ class EloquentDB extends Eloquent
         return $this;
     }
 
+    /**
+     * Get a database Connection
+     * @return array
+     */
     public function getDbConnection()
     {
         return [

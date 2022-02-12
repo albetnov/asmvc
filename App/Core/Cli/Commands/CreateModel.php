@@ -3,6 +3,7 @@
 namespace Albet\Asmvc\Core\Cli\Commands;
 
 use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Config;
 
 class CreateModel extends BaseCli
 {
@@ -13,7 +14,7 @@ class CreateModel extends BaseCli
     {
         $try = $this->next_arguments(1);
         if ($try) {
-            $env = env('APP_MODELS_DRIVER', 'asmvc');
+            $env = Config::modelDriver();
             if ($env == 'eloquent') {
                 $data = <<<data
                         <?php

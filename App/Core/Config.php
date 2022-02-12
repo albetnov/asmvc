@@ -40,7 +40,7 @@ class Config extends EntryPoint
         return $this->fromEnv();
     }
 
-    public function modelsDriver()
+    public static function modelDriver()
     {
         return env('APP_MODELS_DRIVER', 'asmvc');
     }

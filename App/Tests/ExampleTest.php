@@ -18,6 +18,6 @@ class ExampleTest extends TestCase
     {
         $cfg = new Config;
 
-        $this->assertIsString($cfg->defineConnection(), 'Type data of defineConeection() is not string.');
+        $this->assertIsString($cfg->defineConnection(), 'Type data of defineConection() is not string.');
     }
 }

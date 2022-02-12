@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseEloquent extends Model
 {
+    /**
+     * Add eloquent query builder
+     * @var $db
+     */
+    protected $db;
 
     /**
      * Constructor method
@@ -13,9 +18,10 @@ class BaseEloquent extends Model
     public function __construct()
     {
         parent::__construct();
-        $env = env('APP_MODELS_DRIVER', 'asmvc');
+        $env = Config::modelDriver();
         if ($env != 'eloquent') {
             throw new \Exception("You can't use eloquent driver since your current driver is: {$env}. Please use it with {$env} way.");
         }
+        $this->db = new EloquentDB;
     }
 }
