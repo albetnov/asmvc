@@ -9,15 +9,14 @@ return new class extends BaseMigration
 {
     public function up()
     {
-        $this->schema->create('example-migration', function (Blueprint $table) {
+        $this->schema->create('test-lagi', function (Blueprint $table) {
             $table->id();
-            $table->string('test-column');
-            $table->timestamps();
+            $table->string('test');
         });
     }
 
     public function down()
     {
-        $this->schema->dropIfExists('example-migration');
+        $this->schema->dropIfExists('test-lagi');
     }
 };
