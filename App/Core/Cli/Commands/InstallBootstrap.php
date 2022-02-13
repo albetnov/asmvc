@@ -2,12 +2,12 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
+use Albet\Asmvc\Core\Cli\addBootstrap;
 use Albet\Asmvc\Core\Cli\BaseCli;
-use Albet\Asmvc\Core\Cli\ResetIndex;
 
 class InstallBootstrap extends BaseCli
 {
-    use ResetIndex;
+    use addBootstrap;
 
     protected $command = "install:bootstrap";
     protected $desc = "Install and use bootstrap with asset()";
@@ -28,7 +28,7 @@ class InstallBootstrap extends BaseCli
         foreach ($pathjs as $js) {
             copy(base_path() . 'App/Core/bs5_integration/js/' . $js, public_path() . 'js/' . $js);
         }
-        $this->resetIndex('add_bs');
+        $this->addBootstrap();
         echo 'Bootstrap installed successfully!' . PHP_EOL;
     }
 }

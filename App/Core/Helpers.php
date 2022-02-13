@@ -16,8 +16,8 @@ use Albet\Asmvc\Core\Views;
 /**
  * ASMVC Version and State
  */
-define('ASMVC_VERSION', '1.0');
-define('ASMVC_STATE', 'release');
+define('ASMVC_VERSION', '1.5');
+define('ASMVC_STATE', 'development');
 
 /**
  * Function to access Requests Class immediately.
