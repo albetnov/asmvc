@@ -30,4 +30,9 @@ class Config
     {
         return env('APP_CSRF_DRIVER', 'asmvc');
     }
+
+    public static function viewEngine()
+    {
+        return env('APP_VIEW_ENGINE', 'latte');
+    }
 }

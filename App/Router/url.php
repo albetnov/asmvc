@@ -21,3 +21,7 @@ use ParagonIE\AntiCSRF\AntiCSRF;
 
 //Your route
 Route::add('/', [HomeController::class, 'index']);
+Route::view('/tes', ['example', [
+    'title' => 'Uji Coba',
+    'content' => 'Nyoba aja'
+]]);

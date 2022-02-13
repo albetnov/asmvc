@@ -7,7 +7,7 @@ require_once __DIR__ . '/Helpers/strAlter.php';
 // Include validator Helper
 require_once __DIR__ . '/Helpers/validator.php';
 
-
+use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
 use Albet\Asmvc\Core\Requests;
@@ -30,13 +30,28 @@ function request()
 
 /**
  * Function to include a view
- * @param string $view, array $data
+ * @param string $view, 
+ * @param array $data
  */
 function view($view, $data = [])
 {
-    $final = dotSupport($view);
-    extract($data);
-    include __DIR__ . '/../Views/' . $final . ".php";
+    if (Config::viewEngine() == 'latte') {
+        $latte = new Latte\Engine;
+        $path = __DIR__ . '/../Views/Latte/Temps';
+        if (!is_dir($path)) {
+            mkdir(__DIR__ . '/../Views/Latte');
+            mkdir($path);
+        }
+
+        $latte->setTempDirectory($path);
+        if (env('APP_ENV') == 'production') {
+            $latte->setAutoRefresh(false);
+        }
+
+        $view = dotSupport($view);
+        return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
+    }
+    return (new Views)->view($view, $data);
 }
 
 /**

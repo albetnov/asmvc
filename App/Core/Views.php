@@ -98,4 +98,11 @@ class Views
             return '';
         }
     }
+
+    public function view($path, $data)
+    {
+        $final = dotSupport($path);
+        extract($data);
+        include __DIR__ . '/../Views/' . $final . ".php";
+    }
 }
