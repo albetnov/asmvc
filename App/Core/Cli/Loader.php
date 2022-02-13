@@ -7,6 +7,7 @@ class Loader
     public function load()
     {
         return [
+            \Albet\Asmvc\Core\Cli\Commands\Setup::class,
             \Albet\Asmvc\Core\Cli\Commands\Serve::class,
             \Albet\Asmvc\Core\Cli\Commands\InstallBootstrap::class,
             \Albet\Asmvc\Core\Cli\Commands\CreateController::class,

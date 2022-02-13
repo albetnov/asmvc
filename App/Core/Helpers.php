@@ -57,7 +57,9 @@ function rawDB($query)
  */
 function vdd(...$dump)
 {
-    echo "<pre>" . var_dump($dump) . "</pre>";
+    echo "<pre>";
+    var_dump($dump);
+    echo "</pre>";
     exit();
 }
 

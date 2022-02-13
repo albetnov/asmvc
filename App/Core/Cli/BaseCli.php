@@ -73,44 +73,7 @@ class BaseCli
         if (!is_dir(base_path('vendor'))) {
             throw new \Exception("Composer install failed to ran.");
         } else {
-            if (!is_file(base_path('.env'))) {
-                $prompt_setup = $this->ask("Welcome to ASMVC First Time Setup. Would you like to setup your ASMVC [Y/n]");
-                if (strtolower($prompt_setup) == 'y') {
-                    $db_host = $this->ask("What's your database host (Default: Localhost)", 'localhost');
-                    $db_user = $this->ask("What's your database username (Default: root)", 'root');
-                    $db_pass = $this->ask("What's your database password");
-                    $db_name = $this->ask("What's your database name (Default: asmvc)", 'asmvc');
-                    do {
-                        $session_default = $this->ask("Which one do you prefer as Session Driver (Default: redis) [php/redis]", 'redis');
-                    } while ($session_default != 'redis' && $session_default != 'php');
-                    $data = <<<data
-                    APP_ENV=production
-                    APP_MODELS_DRIVER=asmvc
-                    APP_CSRF_DRIVER=asmvc
-
-                    DATABASE_HOST={$db_host}
-                    DATABASE_USERNAME={$db_user}
-                    DATABASE_PASSWORD={$db_pass}
-                    DATABASE_NAME={$db_name}
-
-                    ENTRY_TYPE=controller
-                    ENTRY_CLASS=HomeController
-                    ENTRY_METHOD=index
-                    ENTRY_MIDDLEWARE=
-
-                    SESSION_TYPE={$session_default}
-                    REDIS_SERVER=127.0.0.1
-                    REDIS_PORT=6379
-                    REDIS_DB_NUMBER=0
-                    REDIS_AUTH_USER=
-                    REDIS_AUTH_PASS=
-                    data;
-                    file_put_contents(base_path('.env'), $data);
-                } else {
-                    echo "Skipping...\n";
-                }
-            }
-            echo "Instalilation Completed!\n";
+            exec('php asmvc setup');
         }
     }
 

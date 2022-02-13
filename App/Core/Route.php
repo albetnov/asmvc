@@ -9,18 +9,7 @@ class Route
      */
     public static $routes = [], $pagenotfound = false;
     private static $ASMVC_LOCAL_URL = false;
-
-    /**
-     * Block a path.
-     * @param string $path
-     * @throws Exception
-     */
-    private static function block($path)
-    {
-        if ($path == '/') {
-            throw new \Exception("Overriding URL '/' is not recommended. You should configure it on Core/Config.php only.");
-        }
-    }
+    public const PARAMETER = "([0-9a-zA-Z]*)";
 
     /**
      * Add routing to the array
@@ -28,8 +17,6 @@ class Route
      */
     public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
     {
-
-        self::block($path);
         $http_method = 'GET';
         $middleware = null;
         if ($http_method_or_middleware != []) {
@@ -45,13 +32,13 @@ class Route
                 $http_method = $http_method_or_middleware[0];
             }
         }
-        array_push(self::$routes, [
+        self::$routes[] = [
             'path' => $path,
             'controller' => $controllerandmethod[0],
             'method' => $controllerandmethod[1],
             'http_method' => $http_method,
             'middleware' => $middleware
-        ]);
+        ];
     }
 
     /**
@@ -60,7 +47,6 @@ class Route
      */
     public static function inline($path, $inline, ...$http_method_or_middleware)
     {
-        self::block($path);
         $http_method = 'GET';
         $middleware = null;
         if ($http_method_or_middleware != []) {
@@ -76,13 +62,13 @@ class Route
                 $http_method = $http_method_or_middleware[0];
             }
         }
-        array_push(self::$routes, [
+        self::$routes[] = [
             'path' => $path,
             'controller' => 'inline',
             'method' => $inline,
             'http_method' => $http_method,
             'middleware' => $middleware
-        ]);
+        ];
     }
 
     /**
@@ -91,7 +77,6 @@ class Route
      */
     public static function view($path, $view, ...$http_method_or_middleware)
     {
-        self::block($path);
         $http_method = 'GET';
         $middleware = null;
         if ($http_method_or_middleware != []) {
@@ -119,32 +104,6 @@ class Route
             $array['method'] = $view;
         }
         array_push(self::$routes, $array);
-    }
-
-    /**
-     * Default settings for url '/'.
-     */
-    protected static function mainEntry()
-    {
-        $config = (new Config)->entryPoint();
-        if (!empty($config['middleware'])) {
-            $middleware = new $config['middleware'];
-            $middleware->middleware();
-        }
-        if (isset($config['controller'])) {
-            $call_main = new $config['controller'];
-            $method = $config['method'];
-            return $call_main->$method(new Requests);
-        } else if (isset($config['path'])) {
-            if (isset($config['data'])) {
-                return view($config['path'], $config['data']);
-            }
-            return view($config['path']);
-        } else if (isset($config['inline'])) {
-            return call_user_func($config['inline']);
-        } else {
-            throw new \Exception("Invalid entry point!");
-        }
     }
 
     /**
@@ -176,44 +135,41 @@ class Route
             // Define where your url start with.
             self::$ASMVC_LOCAL_URL =  $exploded[array_key_last($exploded)];
         }
-
-        if ($server == '/') {
-            self::mainEntry();
-        } else {
-            if (empty(self::$routes)) {
-                self::$pagenotfound = true;
-            }
-            foreach (self::$routes as $route) {
-
-                if ($server == $route['path']) {
-                    if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
-                        throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} is not support for this url. Instead use {$route['http_method']}!");
-                    } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        if (!csrf()->validateCsrf()) {
-                            return ReturnError(500);
-                        };
-                    }
-                    if (!is_null($route['middleware'])) {
-                        $middleware = new $route['middleware'];
-                        $middleware->middleware();
-                    }
-                    if ($route['controller'] == 'view') {
-                        if (isset($route['method']['data'])) {
-                            return view($route['method']['view'], $route['method']['data']);
-                        } else {
-                            return view($route['method']);
-                        }
-                    } else if ($route['controller'] == 'inline') {
-                        return call_user_func($route['method']);
-                    } else {
-                        $controller = new $route['controller'];
-                        $method = $route['method'];
-                        return $controller->$method(new Requests);
-                    }
-                    exit;
-                } else if ($server != $route['path']) {
-                    self::$pagenotfound = true;
+        if (empty(self::$routes)) {
+            self::$pagenotfound = true;
+        }
+        foreach (self::$routes as $route) {
+            $pattern = "#^{$route['path']}$#";
+            if (preg_match($pattern, $server, $variables)) {
+                array_shift($variables);
+                if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
+                    throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} is not support for this url. Instead use {$route['http_method']}!");
+                } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    if (!csrf()->validateCsrf()) {
+                        return ReturnError(500);
+                    };
                 }
+                if (!is_null($route['middleware'])) {
+                    $middleware = new $route['middleware'];
+                    $middleware->middleware();
+                }
+                if ($route['controller'] == 'view') {
+                    if (isset($route['method']['data'])) {
+                        return view($route['method']['view'], $route['method']['data']);
+                    } else {
+                        return view($route['method']);
+                    }
+                } else if ($route['controller'] == 'inline') {
+                    return call_user_func_array($route['method'], $variables);
+                } else {
+                    $controller = new $route['controller'];
+                    $pattern = "#^{$route['path']}$#";
+                    $method = $route['method'];
+                    call_user_func_array([$controller, $method], $variables);
+                }
+                exit;
+            } else if ($server != $route['path']) {
+                self::$pagenotfound = true;
             }
         }
         if (self::$pagenotfound) {

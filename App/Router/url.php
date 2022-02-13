@@ -1,5 +1,6 @@
 <?php
 
+use Albet\Asmvc\Controllers\HomeController;
 use Albet\Asmvc\Core\Route;
 use ParagonIE\AntiCSRF\AntiCSRF;
 
@@ -19,3 +20,4 @@ use ParagonIE\AntiCSRF\AntiCSRF;
 
 
 //Your route
+Route::add('/', [HomeController::class, 'index']);
