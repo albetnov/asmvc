@@ -1,6 +1,7 @@
 <?php
 
 use Albet\Asmvc\Core\Route;
+use ParagonIE\AntiCSRF\AntiCSRF;
 
 /**
  * You can use following method for routing:

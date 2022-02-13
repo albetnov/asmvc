@@ -15,7 +15,7 @@ function csrf()
  * Function to access CsrfGenerator's field method immediately.
  * @return CsrfGenerator
  */
-function csrf_field()
+function csrf_field($route = null)
 {
-    return (new CsrfGenerator)->field();
+    return (new CsrfGenerator)->field($route);
 }

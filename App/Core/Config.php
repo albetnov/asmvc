@@ -44,4 +44,9 @@ class Config extends EntryPoint
     {
         return env('APP_MODELS_DRIVER', 'asmvc');
     }
+
+    public static function csrfDriver()
+    {
+        return env('APP_CSRF_DRIVER', 'asmvc');
+    }
 }

@@ -86,6 +86,7 @@ class BaseCli
                     $data = <<<data
                     APP_ENV=production
                     APP_MODELS_DRIVER=asmvc
+                    APP_CSRF_DRIVER=asmvc
 
                     DATABASE_HOST={$db_host}
                     DATABASE_USERNAME={$db_user}

@@ -22,7 +22,8 @@
     "vlucas/phpdotenv": "^5.4",
     "illuminate/database": "^9.0",
     "illuminate/events": "^9.0",
-    "fakerphp/faker": "^1.19"
+    "fakerphp/faker": "^1.19",
+    "paragonie/anti-csrf": "^2.3"
   }, 
   "require-dev": {
     "phpunit/phpunit": "^9.5",
