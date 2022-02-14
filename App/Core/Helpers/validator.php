@@ -42,9 +42,9 @@ function flush_old()
  * @param array $validate
  * @return Validator
  */
-function makeValidate($validate)
+function makeValidate($validate, $customMsg = [])
 {
-    return (new Validator)::make($validate);
+    return (new Validator)::make($validate, $customMsg);
 }
 
 /**

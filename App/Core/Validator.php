@@ -2,111 +2,74 @@
 
 namespace Albet\Asmvc\Core;
 
+use Rakit\Validation\Validator as ValidationValidator;
+
 class Validator
 {
     /**
-     * @var boolean $status
+     * Put error to session.
+     * @param object $array
      */
-    private static $status = true;
-
-    /**
-     * Function to put a validation
-     * @param string $field, $value
-     */
-    private static function put($field, $value)
+    private static function put($array)
     {
-        $_SESSION['validation'][$field] = $value;
-    }
-
-    /**
-     * Function to validate the field based from the validate parameter
-     * @param string $field, $validate
-     */
-    private static function validate($field, $validate)
-    {
-        set_old($field);
-        if ($validate == 'required') {
-            if (empty(request()->input($field))) {
-                self::put($field, "{$field} wajib diisi");
-                self::$status = false;
-            }
-        }
-        if ($validate == 'file') {
-            if (empty(request()->upload($field))) {
-                self::put($field, "{$field} wajib diisi");
-                self::$status = false;
-            }
-        }
-        if (str_starts_with($validate, 'min')) {
-            $min = getStringAfter(':', $validate);
-            if (strlen(request()->input($field)) < $min) {
-                self::put($field, "{$field} Minimal karakter hanya boleh " . $min);
-                self::$status = false;
-            }
-        }
-        if (str_starts_with($validate, 'max')) {
-            $max = getStringAfter(':', $validate);
-            if (strlen(request()->input($field)) > $max) {
-                self::put($field, "{$field} Maksimal karakter hanya boleh " . $max);
-                self::$status = false;
-            }
+        foreach ($array->toArray() as $field => $message) {
+            $_SESSION['validation'][$field] = $message;
         }
     }
 
     /**
-     * Function to make a validation
+     * Make a validation.
      * @param array $validate
-     */
-    public static function make(array $validate)
-    {
-        foreach ($validate as $key => $value) {
-            if (is_string($value)) {
-                self::validate($key, $value);
-            } else {
-                foreach ($value as $value) {
-                    self::validate($key, $value);
-                }
-            }
-        }
-        return new static;
-    }
-
-    /**
-     * Function to get validation error message
-     * @param string $field
-     * @return string
-     */
-    public static function validMsg($field)
-    {
-        $return = $_SESSION['validation'][$field];
-        unset($_SESSION['validation'][$field]);
-        return $return;
-    }
-
-    /**
-     * Function to check whenever validation's error or not per field.
-     * @param string $field
+     * @param array $customMsg
      * @return boolean
      */
+    public static function make(array $validate, array $customMsg = [])
+    {
+        $validator = new ValidationValidator();
+        $validation = $validator->make(request()->input('*'), $validate);
+
+        if ($customMsg !== []) {
+            $validation->setMessages($customMsg);
+        }
+
+        $validation->validate();
+
+        if ($validation->fails()) {
+            self::put($validation->errors());
+            foreach (array_keys($validate) as $field) {
+                set_old($field);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static function validMsg($field, $class = null, $liclass = null)
+    {
+        $string = "";
+        if ($class) {
+            $string .= "<ul class=\"{$class}\">";
+        } else {
+            $string .= "<ul>";
+        }
+        foreach ($_SESSION['validation'][$field] as $error) {
+            if ($liclass) {
+                $string .= "<li class=\"{$liclass}\">{$error}</li>";
+            } else {
+                $string .= "<li>{$error}</li>";
+            }
+        }
+        $string .= "</ul>";
+        unset($_SESSION['validation'][$field]);
+        return $string;
+    }
+
     public static function checkError($field)
     {
         if (isset($_SESSION['validation'][$field])) {
             return true;
         } else {
-            return false;
-        }
-    }
-
-    /**
-     * Function to check whenever validation's fails or not. For globals not per field.
-     * @return boolean
-     */
-    public static function fails()
-    {
-        if (!self::$status) {
-            return true;
-        } else {
-            flush_old();
             return false;
         }
     }

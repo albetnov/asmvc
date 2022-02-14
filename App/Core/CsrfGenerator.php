@@ -6,12 +6,13 @@ use ParagonIE\AntiCSRF\AntiCSRF;
 
 class CsrfGenerator
 {
+
     /**
      * Generate a csrf
      */
     public function generateCsrf()
     {
-        if (!isset($_SESSION['token'])) {
+        if (Config::csrfDriver() != 'paragonie' && !isset($_SESSION['token'])) {
             $_SESSION['token'] = bin2hex(random_bytes(32));
         }
     }
@@ -44,7 +45,7 @@ class CsrfGenerator
     public function field($route = null)
     {
         if (Config::csrfDriver() == 'paragonie') {
-            if ($route == null) {
+            if (is_null($route)) {
                 return new \Exception("Lock to must exist.");
             }
             $csrf = new AntiCSRF();

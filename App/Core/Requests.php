@@ -7,10 +7,15 @@ class Requests
     /**
      * Get an input field value
      * @param string $field
+     * @param boolean $escape
+     * @return array
      * @return string
      */
     public function input($field, $escape = true)
     {
+        if ($field == '*') {
+            return $_POST;
+        }
         if (!$escape) {
             $check = $_POST[$field];
         } else {

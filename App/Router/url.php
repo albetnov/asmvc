@@ -2,7 +2,6 @@
 
 use Albet\Asmvc\Controllers\HomeController;
 use Albet\Asmvc\Core\Route;
-use ParagonIE\AntiCSRF\AntiCSRF;
 
 /**
  * You can use following method for routing:
@@ -21,7 +20,3 @@ use ParagonIE\AntiCSRF\AntiCSRF;
 
 //Your route
 Route::add('/', [HomeController::class, 'index']);
-Route::view('/tes', ['example', [
-    'title' => 'Uji Coba',
-    'content' => 'Nyoba aja'
-]]);

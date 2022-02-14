@@ -48,6 +48,14 @@ function view($view, $data = [])
             $latte->setAutoRefresh(false);
         }
 
+        $latte->addFunction('csrf', function ($route = null) {
+            return new Latte\Runtime\Html(csrf_field($route));
+        });
+
+        $latte->addFunction('validateMsg', function ($field) {
+            return new Latte\Runtime\Html(validateMsg($field));
+        });
+
         $view = dotSupport($view);
         return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
     }
