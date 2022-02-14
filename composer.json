@@ -3,7 +3,6 @@
   "description": "A Simple PHP MVC Framework",
   "type": "project",
   "license": "MIT",
-  "version": "1.0",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "autoload": {
