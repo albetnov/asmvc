@@ -57,13 +57,10 @@ function view($view, $data = [])
             return new Latte\Runtime\Html(validateMsg($field));
         });
 
-<<<<<<< HEAD
-=======
         $latte->addFunction('flash', function () {
             return new Flash;
         });
 
->>>>>>> a86b920 (fix dependency injection error, add flash helper for latte)
         $view = dotSupport($view);
         return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
     }
