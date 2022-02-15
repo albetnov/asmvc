@@ -6,15 +6,18 @@ class SessionManager
 {
     /**
      * @var string $type
+     * @var boolean $ip
      */
-    private static $type;
+    private static $type, $ip;
 
     /**
      * Constructor method
+     * @param boolean $ipvalidation
      */
-    public function __construct()
+    public function __construct($ipvalidation = true)
     {
-        $this->type = env('SESSION_TYPE', 'redis');
+        self::$type = env('SESSION_TYPE', 'redis');
+        self::$ip = $ipvalidation;
     }
 
     /**
@@ -39,6 +42,39 @@ class SessionManager
         } else {
             ini_set('session.name', 'ASMVCSESSID');
         }
+
+        self::generateSession();
+        self::validateSession();
+    }
+
+    /**
+     * Generating a new session.
+     */
+    private static function generateSession()
+    {
+        if (isset($_SESSION['USER_AGENT']) || isset($_SESSION['USER_IP'])) {
+            session_destroy();
+        }
         session_start();
+        session_regenerate_id(true);
+        if (!isset($_SESSION['USER_AGENT'])) {
+            $_SESSION['USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
+        }
+        if (self::$ip || !isset($_SESSION['USER_IP'])) {
+            $_SESSION['USER_IP'] = $_SERVER['REMOTE_ADDR'];
+        }
+    }
+
+    /**
+     * Validating user's session.
+     */
+    private static function validateSession()
+    {
+        if ($_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) {
+            self::generateSession();
+        }
+        if (self::$ip || $_SESSION['USER_IP'] != $_SERVER['REMOTE_ADDR']) {
+            self::generateSession();
+        }
     }
 }
