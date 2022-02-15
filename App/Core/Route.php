@@ -165,7 +165,7 @@ class Route
                     $controller = new $route['controller'];
                     $pattern = "#^{$route['path']}$#";
                     $method = $route['method'];
-                    call_user_func_array([$controller, $method], $variables);
+                    call_user_func_array([$controller, $method], [new Requests, $variables]);
                 }
                 exit;
             } else if ($server != $route['path']) {

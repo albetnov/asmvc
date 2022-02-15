@@ -10,6 +10,7 @@ require_once __DIR__ . '/Helpers/validator.php';
 use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
+use Albet\Asmvc\Core\Flash;
 use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Views;
 
@@ -56,6 +57,13 @@ function view($view, $data = [])
             return new Latte\Runtime\Html(validateMsg($field));
         });
 
+<<<<<<< HEAD
+=======
+        $latte->addFunction('flash', function () {
+            return new Flash;
+        });
+
+>>>>>>> a86b920 (fix dependency injection error, add flash helper for latte)
         $view = dotSupport($view);
         return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
     }
@@ -175,7 +183,7 @@ function asset($asset = null)
 function redirect($to, $outside = true)
 {
     if (!$outside) {
-        header("location:" . base_path() . "$to");
+        header("location:" . url($to));
         exit;
     }
     header("location:$to");
