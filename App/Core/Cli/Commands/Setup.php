@@ -6,9 +6,16 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class Setup extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $desc
+     */
     protected $command = "setup";
     protected $desc = "Setting up ASMVC.";
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         if (!is_file(base_path('.env'))) {

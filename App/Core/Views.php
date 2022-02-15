@@ -5,14 +5,18 @@ namespace Albet\Asmvc\Core;
 class Views
 {
     /**
-     * @var array $sectionList, $section,string $currentSection
+     * @var array $sectionList 
+     * @var array $section
+     * @var string $currentSection
+     * @var string $path
      */
     private static $sectionList = [], $currentSection, $section = [];
     private static $path;
 
     /**
      * Function to define a section
-     * @param string $name, $content
+     * @param string $name
+     * @var string $content
      */
     public function section($name, $content = null)
     {
@@ -86,7 +90,8 @@ class Views
     /**
      * Function to matching user's url and server expected url then
      * if match return following classname.
-     * @param string $expected, $classname
+     * @param string $expected
+     * @param string $classname
      * @return string
      */
     public function match($expected, $classname)
@@ -99,6 +104,11 @@ class Views
         }
     }
 
+    /**
+     * Import a view
+     * @param string $path
+     * @param array $data
+     */
     public function view($path, $data)
     {
         $final = dotSupport($path);

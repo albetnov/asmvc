@@ -31,8 +31,9 @@ function request()
 
 /**
  * Function to include a view
- * @param string $view, 
+ * @param string $view
  * @param array $data
+ * @return Views|Latte\Engine
  */
 function view($view, $data = [])
 {
@@ -70,6 +71,7 @@ function view($view, $data = [])
 /**
  * Function to access PDO immediately
  * @param string $query
+ * @return PDO
  */
 function rawDB($query)
 {
@@ -93,6 +95,7 @@ function vdd(...$dump)
 
 /**
  * Function to get if server is running on HTTPS or HTTP.
+ * @return string
  */
 function get_http_protocol()
 {
@@ -191,6 +194,7 @@ function redirect($to, $outside = true)
  * Function to tell developer if there's a method being chained more than one.
  * @param $mark, string $method, string $custom_msg
  * @throws Exception
+ * @return void
  */
 function noSelfChained($mark, $method, $custom_msg = null)
 {
@@ -228,6 +232,7 @@ function back($jsonly = false)
 
 /**
  * Function to access Requests's currentURL method.
+ * @return string
  */
 function GetCurrentUrl()
 {

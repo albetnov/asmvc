@@ -31,6 +31,7 @@ class Flash
     /**
      * Catch a session
      * @param string $name
+     * @return string
      */
     public static function catchFlash($name)
     {

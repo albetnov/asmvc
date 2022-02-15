@@ -5,7 +5,7 @@ namespace Albet\Asmvc\Core;
 class BaseModel extends Database
 {
     /**
-     * @var Database $db, string $table
+     * @var string $table
      */
     protected $table;
 

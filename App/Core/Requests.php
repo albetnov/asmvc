@@ -8,8 +8,7 @@ class Requests
      * Get an input field value
      * @param string $field
      * @param boolean $escape
-     * @return array
-     * @return string
+     * @return string|array
      */
     public function input($field, $escape = true)
     {
@@ -40,6 +39,7 @@ class Requests
     /**
      * Get form file uploads
      * @param string $name
+     * @return mixed
      */
     public function upload($name)
     {

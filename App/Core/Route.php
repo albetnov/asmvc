@@ -5,15 +5,23 @@ namespace Albet\Asmvc\Core;
 class Route
 {
     /**
-     * @var array $routes, boolean $pagenotfound
+     * @var array $routes
+     * @var boolean $pagenotfound
+     * @var boolean $ASMVC_LOCAL_URL
      */
-    public static $routes = [], $pagenotfound = false;
+    private static $routes = [], $pagenotfound = false;
     private static $ASMVC_LOCAL_URL = false;
+
+    /**
+     * Regex const
+     */
     public const PARAMETER = "([0-9a-zA-Z]*)";
 
     /**
      * Add routing to the array
-     * @param string $path, Class|String $controllerandmethod, Class|String $http_method_or_middleware
+     * @param string $path
+     * @param array $controllerandmethod
+     * @param array $http_method_or_middlewarepublic
      */
     public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
     {
@@ -43,7 +51,9 @@ class Route
 
     /**
      * Add routing to the array but for anonymous function only.
-     * @param string $path, Callable $inline, Class|String $http_method_or_middleware.
+     * @param string $path
+     * @param callable $inline
+     * @param array $http_method_or_middleware.
      */
     public static function inline($path, $inline, ...$http_method_or_middleware)
     {
@@ -73,7 +83,9 @@ class Route
 
     /**
      * Add routing to the array but for views only.
-     * @param string $path, Array|String $view, Class|String $http_method_or_middleware.
+     * @param string $path
+     * @param Array|String $view
+     * @param array $http_method_or_middleware.
      */
     public static function view($path, $view, ...$http_method_or_middleware)
     {
@@ -108,6 +120,7 @@ class Route
 
     /**
      * Get ASMVC_LOCAL_URL value
+     * @return string
      */
     public static function getAsmvcUrlLocal()
     {

@@ -6,6 +6,11 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class RunSeeder extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = "run:seeder";
     protected $hint = "SeederName?";
     protected $desc = "Seeding a database table.";
@@ -17,6 +22,9 @@ class RunSeeder extends BaseCli
         return implode('.', $result);
     }
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

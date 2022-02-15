@@ -7,9 +7,18 @@ use Albet\Asmvc\Core\Config;
 
 class CreateModel extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = "create:model";
     protected $hint = "model";
     protected $desc = "Creating Model";
+
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

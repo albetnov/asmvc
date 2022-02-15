@@ -32,7 +32,7 @@ class Cli extends BaseCli
 
     /**
      * Parsing the argument
-     * @param $args
+     * @param array $args
      */
     public function argument_parse($args)
     {

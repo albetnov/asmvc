@@ -7,10 +7,19 @@ use Albet\Asmvc\Core\EloquentDB;
 
 class RollbackMigration extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = "migration:rollback";
     protected $hint = "MigrationName?,clean?";
     protected $desc = "Rollback your migration.";
 
+    /**
+     * Clear history table
+     * @param string $table
+     */
     private function clearHistory($table = null)
     {
         $eloquent = new EloquentDB;
@@ -30,6 +39,11 @@ class RollbackMigration extends BaseCli
         }
     }
 
+    /**
+     * Remove extension from a file name
+     * @param string $file
+     * @return string
+     */
     private function noExtension($file)
     {
         $result = explode('.', $file);
@@ -37,6 +51,9 @@ class RollbackMigration extends BaseCli
         return implode('.', $result);
     }
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1) != "clean" ? $this->next_arguments(1) : true;

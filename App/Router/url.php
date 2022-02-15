@@ -15,6 +15,7 @@ use Albet\Asmvc\Core\Route;
  * Route::add($urlPath, [Controller::class, 'methodName'], $Middleware) for Middleware only.
  * or both of them.
  * The same rules applies for inline and view. 
+ * Note: if you use both httpMethod and Middleware. Make sure they registered in the correct order.
  */
 
 

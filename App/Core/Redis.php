@@ -26,6 +26,8 @@ class Redis
     /**
      * Function to check whenever key is exist or not.
      * @param string $key
+     * @param boolean $get
+     * @return mixed
      */
     public function checkKey($key, $get = false)
     {
@@ -46,6 +48,7 @@ class Redis
      * @param mixed $value
      * @param boolean $list
      * @param int $expire
+     * @return mixed
      */
     public function redisKey($key, $value = null, $list = false, $expire = null)
     {

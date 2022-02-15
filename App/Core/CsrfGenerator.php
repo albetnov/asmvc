@@ -29,7 +29,7 @@ class CsrfGenerator
                 return true;
             }
         } else {
-            $token = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
+            $token = htmlspecialchars(request()->input('token'));
             if (!$token || $token !== $_SESSION['token']) {
                 return false;
             }

@@ -4,7 +4,8 @@ use Albet\Asmvc\Core\Validator;
 
 /**
  * Function to get old value of field.
- * @param string $field_name, $data
+ * @param string $field_name
+ * @param string $data
  * @return string
  */
 function old($field_name, $data = null)

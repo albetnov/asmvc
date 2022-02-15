@@ -6,10 +6,18 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class CreateSeeder extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = "create:seeder";
     protected $hint = "SeederName";
     protected $desc = "Creating Seeder";
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

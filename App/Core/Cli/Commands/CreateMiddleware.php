@@ -6,10 +6,18 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class CreateMiddleware extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = "create:middleware";
     protected $hint = "middleware";
     protected $desc = "Creating Middleware";
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

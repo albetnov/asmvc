@@ -67,7 +67,9 @@ class Database
 
     /**
      * Where function
-     * @param string $field, $value, $operator
+     * @param string $field
+     * @param string value
+     * @param string $operator
      * @return self
      */
     public function where($field, $value, $operator = null)
@@ -106,7 +108,9 @@ class Database
 
     /**
      * orWhere function
-     * @param string $field, $value, $operator
+     * @param string $field
+     * @param string value
+     * @param string $operator
      * @return self
      */
     public function orWhere($field, $value, $operator = null)
@@ -129,7 +133,8 @@ class Database
 
     /**
      * Order by function
-     * @param string $column, $order
+     * @param string $column
+     * @param string $order
      * @return self
      */
     public function orderBy($column, $order)
@@ -160,7 +165,9 @@ class Database
 
     /**
      * Join Function
-     * @param string $table, $from_id, $to_id
+     * @param string $table
+     * @param string $from_id
+     * @param string $to_id
      * @return self
      */
     public function join($table, $from_id, $to_id)
@@ -214,6 +221,7 @@ class Database
     /**
      * Fetching data
      * @param array $fields
+     * @return \PDO
      */
     public function get($fields = [])
     {
@@ -230,6 +238,7 @@ class Database
     /**
      * Get the first data from fetch
      * @param array $fields
+     * @return \PDO
      */
     public function first($fields = [])
     {
@@ -247,6 +256,7 @@ class Database
 
     /**
      * Count a table
+     * @return \PDO
      */
     public function count()
     {
@@ -260,7 +270,9 @@ class Database
 
     /**
      * Insert a data
-     * @param array $data, boolean $last_insert_id
+     * @param array $data
+     * @param boolean $last_insert_id
+     * @return boolean
      */
     public function insert(array $data, $last_insert_id = false)
     {
@@ -278,6 +290,7 @@ class Database
 
     /**
      * Get Last Insert Id
+     * @return string|int
      */
     public function lastInsertId()
     {
@@ -287,6 +300,7 @@ class Database
     /**
      * Update function
      * @param array $data
+     * @return boolean
      */
     public function update(array $data)
     {
@@ -307,6 +321,7 @@ class Database
 
     /**
      * Delete function
+     * @return boolean
      */
     public function delete()
     {

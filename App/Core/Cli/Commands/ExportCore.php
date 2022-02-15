@@ -6,9 +6,18 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class ExportCore extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = 'export:core';
     protected $hint = "name";
     protected $desc = 'Exporting specific core files';
+
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

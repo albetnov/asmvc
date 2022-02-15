@@ -5,14 +5,15 @@ namespace Albet\Asmvc\Core\Cli;
 class BaseCli
 {
     /**
-     * @var $args
+     * @var array $args
+     * @var string $hint
      */
     protected static $args = [];
     protected $hint;
 
     /**
      * Get where the arguments start
-     * @param $args, boolean $get_counter
+     * @param boolean $get_counter
      * @return int | string
      */
     protected function getArgsStarts($get_counter = false)
@@ -34,8 +35,8 @@ class BaseCli
 
     /**
      * Get the next argument
-     * @param $args, int $i
-     * @return string | boolean
+     * @param int $i
+     * @return string|boolean
      */
     protected function next_arguments($i)
     {
@@ -50,7 +51,7 @@ class BaseCli
     /**
      * Ask a question in CLI.
      * @param string $question
-     * @return string $q
+     * @return string
      */
     protected function ask($question, $default = null)
     {

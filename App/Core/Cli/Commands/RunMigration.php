@@ -8,10 +8,19 @@ use Illuminate\Database\Schema\Blueprint;
 
 class RunMigration extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = "run:migration";
     protected $hint = "MigrationName?,fresh?";
     protected $desc = "Run a migration file or refresh your migration.";
 
+    /**
+     * Check history table exist.
+     * @return Albet\Asmvc\Core\EloquentDB
+     */
     private function historyCheckup()
     {
         $eloquent = new EloquentDB;
@@ -26,6 +35,10 @@ class RunMigration extends BaseCli
         return $eloquent->table('migration_history');
     }
 
+    /**
+     * Register a history
+     * @param string $table
+     */
     private function fillHistory($table)
     {
         $eloquent = new EloquentDB;
@@ -35,6 +48,11 @@ class RunMigration extends BaseCli
         ]);
     }
 
+    /**
+     * Check if table exist in migration.
+     * @param string $table
+     * @return boolean
+     */
     private function checkHistoryMigration($table)
     {
         if ($this->historyCheckup()->count() > 0) {
@@ -49,6 +67,11 @@ class RunMigration extends BaseCli
         }
     }
 
+    /**
+     * Remove extension from a file
+     * @param string $file
+     * @return string
+     */
     private function noExtension($file)
     {
         $result = explode('.', $file);
@@ -56,6 +79,9 @@ class RunMigration extends BaseCli
         return implode('.', $result);
     }
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

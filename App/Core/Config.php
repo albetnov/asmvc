@@ -21,16 +21,28 @@ class Config
         ];
     }
 
+    /**
+     * Define your models driver
+     * @return string
+     */
     public static function modelDriver()
     {
         return env('APP_MODELS_DRIVER', 'asmvc');
     }
 
+    /**
+     * Define your csrf driver
+     * @return string
+     */
     public static function csrfDriver()
     {
         return env('APP_CSRF_DRIVER', 'asmvc');
     }
 
+    /**
+     * Define your templating engine provider
+     * @return string
+     */
     public static function viewEngine()
     {
         return env('APP_VIEW_ENGINE', 'latte');

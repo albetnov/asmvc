@@ -9,9 +9,16 @@ class InstallBootstrap extends BaseCli
 {
     use addBootstrap;
 
+    /**
+     * @var string $command
+     * @var string $desc
+     */
     protected $command = "install:bootstrap";
     protected $desc = "Install and use bootstrap with asset()";
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $path = array_diff(scandir(base_path() . 'App/Core/bs5_integration/css/'), ['.', '..']);

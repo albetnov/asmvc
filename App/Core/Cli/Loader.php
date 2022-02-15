@@ -4,6 +4,9 @@ namespace Albet\Asmvc\Core\Cli;
 
 class Loader
 {
+    /**
+     * Load a command by it's clases.
+     */
     public function load()
     {
         return [

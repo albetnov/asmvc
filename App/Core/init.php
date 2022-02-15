@@ -7,7 +7,6 @@
 
 use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\EloquentDB;
-use Albet\Asmvc\Core\EloquentDriver;
 use Dotenv\Dotenv;
 
 require_once __DIR__ . '/Helpers.php';
@@ -38,6 +37,9 @@ if (!defined('ASMVC_CLI_START')) {
     $whoops->register();
 }
 
+/**
+ * Generate EloquentDB environment.
+ */
 if (Config::modelDriver() == 'eloquent') {
     new EloquentDB;
 }

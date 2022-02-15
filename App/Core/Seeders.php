@@ -6,6 +6,10 @@ use Faker\Factory;
 
 abstract class Seeders
 {
+    /**
+     * @var Faker\Factory $faker
+     * @var string $lang
+     */
     protected $faker, $lang;
 
     /**
@@ -22,6 +26,8 @@ abstract class Seeders
 
     /**
      * Loop your database insert statement.
+     * @param int $count
+     * @param callable $callback
      */
     public function seed($count, $callback)
     {

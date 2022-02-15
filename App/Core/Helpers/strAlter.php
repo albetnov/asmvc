@@ -3,7 +3,8 @@
 
 /**
  * Function to get a string after specific character.
- * @param string $char, $string
+ * @param string $char
+ * @param string $string
  * @return string
  */
 function getStringAfter($char, $string)
@@ -26,7 +27,8 @@ function dotSupport($text)
 
 /**
  * Function to get a string before specific character
- * @param string $char, $string
+ * @param string $char
+ * @param string $string
  * @return string
  */
 function getStringBefore($char, $string)
@@ -37,7 +39,9 @@ function getStringBefore($char, $string)
 
 /**
  * Function to get a string between characters
- * @param string $string, $start, $end
+ * @param string $string 
+ * @param string $start 
+ * @param string $end
  * @return string
  */
 function get_string_between($string, $start, $end)

@@ -2,7 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
-use Rakit\Validation\Validator as ValidationValidator;
+use Rakit\Validation\Validator as RakitValidator;
 
 class Validator
 {
@@ -25,7 +25,7 @@ class Validator
      */
     public static function make(array $validate, array $customMsg = [])
     {
-        $validator = new ValidationValidator();
+        $validator = new RakitValidator();
         $validation = $validator->make(request()->input('*'), $validate);
 
         if ($customMsg !== []) {
@@ -45,6 +45,13 @@ class Validator
         }
     }
 
+    /**
+     * Get a message validation
+     * @param string $field
+     * @param string $class
+     * @param string $liclass
+     * @return string
+     */
     public static function validMsg($field, $class = null, $liclass = null)
     {
         $string = "";
@@ -65,6 +72,11 @@ class Validator
         return $string;
     }
 
+    /**
+     * Check if error in validation is exist.
+     * @param string $field
+     * @return boolean
+     */
     public static function checkError($field)
     {
         if (isset($_SESSION['validation'][$field])) {

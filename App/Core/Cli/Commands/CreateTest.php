@@ -6,10 +6,18 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class CreateTest extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $hint
+     * @var string $desc
+     */
     protected $command = 'create:test';
     protected $hint = "test";
     protected $desc = 'Creating test';
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         $try = $this->next_arguments(1);

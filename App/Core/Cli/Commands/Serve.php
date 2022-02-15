@@ -6,9 +6,16 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class Serve extends BaseCli
 {
+    /**
+     * @var string $command
+     * @var string $desc
+     */
     protected $command = 'serve';
     protected $desc = 'Start a ASMVC Development Server';
 
+    /**
+     * Register the command
+     */
     public function register()
     {
         if (!function_exists('exec')) {
