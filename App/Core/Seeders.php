@@ -14,6 +14,11 @@ abstract class Seeders
     protected $faker, $lang;
 
     /**
+     * @var int $count
+     */
+    private $count;
+
+    /**
      * Initiate faker based on lang.
      */
     public function __construct()
@@ -26,14 +31,24 @@ abstract class Seeders
     }
 
     /**
-     * Loop your database insert statement.
+     * Count how much the seeder will be executed.
      * @param int $count
+     * @return self
+     */
+    public function count($count)
+    {
+        $this->count = $count;
+        return $this;
+    }
+
+    /**
+     * Loop your database insert statement.
      * @param string|callable $table
      * @param array $data
      */
-    public function seed($count, $table, $data)
+    public function seed($table, $data)
     {
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $this->count; $i++) {
             if (class_exists($table)) {
                 $table::insert($data);
             } else {

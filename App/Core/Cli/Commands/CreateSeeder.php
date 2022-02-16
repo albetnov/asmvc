@@ -37,8 +37,9 @@ class CreateSeeder extends BaseCli
                      * @param int \$count
                      * @param string|callable \$table
                      * @param array \$data
+                     * count() method is optional.
                      */
-                    \$this->seed();
+                    \$this->count(\$count)->seed(\$table, \$data);
                 }
             }
                  

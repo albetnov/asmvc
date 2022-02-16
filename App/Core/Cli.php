@@ -72,7 +72,7 @@ class Cli extends BaseCli
             }
         }
         if ($command_found != true) {
-            echo "Command not found. Please run 'php asmvc help'";
+            echo "Command not found. Please run 'php asmvc help'\n";
         }
     }
 }
