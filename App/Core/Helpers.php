@@ -66,6 +66,10 @@ function view($view, $data = [])
             return (new Views)->match($url, $htmlclass);
         });
 
+        $latte->addFunction('url', function ($url) {
+            return url($url);
+        });
+
         $view = dotSupport($view);
         return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
     }
