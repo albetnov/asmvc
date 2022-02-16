@@ -8,6 +8,23 @@ class CsrfGenerator
 {
 
     /**
+     * @var ParagonieIE\AntiCSRF\AntiCSRF
+     */
+    private static $csrf = null;
+
+    /**
+     * Constructor method.
+     */
+    public function __construct()
+    {
+        if (Config::csrfDriver() == 'paragonie') {
+            if (is_null(self::$csrf)) {
+                self::$csrf = new AntiCSRF();
+            }
+        }
+    }
+
+    /**
      * Generate a csrf
      */
     public function generateCsrf()
@@ -32,9 +49,11 @@ class CsrfGenerator
             $token = htmlspecialchars(request()->input('token'));
             if (!$token || $token !== $_SESSION['token']) {
                 return false;
+            } else {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -48,8 +67,7 @@ class CsrfGenerator
             if (is_null($route)) {
                 return new \Exception("Lock to must exist.");
             }
-            $csrf = new AntiCSRF();
-            return $csrf->insertToken(url($route), false);
+            return self::$csrf->insertToken($route, false);
         }
         return '<input name="token" type="hidden" value="' . $_SESSION['token'] . '" />';
     }

@@ -16,7 +16,7 @@ abstract class Seeders
     /**
      * @var int $count
      */
-    private $count;
+    private $count = 1;
 
     /**
      * Initiate faker based on lang.
