@@ -41,6 +41,7 @@ class Validator
             }
             return false;
         } else {
+            flush_old();
             return true;
         }
     }

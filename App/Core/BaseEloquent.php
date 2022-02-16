@@ -16,9 +16,9 @@ class BaseEloquent extends Model
     /**
      * Constructor method
      */
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
-        parent::__construct();
+        parent::__construct($attributes);
         $env = Config::modelDriver();
         if ($env != 'eloquent') {
             throw new \Exception("You can't use eloquent driver since your current driver is: {$env}. Please use it with {$env} way.");

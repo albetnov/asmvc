@@ -62,6 +62,10 @@ function view($view, $data = [])
             return new Flash;
         });
 
+        $latte->addFunction('match', function ($url, $htmlclass) {
+            return (new Views)->match($url, $htmlclass);
+        });
+
         $view = dotSupport($view);
         return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
     }

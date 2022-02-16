@@ -53,3 +53,26 @@ function get_string_between($string, $start, $end)
     $len = strpos($string, $end, $ini) - $ini;
     return substr($string, $ini, $len);
 }
+
+
+/**
+ * Encrypt a string to given constant.
+ * @param $constant
+ * @param string $string
+ * @return string
+ */
+function mkPass($constant, $string)
+{
+    return password_hash($string, $constant);
+}
+
+/**
+ * Compare an encryption.
+ * @param string $first
+ * @param string $second
+ * @return string
+ */
+function passCompare($first, $second)
+{
+    return password_verify($first, $second);
+}
