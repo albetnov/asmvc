@@ -9,8 +9,9 @@ class BaseEloquent extends Model
     /**
      * Add eloquent query builder
      * @var $db
+     * @var string $table
      */
-    protected $db;
+    protected $db, $table;
 
     /**
      * Constructor method

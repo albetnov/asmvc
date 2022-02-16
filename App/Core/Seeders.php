@@ -2,6 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
+use Albet\Asmvc\Models\Test;
 use Faker\Factory;
 
 abstract class Seeders
@@ -27,12 +28,17 @@ abstract class Seeders
     /**
      * Loop your database insert statement.
      * @param int $count
-     * @param callable $callback
+     * @param string|callable $table
+     * @param array $data
      */
-    public function seed($count, $callback)
+    public function seed($count, $table, $data)
     {
         for ($i = 0; $i < $count; $i++) {
-            call_user_func($callback);
+            if (class_exists($table)) {
+                $table::insert($data);
+            } else {
+                EloquentDB::table($table)->insert($data);
+            }
         }
     }
 
