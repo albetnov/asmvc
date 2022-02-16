@@ -27,16 +27,18 @@ class CreateSeeder extends BaseCli
 
             namespace Albet\Asmvc\Database\Seeders;
 
-            use Albet\Asmvc\Core\EloquentDB;
             use Albet\Asmvc\Core\Seeders;
 
             class {$try} extends Seeders
             {
                 public function run()
                 {
-                    \$this->seed(0, function () {
-                        //Your logic
-                    });
+                    /**
+                     * @param int \$count
+                     * @param string|callable \$table
+                     * @param array \$data
+                     */
+                    \$this->seed();
                 }
             }
                  
