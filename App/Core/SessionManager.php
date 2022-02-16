@@ -50,9 +50,9 @@ class SessionManager
     /**
      * Generating a new session.
      */
-    private static function generateSession()
+    public static function generateSession($regenerate = false)
     {
-        if (isset($_SESSION['USER_AGENT']) || isset($_SESSION['USER_IP'])) {
+        if (isset($_SESSION['USER_AGENT']) || isset($_SESSION['USER_IP']) || $regenerate) {
             session_destroy();
         }
         session_start();
