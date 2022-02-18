@@ -10,6 +10,8 @@ RewriteBase /
 # Deliver the folder or file directly if it exists on the server
 Options -indexes
 # Push every request to index.php
+RewriteCond %{REQUEST_URI} ^/public/
+RewriteRule ^public/(.*)$ /$1 [R=301,L,NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ index.php [L,QSA]

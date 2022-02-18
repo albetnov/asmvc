@@ -2,6 +2,8 @@
 
 namespace Albet\Asmvc\Core;
 
+use Albet\Asmvc\Controllers\AdminController;
+
 class Route
 {
     /**
@@ -21,7 +23,7 @@ class Route
      * Add routing to the array
      * @param string $path
      * @param array $controllerandmethod
-     * @param array $http_method_or_middlewarepublic
+     * @param array $http_method_or_middleware
      */
     public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
     {
@@ -175,10 +177,10 @@ class Route
                 } else if ($route['controller'] == 'inline') {
                     return call_user_func_array($route['method'], $variables);
                 } else {
-                    $controller = new $route['controller'];
                     $pattern = "#^{$route['path']}$#";
                     $method = $route['method'];
-                    call_user_func_array([$controller, $method], [new Requests, $variables]);
+                    $resolver = new DependencyResolver;
+                    return $resolver->methodResolver($route['controller'], $method, ...$variables);
                 }
                 exit;
             } else if ($server != $route['path']) {
