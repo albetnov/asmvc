@@ -53,7 +53,6 @@ class DependencyResolver
         if ($definedParam !== []) {
             $dependencies[] = $definedParam;
             $class->$method(...$dependencies);
-            // $class->$method($definedParam, ...$dependencies);
         } else {
             $class->$method(...$dependencies);
         }
@@ -72,7 +71,10 @@ class DependencyResolver
         foreach ($parameters as $parameter) {
             $dependency = $parameter->getType();
             if (is_null($dependency)) {
-                // $dependencies[] = $this->resolveNonClass($parameter);
+                $nonClass = $this->resolveNonClass($parameter);
+                if ($nonClass) {
+                    $dependencies[] = $nonClass;
+                }
             } else {
                 $dependencies[] = $this->resolve($dependency->getName());
             }
@@ -91,7 +93,7 @@ class DependencyResolver
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
         } else {
-            return $parameter->getName();
+            return "";
         }
     }
 }
