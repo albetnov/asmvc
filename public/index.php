@@ -29,3 +29,4 @@ define('BS5_JS', '');
  */
 require_once __DIR__ . '/../App/Router/url.php';
 Route::triggerRouter();
+

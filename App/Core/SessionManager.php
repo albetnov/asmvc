@@ -22,8 +22,9 @@ class SessionManager
 
     /**
      * Configure default session then run it.
+     * @param string $parameter
      */
-    public static function runSession()
+    public static function runSession($parameter)
     {
         if (self::$type == 'redis') {
             ini_set('session.save_handler', 'redis');
@@ -44,7 +45,9 @@ class SessionManager
         }
 
         self::generateSession();
-        self::validateSession();
+        if ($parameter != 'no-validate') {
+            self::validateSession();
+        }
     }
 
     /**
