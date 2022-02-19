@@ -44,7 +44,7 @@ class DependencyResolver
         $class = $this->resolve($class);
 
         if (!method_exists($class, $method)) {
-            throw new \Exception("Method not exist in {$class}.");
+            throw new \Exception("Method not exist.");
         }
 
         $reflector = new \ReflectionMethod($class, $method);
