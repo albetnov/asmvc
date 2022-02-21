@@ -95,14 +95,15 @@ class RunMigration extends BaseCli
                 echo "Table: {$try} already exist. Skipping...\n";
                 exit;
             }
-            if (!class_exists($this->noExtension($try))) {
-                $get = require_once base_path("App/Database/Migrations/{$try}.php");
+            $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$try}";
+            if (!class_exists($find_class)) {
+                $get = include base_path("App/Database/Migrations/{$try}.php");
                 $get->up();
                 echo "Migrated: {$try}.\n";
             } else {
-                $noext = $this->noExtension($try);
-                $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
+                $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$try}";
                 (new $class())->up();
+                echo "Migrated: {$try}.\n";
             }
             $this->fillHistory($try);
         } else {
@@ -118,8 +119,9 @@ class RunMigration extends BaseCli
                         } else {
                             echo "Migrated: {$dir}.\n";
                             $noext = $this->noExtension($dir);
-                            if (!class_exists($noext)) {
-                                $get = require_once base_path("App/Database/Migrations/{$dir}");
+                            $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
+                            if (!class_exists($find_class)) {
+                                $get = include base_path("App/Database/Migrations/{$dir}");
                                 $get->up();
                             } else {
                                 $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
@@ -134,8 +136,9 @@ class RunMigration extends BaseCli
                     } else {
                         echo "Migrated: $diffed\n";
                         $noext = $this->noExtension($diffed);
-                        if (!class_exists($noext)) {
-                            $get = require_once base_path("App/Database/Migrations/{$diffed}");
+                        $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
+                        if (!class_exists($find_class)) {
+                            $get = include base_path("App/Database/Migrations/{$diffed}");
                             $get->up();
                         } else {
                             $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
