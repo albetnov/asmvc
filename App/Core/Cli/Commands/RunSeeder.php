@@ -30,7 +30,7 @@ class RunSeeder extends BaseCli
         $try = $this->next_arguments(1);
 
         if ($try) {
-            $class = "\Albet\Asmvc\Database\Seeders\{$try}";
+            $class = "\\Albet\\Asmvc\\Database\\Seeders\\{$try}";
             (new $class())->run();
             echo "Seeded: {$try}\n";
         } else {
