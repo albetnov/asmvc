@@ -55,7 +55,7 @@ class SessionManager
      */
     public static function generateSession($regenerate = false)
     {
-        if (isset($_SESSION['USER_AGENT']) || isset($_SESSION['USER_IP']) || $regenerate) {
+        if ($regenerate) {
             session_destroy();
         }
         session_start();
@@ -74,10 +74,10 @@ class SessionManager
     private static function validateSession()
     {
         if ($_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) {
-            self::generateSession();
+            self::generateSession(true);
         }
         if (self::$ip || $_SESSION['USER_IP'] != $_SERVER['REMOTE_ADDR']) {
-            self::generateSession();
+            self::generateSession(true);
         }
     }
 }
