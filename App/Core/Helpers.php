@@ -12,6 +12,7 @@ use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
 use Albet\Asmvc\Core\Flash;
 use Albet\Asmvc\Core\Requests;
+use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Views;
 
 /**
@@ -279,4 +280,9 @@ if (!function_exists('env')) {
             return '';
         }
     }
+}
+
+function session()
+{
+    return new SessionManager;
 }

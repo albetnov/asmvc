@@ -104,4 +104,33 @@ class SessionManager
             self::generateSession(true);
         }
     }
+
+    /**
+     * Put into session.
+     * 
+     * @param string $name
+     * @param mixed $content
+     */
+    public function put($name, $content)
+    {
+        $_SESSION[$name] = $content;
+    }
+
+    /**
+     * Erase a session
+     * 
+     * @param string $name
+     */
+    public function erase($name)
+    {
+        unset($_SESSION[$name]);
+    }
+
+    /**
+     * Regenerate a session.
+     */
+    public function regenerate()
+    {
+        return self::generateSession(true);
+    }
 }
