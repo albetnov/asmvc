@@ -7,25 +7,51 @@ class SessionManager
     /**
      * @var string $type
      * @var boolean $ip
+     * @var boolean $validate
+     * @var boolean $secure
      */
-    private static $type, $ip;
+    private static $type, $ip = false, $validate = false, $secure = false;
 
     /**
      * Constructor method
-     * @param boolean $ipvalidation
      */
-    public function __construct($ipvalidation = true)
+    public function __construct()
     {
-        self::$type = env('SESSION_TYPE', 'redis');
-        self::$ip = $ipvalidation;
+        $session = include __DIR__ . '/../Config/session.php';
+        self::$type = $session['type'];
+        self::$ip = $session['ip-validation'];
+        self::$validate = $session['session-basic-validation'];
+        self::$secure = $session['secure'];
+    }
+
+    private static function sessionSetting()
+    {
+        ini_set('session.name', 'ASMVCSESSID');
+        ini_set('session.cookie_lifetime', 0);
+        ini_set('session.use_cookies', 'On');
+        ini_set('session.use_only_cookies', 'On');
+        ini_set('session.use_strict_mode', 'On');
+        ini_set('session.cookie_httponly', 'On');
+        ini_set('session.cookie_samesite', 'Lax');
+        ini_set('session.use_trans_sid', "Off");
+        ini_set('session.trans_sid_hosts', '[limited hosts]');
+        ini_set('session.trans_sid_tags', '[limited tags]');
+        ini_set('session.referer_check', base_url());
+        ini_set('session.cache_limiter', 'nocache');
+        ini_set('session.sid_length', 48);
+        ini_set('session.sid_bits_per_character', 6);
+        if (self::$secure) {
+            ini_set('session.cookie_secure', 'On');
+        }
     }
 
     /**
      * Configure default session then run it.
-     * @param string $parameter
      */
-    public static function runSession($parameter)
+    public static function runSession()
     {
+        // Configuring ini
+        self::sessionSetting();
         if (self::$type == 'redis') {
             ini_set('session.save_handler', 'redis');
             $redisHost = env('REDIS_SERVER', '127.0.0.1');
@@ -40,12 +66,10 @@ class SessionManager
             } else {
                 ini_set('session.save_path', "tcp://{$redisHost}:{$redisPort}?database={$redisDb}");
             }
-        } else {
-            ini_set('session.name', 'ASMVCSESSID');
         }
 
         self::generateSession();
-        if ($parameter != 'no-validate') {
+        if (self::$validate) {
             self::validateSession();
         }
     }
