@@ -236,7 +236,18 @@ function back($jsonly = false)
     if ($jsonly) {
         return "history.go(-1)";
     }
-    return "javascript://history.go(-1)";
+    return (new SessionManager)->back();
+}
+
+
+/**
+ * A function to set a previous
+ * @param string $route
+ * @return string
+ */
+function setPrevious($route)
+{
+    return (new SessionManager)->setPrevious($route);
 }
 
 /**
@@ -282,7 +293,16 @@ if (!function_exists('env')) {
     }
 }
 
-function session()
+/**
+ * Function to access SessionManager directly
+ * 
+ * @param string $name
+ * @return mixed
+ */
+function session($name = null)
 {
+    if (!is_null($name)) {
+        return $_SESSION[$name];
+    }
     return new SessionManager;
 }

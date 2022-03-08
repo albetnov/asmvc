@@ -133,4 +133,22 @@ class SessionManager
     {
         return self::generateSession(true);
     }
+
+    /**
+     * Get a previous url
+     */
+    public function back()
+    {
+        return Route::getPrevious();
+    }
+
+    /**
+     * Register customized previous url
+     * @param string $route
+     * @return string
+     */
+    public function setPrevious($route)
+    {
+        return Route::registerPrevious($route, true);
+    }
 }

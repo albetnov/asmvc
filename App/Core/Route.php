@@ -12,7 +12,7 @@ class Route
      * @var boolean $ASMVC_LOCAL_URL
      */
     private static $routes = [], $pagenotfound = false;
-    private static $ASMVC_LOCAL_URL = false;
+    private static $ASMVC_LOCAL_URL = false, $previous;
 
     /**
      * Regex const
@@ -130,6 +130,47 @@ class Route
     }
 
     /**
+     * Register user previously visit url
+     * @param string $route
+     * @param boolean $get
+     * @return void|string
+     */
+    public static function registerPrevious($route = null, $get = false)
+    {
+        if (!isset($_SESSION['_previousUrl'])) {
+            $_SESSION['_previousUrl'] = [GetCurrentUrl()];
+        }
+
+        if ($route) {
+            $_SESSION['_previousUrl'] = $route;
+        }
+
+        $_SESSION['_previousUrl'][] = GetCurrentUrl();
+        if (sizeof($_SESSION['_previousUrl']) > 1) {
+            $getPrevious = $_SESSION['_previousUrl'][array_key_last($_SESSION['_previousUrl']) - 1];
+        } else {
+            $getPrevious = $_SESSION['_previousUrl'][array_key_first($_SESSION['_previousUrl'])];
+        }
+
+        if (sizeof($_SESSION['_previousUrl']) > 4) {
+            for ($i = 0; $i < 5; $i++) {
+                unset($_SESSION['_previousUrl'][$i]);
+            }
+        }
+
+        if ($get) {
+            return $getPrevious;
+        } else {
+            self::$previous = $getPrevious;
+        }
+    }
+
+    public static function getPrevious()
+    {
+        return self::$previous;
+    }
+
+    /**
      * Run the routing
      * @return returnError
      */
@@ -164,6 +205,7 @@ class Route
                         return ReturnError(500);
                     };
                 }
+                self::registerPrevious();
                 if (!is_null($route['middleware'])) {
                     $middleware = new $route['middleware'];
                     $middleware->middleware();

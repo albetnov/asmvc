@@ -21,9 +21,10 @@ class Validator
      * Make a validation.
      * @param array $validate
      * @param array $customMsg
+     * @param boolean $redirect
      * @return boolean
      */
-    public static function make(array $validate, array $customMsg = [])
+    public static function make(array $validate, array $customMsg = [], $redirect = false)
     {
         $validator = new RakitValidator();
         $validation = $validator->make(request()->input('*'), $validate);
@@ -38,6 +39,9 @@ class Validator
             self::put($validation->errors());
             foreach (array_keys($validate) as $field) {
                 set_old($field);
+            }
+            if ($redirect) {
+                return redirect(back(), false);
             }
             return false;
         } else {
