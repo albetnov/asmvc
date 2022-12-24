@@ -14,11 +14,6 @@ use Albet\Asmvc\Core\SessionManager;
 SessionManager::make()->runSession();
 
 /**
- * Generate a csrf
- */
-csrf()->generateCsrf();
-
-/**
  * Define Bootstrap const.
  */
 define('BS5_CSS', 'css/bootstrap.min.css');

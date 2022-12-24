@@ -1,6 +1,7 @@
 <?php
 
 use Albet\Asmvc\Controllers\HomeController;
+use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Route;
 
 /**
@@ -21,6 +22,3 @@ use Albet\Asmvc\Core\Route;
 
 //Your route
 Route::add('/', [HomeController::class, 'index']);
-Route::add('/:id', function ($param) {
-    echo $param;
-});

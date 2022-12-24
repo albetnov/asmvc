@@ -31,7 +31,6 @@ class Setup extends BaseCli
                 $data = <<<data
                 APP_ENV=production
                 APP_MODELS_DRIVER=asmvc
-                APP_CSRF_DRIVER=asmvc
                 APP_VIEW_ENGINE=latte
 
                 DATABASE_HOST={$db_host}

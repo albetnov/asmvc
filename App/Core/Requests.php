@@ -15,6 +15,11 @@ class Requests
         if ($field == '*') {
             return $_POST;
         }
+
+        if (!isset($_POST[$field])) {
+            return false;
+        }
+
         if (!$escape) {
             $check = $_POST[$field];
         } else {

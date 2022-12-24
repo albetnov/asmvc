@@ -2,36 +2,16 @@
 
 namespace Albet\Asmvc\Core;
 
-use ParagonIE\AntiCSRF\AntiCSRF;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 class CsrfGenerator
 {
+    private CsrfTokenManager $csrf;
 
-    /**
-     * @var ParagonieIE\AntiCSRF\AntiCSRF
-     */
-    private static $csrf = null;
-
-    /**
-     * Constructor method.
-     */
     public function __construct()
     {
-        if (Config::csrfDriver() == 'paragonie') {
-            if (is_null(self::$csrf)) {
-                self::$csrf = new AntiCSRF();
-            }
-        }
-    }
-
-    /**
-     * Generate a csrf
-     */
-    public function generateCsrf(): void
-    {
-        if (Config::csrfDriver() != 'paragonie' && !isset($_SESSION['token'])) {
-            $_SESSION['token'] = bin2hex(random_bytes(32));
-        }
+        $this->csrf = new CsrfTokenManager();
     }
 
     /**
@@ -40,35 +20,26 @@ class CsrfGenerator
      */
     public function validateCsrf(): bool
     {
-        if (Config::csrfDriver() == 'paragonie') {
-            $csrf = new AntiCSRF();
-            if ($csrf->validateRequest()) {
-                return true;
-            }
-        } else {
-            $token = htmlspecialchars(request()->input('token'));
-            if (!$token || $token !== $_SESSION['token']) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
+        $token = new CsrfToken(session('token'), request()->input('__token__'));
+        $isValid = $this->csrf->isTokenValid($token);
+        $this->csrf->refreshToken($_SESSION['token']);
+
+        return $isValid;
     }
 
     /**
      * Echo a csrf field html
-     * @param string $route
+     * @param string $uniqueId
      * @return string
      */
-    public function field(?string $route = null): string
+    public function field(?string $uniqueId = null): string
     {
-        if (Config::csrfDriver() == 'paragonie') {
-            if (is_null($route)) {
-                return new \Exception("Lock to must exist.");
-            }
-            return self::$csrf->insertToken($route, false);
+        if (!$uniqueId) {
+            $uniqueId = bin2hex(random_bytes(32));
         }
-        return '<input name="token" type="hidden" value="' . $_SESSION['token'] . '" />';
+        $token = $this->csrf->getToken($uniqueId);
+        $_SESSION['token'] = $uniqueId;
+
+        return '<input name="__token__" type="hidden" value="' . $token . '" />';
     }
 }

@@ -23,6 +23,7 @@ class Route
             if (str_starts_with($item, ":")) {
                 return "([0-9a-zA-Z]*)";
             }
+            return $item;
         }, $spliited);
 
         return join("/", $result);
@@ -190,7 +191,7 @@ class Route
                     throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} is not support for this url. Instead use {$route['http_method']}!");
                 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (!csrf()->validateCsrf()) {
-                        return ReturnError(500);
+                        return ReturnError(500, "Csrf Not Valid.");
                     };
                 }
                 self::registerPrevious();

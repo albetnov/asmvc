@@ -31,15 +31,6 @@ class Config
     }
 
     /**
-     * Define your csrf driver
-     * @return string
-     */
-    public static function csrfDriver(): string
-    {
-        return env('APP_CSRF_DRIVER', 'asmvc');
-    }
-
-    /**
      * Define your templating engine provider
      * @return string
      */
