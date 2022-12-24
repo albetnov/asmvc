@@ -31,7 +31,7 @@ function request(): Requests
 /**
  * Function to include a view
  */
-function view(string $view, array $data = []): void
+function view(string $view, array $data = []): mixed
 {
     return (new Views)->view($view, $data);
 }
@@ -171,8 +171,6 @@ function noSelfChained(bool $mark, string $method, ?string $custom_msg = null): 
             throw new \Exception($custom_msg);
         }
         throw new \Exception("Method {$method} is not allowed to be called more than one.");
-    } else {
-        return;
     }
 }
 

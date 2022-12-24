@@ -13,7 +13,7 @@ class Cli extends BaseCli
      * @param string $string
      * @return string
      */
-    private function multiple_parse(string $string): string
+    private function multiple_parse(?string $string): ?string
     {
         $result = "";
         if (!empty($string)) {
@@ -28,6 +28,8 @@ class Cli extends BaseCli
             }
             return $result;
         }
+
+        return null;
     }
 
     /**

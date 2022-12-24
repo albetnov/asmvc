@@ -17,7 +17,6 @@ function old(string $field_name, ?string $data = null): string
     } else if (!is_null($data)) {
         return $data;
     }
-    return;
 }
 
 /**
