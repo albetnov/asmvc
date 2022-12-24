@@ -2,21 +2,23 @@
 
 namespace Albet\Asmvc\Core;
 
+use Predis\Client;
+
 class Redis
 {
     /**
      * A function to connect to the machine redis.
-     * @return \Redis
      */
-    public function connect(): \Redis
+    public function connect(): Client
     {
-        $redis = new \Redis();
-        $redis->connect(env('REDIS_SERVER', '127.0.0.1'), env('REDIS_PORT', '6379'), 2.5, NULL, 100);
-        $redisUser = env('REDIS_AUTH_USRE');
+        $redis = new Client([
+            'scheme' => 'tcp',
+            'host' => env('REDIS_SERVER', '127.0.0.1'),
+            'port' => env("REDIS_PORT", '6379')
+        ]);
+        $redis->connect();
         $redisPass = env('REDIS_AUTH_PASS');
-        if (!empty($redisUser) && !empty($redisPass)) {
-            $redis->auth(['user' => $redisUser, 'pass' => $redisPass]);
-        } else if (empty($redisUser) && !empty($redisPass)) {
+        if (!empty($redisPass)) {
             $redis->auth($redisPass);
         }
         $redis->select(env('REDIS_DB', 0));

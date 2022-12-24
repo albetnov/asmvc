@@ -42,7 +42,6 @@ class Setup extends BaseCli
                 REDIS_SERVER=127.0.0.1
                 REDIS_PORT=6379
                 REDIS_DB_NUMBER=0
-                REDIS_AUTH_USER=
                 REDIS_AUTH_PASS=
                 data;
                 file_put_contents(base_path('.env'), $data);

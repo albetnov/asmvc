@@ -1,7 +1,6 @@
 <?php
 
 use Albet\Asmvc\Controllers\HomeController;
-use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Route;
 
 /**
