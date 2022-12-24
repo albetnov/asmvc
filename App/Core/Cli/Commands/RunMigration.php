@@ -15,7 +15,7 @@ class RunMigration extends BaseCli
      * @var string $desc
      */
     protected $command = "run:migration";
-    protected $hint = "MigrationName?,fresh?";
+    protected $hint = "fresh?";
     protected $desc = "Run a migration file or refresh your migration.";
 
     /**
@@ -85,68 +85,49 @@ class RunMigration extends BaseCli
      */
     public function register()
     {
-        $try = $this->next_arguments(1);
-        if ($this->next_arguments(2) == 'fresh' || $try == 'fresh') {
+        if ($this->next_arguments(1) == 'fresh') {
             (new EloquentDB)->schema()->dropAllTables();
             echo "Tables Dropped successfully!\n";
             echo "Starting migrating...\n";
         }
-        if ($try && $try != 'fresh') {
-            if ($this->checkHistoryMigration($try)) {
-                echo "Table: {$try} already exist. Skipping...\n";
-                exit;
-            }
-            $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$try}";
-            if (!class_exists($find_class)) {
-                $get = include base_path("App/Database/Migrations/{$try}.php");
-                $get->up();
-                echo "Migrated: {$try}.\n";
-            } else {
-                $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$try}";
-                (new $class())->up();
-                echo "Migrated: {$try}.\n";
-            }
-            $this->fillHistory($try);
-        } else {
-            $diffed = array_diff(scandir(base_path() . "/App/Database/Migrations"), ['.', '..', '.gitkeep']);
-            $dirtho = [];
-            foreach ($diffed as $diffed) {
-                if (!str_contains($diffed, '.')) {
-                    $dirs = array_diff(scandir($diffed . '/'), ['.', '..']);
-                    $dirtho[] = $diffed;
-                    foreach ($dirs as $dir) {
-                        if ($this->checkHistoryMigration($dir)) {
-                            echo "Table: {$dir} already exist. Skipping...\n";
-                        } else {
-                            echo "Migrated: {$dir}.\n";
-                            $noext = $this->noExtension($dir);
-                            $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                            if (!class_exists($find_class)) {
-                                $get = include base_path("App/Database/Migrations/{$dir}");
-                                $get->up();
-                            } else {
-                                $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                                (new $class())->up();
-                            }
-                            $this->fillHistory($dir);
-                        }
-                    }
-                } else {
-                    if ($this->checkHistoryMigration($diffed)) {
-                        echo "Table: {$diffed} already exist. Skipping...\n";
+        $diffed = array_diff(scandir(base_path() . "/App/Database/Migrations"), ['.', '..', '.gitkeep']);
+        $dirtho = [];
+        foreach ($diffed as $diffed) {
+            if (!str_contains($diffed, '.')) {
+                $dirs = array_diff(scandir($diffed . '/'), ['.', '..']);
+                $dirtho[] = $diffed;
+                foreach ($dirs as $dir) {
+                    if ($this->checkHistoryMigration($dir)) {
+                        echo "Table: {$dir} already exist. Skipping...\n";
                     } else {
-                        echo "Migrated: $diffed\n";
-                        $noext = $this->noExtension($diffed);
+                        echo "Migrated: {$dir}.\n";
+                        $noext = $this->noExtension($dir);
                         $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                         if (!class_exists($find_class)) {
-                            $get = include base_path("App/Database/Migrations/{$diffed}");
+                            $get = include base_path("App/Database/Migrations/{$dir}");
                             $get->up();
                         } else {
                             $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
                             (new $class())->up();
                         }
-                        $this->fillHistory($diffed);
+                        $this->fillHistory($dir);
                     }
+                }
+            } else {
+                if ($this->checkHistoryMigration($diffed)) {
+                    echo "Table: {$diffed} already exist. Skipping...\n";
+                } else {
+                    echo "Migrated: $diffed\n";
+                    $noext = $this->noExtension($diffed);
+                    $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
+                    if (!class_exists($find_class)) {
+                        $get = include base_path("App/Database/Migrations/{$diffed}");
+                        $get->up();
+                    } else {
+                        $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
+                        (new $class())->up();
+                    }
+                    $this->fillHistory($diffed);
                 }
             }
         }

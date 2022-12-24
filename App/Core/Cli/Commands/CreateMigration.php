@@ -22,8 +22,7 @@ class CreateMigration extends BaseCli
     {
         $next = $this->next_arguments(1);
         if ($next) {
-            if ($this->next_arguments(2) == 'anonymous') {
-                $data = <<<data
+            $data = <<<data
             <?php
 
             namespace Albet\\Asmvc\\Database\\Migrations;
@@ -47,34 +46,11 @@ class CreateMigration extends BaseCli
             };
 
             data;
-            } else {
-                $data = <<<data
-            <?php
 
-            namespace Albet\\Asmvc\\Database\\Migrations;
+            $time = time();
 
-            use Albet\\Asmvc\\Core\\BaseMigration;
-            use Illuminate\\Database\\Schema\\Blueprint;
-
-            class {$next} extends BaseMigration
-            {
-                public function up()
-                {
-                    \$this->schema->create('', function(Blueprint \$table){
-                    
-                    });
-                }
-
-                public function down()
-                {
-                    \$this->schema->dropIfExists('');
-                }
-            };
-
-            data;
-            }
-            file_put_contents(base_path() . "/App/Database/Migrations/{$next}.php", $data);
-            echo "Migration creted: {$next}.php\n";
+            file_put_contents(base_path() . "/App/Database/Migrations/{$next}_{$time}.php", $data);
+            echo "Migration creted: {$next}_{$time}.php\n";
         }
     }
 }
