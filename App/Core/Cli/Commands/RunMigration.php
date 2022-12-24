@@ -69,18 +69,6 @@ class RunMigration extends BaseCli
     }
 
     /**
-     * Remove extension from a file
-     * @param string $file
-     * @return string
-     */
-    private function noExtension(string $file): string
-    {
-        $result = explode('.', $file);
-        array_pop($result);
-        return implode('.', $result);
-    }
-
-    /**
      * Register the command
      */
     public function register()
@@ -101,15 +89,8 @@ class RunMigration extends BaseCli
                         echo "Table: {$dir} already exist. Skipping...\n";
                     } else {
                         echo "Migrated: {$dir}.\n";
-                        $noext = $this->noExtension($dir);
-                        $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                        if (!class_exists($find_class)) {
-                            $get = include base_path("App/Database/Migrations/{$dir}");
-                            $get->up();
-                        } else {
-                            $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                            (new $class())->up();
-                        }
+                        $get = include base_path("App/Database/Migrations/{$dir}");
+                        $get->up();
                         $this->fillHistory($dir);
                     }
                 }
@@ -118,15 +99,8 @@ class RunMigration extends BaseCli
                     echo "Table: {$diffed} already exist. Skipping...\n";
                 } else {
                     echo "Migrated: $diffed\n";
-                    $noext = $this->noExtension($diffed);
-                    $find_class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                    if (!class_exists($find_class)) {
-                        $get = include base_path("App/Database/Migrations/{$diffed}");
-                        $get->up();
-                    } else {
-                        $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                        (new $class())->up();
-                    }
+                    $get = include base_path("App/Database/Migrations/{$diffed}");
+                    $get->up();
                     $this->fillHistory($diffed);
                 }
             }
