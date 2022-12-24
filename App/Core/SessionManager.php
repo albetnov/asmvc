@@ -10,7 +10,8 @@ class SessionManager
      * @var boolean $validate
      * @var boolean $secure
      */
-    private static $type, $ip = false, $validate = false, $secure = false;
+    private static string $type;
+    private static bool $ip = false, $validate = false, $secure = false;
 
     /**
      * Constructor method
@@ -24,7 +25,7 @@ class SessionManager
         self::$secure = $session['secure'];
     }
 
-    private static function sessionSetting()
+    private static function sessionSetting(): void
     {
         ini_set('session.name', 'ASMVCSESSID');
         ini_set('session.cookie_lifetime', 0);
@@ -48,7 +49,7 @@ class SessionManager
     /**
      * Configure default session then run it.
      */
-    public static function runSession()
+    public static function runSession(): void
     {
         // Configuring ini
         self::sessionSetting();
@@ -77,7 +78,7 @@ class SessionManager
     /**
      * Generating a new session.
      */
-    public static function generateSession($regenerate = false)
+    public static function generateSession(bool $regenerate = false): void
     {
         if ($regenerate) {
             session_destroy();
@@ -95,7 +96,7 @@ class SessionManager
     /**
      * Validating user's session.
      */
-    private static function validateSession()
+    private static function validateSession(): void
     {
         if ($_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) {
             self::generateSession(true);
@@ -111,7 +112,7 @@ class SessionManager
      * @param string $name
      * @param mixed $content
      */
-    public function put($name, $content)
+    public function put(string $name, mixed $content): void
     {
         $_SESSION[$name] = $content;
     }
@@ -121,7 +122,7 @@ class SessionManager
      * 
      * @param string $name
      */
-    public function erase($name)
+    public function erase(string $name): void
     {
         unset($_SESSION[$name]);
     }
@@ -129,7 +130,7 @@ class SessionManager
     /**
      * Regenerate a session.
      */
-    public function regenerate()
+    public function regenerate(): void
     {
         return self::generateSession(true);
     }
@@ -137,7 +138,7 @@ class SessionManager
     /**
      * Get a previous url
      */
-    public function back()
+    public function back(): string
     {
         return Route::getPrevious();
     }
@@ -147,7 +148,7 @@ class SessionManager
      * @param string $route
      * @return string
      */
-    public function setPrevious($route)
+    public function setPrevious(string $route): string
     {
         return Route::registerPrevious($route, true);
     }

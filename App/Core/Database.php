@@ -16,7 +16,7 @@ class Database
      * Defining your table
      * @param string $table
      */
-    public function defineTable($table)
+    public function defineTable(string $table): void
     {
         $this->table = $table;
         $this->tableDefined = true;
@@ -37,7 +37,7 @@ class Database
     /**
      * Format the field to be used.
      */
-    private function processField()
+    private function processField(): string
     {
         return implode(',', array_keys($this->data));
     }
@@ -45,7 +45,7 @@ class Database
     /**
      * Count required prepare statement
      */
-    private function totalPrepare()
+    private function totalPrepare(): string
     {
         $total_prepare = "";
         for ($i = 0; $i < count($this->data); $i++) {
@@ -59,7 +59,7 @@ class Database
      * @param string $name
      * @return self
      */
-    public function table($name)
+    public function table(string $name): self
     {
         $this->table = $name;
         return $this;
@@ -72,7 +72,7 @@ class Database
      * @param string $operator
      * @return self
      */
-    public function where($field, $value, $operator = null)
+    public function where(string $field, string $value, ?string $operator = null): self
     {
         if ($this->whereStmt) {
             $string = " AND {$field} ";
@@ -97,7 +97,7 @@ class Database
      * Where function without formatted strings.
      * @return self
      */
-    public function whereNoFormat()
+    public function whereNoFormat(): self
     {
         if ($this->whereStmt) {
             throw new \Exception("Please use whereNoFormat before where()");
@@ -113,7 +113,7 @@ class Database
      * @param string $operator
      * @return self
      */
-    public function orWhere($field, $value, $operator = null)
+    public function orWhere(string $field, string $value, ?string $operator = null): self
     {
         if (!$this->whereStmt) {
             throw new \Exception("Please use orWhere() after where()");
@@ -137,7 +137,7 @@ class Database
      * @param string $order
      * @return self
      */
-    public function orderBy($column, $order)
+    public function orderBy(string $column, string $order): self
     {
         noSelfChained($this->orderStmt, 'orderBy');
         if (!is_array($column)) {
@@ -151,15 +151,42 @@ class Database
     }
 
     /**
+     * Order by DESC.
+     */
+    public function orderByDesc(string $column): self
+    {
+        return $this->orderBy($column, "DESC");
+    }
+
+    /**
+     * Order by ASC.
+     */
+    public function orderByAsc(string $column): self
+    {
+        return $this->orderBy($column, "ASC");
+    }
+
+    /**
      * Limit function
      * @param int $limit
      * @return self
      */
-    public function limit(int $limit)
+    public function limit(int $limit): self
     {
         noSelfChained($this->limitStmt, 'limit');
         $string = "LIMIT {$limit}";
         $this->limitStmt = $string;
+        return $this;
+    }
+
+    private function joinHandler(string $opening, string $table, string $from_id, string $to_id): self
+    {
+        $string = "";
+        if ($this->joinStmt) {
+            $string = " ";
+        }
+        $string .= "{$opening} {$table} ON {$from_id} = {$to_id}";
+        $this->joinStmt .= $string;
         return $this;
     }
 
@@ -170,22 +197,31 @@ class Database
      * @param string $to_id
      * @return self
      */
-    public function join($table, $from_id, $to_id)
+    public function join(string $table, string $from_id, string $to_id): self
     {
-        $string = "";
-        if ($this->joinStmt) {
-            $string = " ";
-        }
-        $string .= "INNER JOIN {$table} ON {$from_id} = {$to_id}";
-        $this->joinStmt .= $string;
-        return $this;
+        return $this->joinHandler("INNER JOIN", $table, $from_id, $to_id);
+    }
+
+    public function leftJoin(string $table, string $from_id, string $to_id): self
+    {
+        return $this->joinHandler("LEFT JOIN", $table, $from_id, $to_id);
+    }
+
+    public function rightJoin(string $table, string $from_id, string $to_id): self
+    {
+        return $this->joinHandler("RIGHT JOIN", $table, $from_id, $to_id);
+    }
+
+    public function fullJoin(string $table, string $from_id, string $to_id): self
+    {
+        return $this->joinHandler("FULL JOIN", $table, $from_id, $to_id);
     }
 
     /**
      * Run and format every possible query statement in use
      * @return string
      */
-    private function validateOptional()
+    private function validateOptional(): string
     {
         $string = "";
         if (!is_null($this->orderStmt)) {
@@ -206,7 +242,7 @@ class Database
     /**
      * Clean function to clean the entire variables.
      */
-    private function clean()
+    private function clean(): void
     {
         if (!$this->tableDefined) {
             $this->table = '';
@@ -223,7 +259,7 @@ class Database
      * @param array $fields
      * @return \PDO
      */
-    public function get($fields = [])
+    public function get($fields = []): array | bool
     {
         $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()}");
         if ($fields != []) {
@@ -240,7 +276,7 @@ class Database
      * @param array $fields
      * @return \PDO
      */
-    public function first($fields = [])
+    public function first($fields = []): mixed
     {
         $sql = $this->pdo->query("SELECT * FROM {$this->table} {$this->validateOptional()} LIMIT 1");
         if ($fields != []) {
@@ -258,7 +294,7 @@ class Database
      * Count a table
      * @return \PDO
      */
-    public function count()
+    public function count(): mixed
     {
         $sql = $this->pdo->query("SELECT COUNT(*) AS result FROM {$this->table} {$this->validateOptional()}");
         $sql->execute();
@@ -274,7 +310,7 @@ class Database
      * @param boolean $last_insert_id
      * @return boolean
      */
-    public function insert(array $data, $last_insert_id = false)
+    public function insert(array $data, bool $last_insert_id = false): bool
     {
         $this->data = $data;
         $prepare = $this->pdo->prepare("INSERT INTO {$this->table} ({$this->processField()}) VALUES ({$this->totalPrepare()})");
@@ -292,7 +328,7 @@ class Database
      * Get Last Insert Id
      * @return string|int
      */
-    public function lastInsertId()
+    public function lastInsertId(): string | int
     {
         return self::$last_insert_id;
     }
@@ -302,7 +338,7 @@ class Database
      * @param array $data
      * @return boolean
      */
-    public function update(array $data)
+    public function update(array $data): bool
     {
         $this->data = $data;
         $prepare = "SET ";
@@ -323,7 +359,7 @@ class Database
      * Delete function
      * @return boolean
      */
-    public function delete()
+    public function delete(): bool
     {
         $prepare = $this->pdo->prepare("DELETE FROM {$this->table} {$this->validateOptional()}");
         $attempt = $prepare->execute();
@@ -337,7 +373,7 @@ class Database
      * Debug function
      * @return string
      */
-    public function debug()
+    public function debug(): string
     {
         return "SELECT * FROM {$this->table} {$this->validateOptional()}";
     }

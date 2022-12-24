@@ -4,6 +4,7 @@ namespace Albet\Asmvc\Core\Cli\Commands;
 
 use Albet\Asmvc\Core\Cli\BaseCli;
 use Albet\Asmvc\Core\EloquentDB;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
 
 class RunMigration extends BaseCli
@@ -21,7 +22,7 @@ class RunMigration extends BaseCli
      * Check history table exist.
      * @return Albet\Asmvc\Core\EloquentDB
      */
-    private function historyCheckup()
+    private function historyCheckup(): Builder
     {
         $eloquent = new EloquentDB;
         $check = $eloquent->schema()->hasTable('migration_history');
@@ -39,7 +40,7 @@ class RunMigration extends BaseCli
      * Register a history
      * @param string $table
      */
-    private function fillHistory($table)
+    private function fillHistory(string $table): void
     {
         $eloquent = new EloquentDB;
         $eloquent::table('migration_history')->insert([
@@ -51,9 +52,9 @@ class RunMigration extends BaseCli
     /**
      * Check if table exist in migration.
      * @param string $table
-     * @return boolean
+     * @return bool
      */
-    private function checkHistoryMigration($table)
+    private function checkHistoryMigration(string $table): bool
     {
         if ($this->historyCheckup()->count() > 0) {
             $check = $this->historyCheckup()->where('migration_name', $table)->first();
@@ -72,7 +73,7 @@ class RunMigration extends BaseCli
      * @param string $file
      * @return string
      */
-    private function noExtension($file)
+    private function noExtension(string $file): string
     {
         $result = explode('.', $file);
         array_pop($result);

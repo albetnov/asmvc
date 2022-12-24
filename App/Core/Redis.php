@@ -8,7 +8,7 @@ class Redis
      * A function to connect to the machine redis.
      * @return \Redis
      */
-    public function connect()
+    public function connect(): \Redis
     {
         $redis = new \Redis();
         $redis->connect(env('REDIS_SERVER', '127.0.0.1'), env('REDIS_PORT', '6379'), 2.5, NULL, 100);
@@ -26,10 +26,10 @@ class Redis
     /**
      * Function to check whenever key is exist or not.
      * @param string $key
-     * @param boolean $get
+     * @param bool $get
      * @return mixed
      */
-    public function checkKey($key, $get = false)
+    public function checkKey(string $key, bool $get = false): string | bool
     {
         $redis = $this->connect();
         if ($redis->exists($key)) {
@@ -50,7 +50,7 @@ class Redis
      * @param int $expire
      * @return mixed
      */
-    public function redisKey($key, $value = null, $list = false, $expire = null)
+    public function redisKey(string $key, mixed $value = null, bool $list = false, int $expire = null): bool
     {
         $redis = $this->connect();
         if (is_null($value)) {
@@ -74,10 +74,10 @@ class Redis
 
     /**
      * Get key expires
-     * @param mixed $key
+     * @param string $key
      * @return int
      */
-    public function getExpires($key)
+    public function getExpires(string $key): int
     {
         $redis = $this->connect();
         return $redis->ttl($key);
@@ -86,9 +86,9 @@ class Redis
     /**
      * Delete a key
      * @param mixed $key
-     * @return boolean
+     * @return bool
      */
-    public function flush($key = null)
+    public function flush(?string $key = null): bool
     {
         if (is_null($key)) {
             $redis = $this->connect()->flushDb();

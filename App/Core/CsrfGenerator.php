@@ -27,7 +27,7 @@ class CsrfGenerator
     /**
      * Generate a csrf
      */
-    public function generateCsrf()
+    public function generateCsrf(): void
     {
         if (Config::csrfDriver() != 'paragonie' && !isset($_SESSION['token'])) {
             $_SESSION['token'] = bin2hex(random_bytes(32));
@@ -36,9 +36,9 @@ class CsrfGenerator
 
     /**
      * Validate the csrf
-     * @return boolean
+     * @return bool
      */
-    public function validateCsrf()
+    public function validateCsrf(): bool
     {
         if (Config::csrfDriver() == 'paragonie') {
             $csrf = new AntiCSRF();
@@ -61,7 +61,7 @@ class CsrfGenerator
      * @param string $route
      * @return string
      */
-    public function field($route = null)
+    public function field(?string $route = null): string
     {
         if (Config::csrfDriver() == 'paragonie') {
             if (is_null($route)) {

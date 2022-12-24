@@ -10,7 +10,7 @@ class Validator
      * Put error to session.
      * @param object $array
      */
-    private static function put($array)
+    private static function put(object $array): void
     {
         foreach ($array->toArray() as $field => $message) {
             $_SESSION['validation'][$field] = $message;
@@ -21,10 +21,10 @@ class Validator
      * Make a validation.
      * @param array $validate
      * @param array $customMsg
-     * @param boolean $redirect
-     * @return boolean
+     * @param bool $redirect
+     * @return bool
      */
-    public static function make(array $validate, array $customMsg = [], $redirect = false)
+    public static function make(array $validate, array $customMsg = [], bool $redirect = false): bool
     {
         $validator = new RakitValidator();
         $validation = $validator->make(request()->input('*'), $validate);
@@ -57,7 +57,7 @@ class Validator
      * @param string $liclass
      * @return string
      */
-    public static function validMsg($field, $class = null, $liclass = null)
+    public static function validMsg(string $field, string $class = null, string $liclass = null): string
     {
         $string = "";
         if ($class) {
@@ -80,9 +80,9 @@ class Validator
     /**
      * Check if error in validation is exist.
      * @param string $field
-     * @return boolean
+     * @return bool
      */
-    public static function checkError($field)
+    public static function checkError(string $field): bool
     {
         if (isset($_SESSION['validation'][$field])) {
             return true;

@@ -11,7 +11,7 @@ class DependencyResolver
      * @return mixed
      * @throws Exception
      */
-    public function resolve($class)
+    public function resolve(string $class): mixed
     {
         $reflector = new \ReflectionClass($class);
 
@@ -39,7 +39,7 @@ class DependencyResolver
      * @return mixed
      * @throws Exception
      */
-    public function methodResolver($class, $method, $definedParam = [])
+    public function methodResolver(string $class, string $method, mixed $definedParam = []): mixed
     {
         $class = $this->resolve($class);
 
@@ -65,7 +65,7 @@ class DependencyResolver
      * @param array $parameters
      * @return array
      */
-    public function getDependencies($parameters)
+    public function getDependencies(array $parameters): array
     {
         $dependencies = array();
         foreach ($parameters as $parameter) {
@@ -88,7 +88,7 @@ class DependencyResolver
      * @param ReflectionParameter $parameter
      * @return mixed
      */
-    public function resolveNonClass(\ReflectionParameter $parameter)
+    public function resolveNonClass(\ReflectionParameter $parameter): mixed
     {
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();

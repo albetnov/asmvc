@@ -7,10 +7,8 @@ require_once __DIR__ . '/Helpers/strAlter.php';
 // Include validator Helper
 require_once __DIR__ . '/Helpers/validator.php';
 
-use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
-use Albet\Asmvc\Core\Flash;
 use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Views;
@@ -18,62 +16,23 @@ use Albet\Asmvc\Core\Views;
 /**
  * ASMVC Version and State
  */
-define('ASMVC_VERSION', '1.5');
+define('ASMVC_VERSION', '2.5');
 define('ASMVC_STATE', 'development');
 
 /**
  * Function to access Requests Class immediately.
  * @return Requests
  */
-function request()
+function request(): Requests
 {
     return new Requests;
 }
 
 /**
  * Function to include a view
- * @param string $view
- * @param array $data
- * @return Views|Latte\Engine
  */
-function view($view, $data = [])
+function view(string $view, array $data = []): void
 {
-    if (Config::viewEngine() == 'latte') {
-        $latte = new Latte\Engine;
-        $path = __DIR__ . '/../Views/Latte/Temps';
-        if (!is_dir($path)) {
-            mkdir(__DIR__ . '/../Views/Latte');
-            mkdir($path);
-        }
-
-        $latte->setTempDirectory($path);
-        if (env('APP_ENV') == 'production') {
-            $latte->setAutoRefresh(false);
-        }
-
-        $latte->addFunction('csrf', function ($route = null) {
-            return new Latte\Runtime\Html(csrf_field($route));
-        });
-
-        $latte->addFunction('validateMsg', function ($field) {
-            return new Latte\Runtime\Html(validateMsg($field));
-        });
-
-        $latte->addFunction('flash', function () {
-            return new Flash;
-        });
-
-        $latte->addFunction('match', function ($url, $htmlclass) {
-            return (new Views)->match($url, $htmlclass);
-        });
-
-        $latte->addFunction('url', function ($url) {
-            return url($url);
-        });
-
-        $view = dotSupport($view);
-        return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
-    }
     return (new Views)->view($view, $data);
 }
 
@@ -82,7 +41,7 @@ function view($view, $data = [])
  * @param string $query
  * @return PDO
  */
-function rawDB($query)
+function rawDB(string $query): array | false
 {
     $call_pdo = (new Connection)->getConnection();
     $query = $call_pdo->query($query);
@@ -94,7 +53,7 @@ function rawDB($query)
  * Function to do var_dump then die.
  * @param $dump
  */
-function vdd(...$dump)
+function vdd(mixed ...$dump): never
 {
     echo "<pre>";
     var_dump($dump);
@@ -106,7 +65,7 @@ function vdd(...$dump)
  * Function to get if server is running on HTTPS or HTTP.
  * @return string
  */
-function get_http_protocol()
+function get_http_protocol(): string
 {
     if (!empty($_SERVER['HTTPS'])) {
         return "https";
@@ -120,7 +79,7 @@ function get_http_protocol()
  * @param string $path
  * @return string
  */
-function public_path($path = null)
+function public_path(?string $path = null): string
 {
     if ($path) {
         return __DIR__ . '/../../public/' . $path;
@@ -133,7 +92,7 @@ function public_path($path = null)
  * @param string $path
  * @return string
  */
-function base_path($path = null)
+function base_path(?string $path = null): string
 {
     if ($path) {
         return __DIR__ . '/../../' . $path;
@@ -143,10 +102,10 @@ function base_path($path = null)
 
 /**
  * Function to access base url of project
- * @param boolean $portOnly
+ * @param bool $portOnly
  * @return string
  */
-function base_url($portOnly = false)
+function base_url(bool $portOnly = false): string
 {
     if ($portOnly) {
         return $_SERVER['SERVER_PORT'];
@@ -163,7 +122,7 @@ function base_url($portOnly = false)
  * @param string $url
  * @return string
  */
-function url($url = null)
+function url(?string $url = null): string
 {
     if (!is_null($url)) {
         return get_http_protocol() . '://' . base_url() . $url;
@@ -176,7 +135,7 @@ function url($url = null)
  * @param string $asset
  * @return string
  */
-function asset($asset = null)
+function asset(?string $asset = null): string
 {
     $assetPath = get_http_protocol() . '://' . base_url() . '/public/';
     if (is_null($asset)) {
@@ -189,7 +148,7 @@ function asset($asset = null)
 /**
  * Function to redirect an user to specific location
  */
-function redirect($to, $outside = true)
+function redirect(string $to, bool $outside = true): never
 {
     if (!$outside) {
         header("location:" . url($to));
@@ -205,7 +164,7 @@ function redirect($to, $outside = true)
  * @throws Exception
  * @return void
  */
-function noSelfChained($mark, $method, $custom_msg = null)
+function noSelfChained(bool $mark, string $method, ?string $custom_msg = null): never
 {
     if ($mark) {
         if (!is_null($custom_msg)) {
@@ -221,17 +180,17 @@ function noSelfChained($mark, $method, $custom_msg = null)
  * Function to access Views class immediately
  * @return Views
  */
-function views()
+function views(): Views
 {
     return new Views;
 }
 
 /**
  * Function to return javascript history -1.
- * @param boolean $jsonly
+ * @param bool $jsonly
  * @return string
  */
-function back($jsonly = false)
+function back(bool $jsonly = false): string
 {
     if ($jsonly) {
         return "history.go(-1)";
@@ -245,7 +204,7 @@ function back($jsonly = false)
  * @param string $route
  * @return string
  */
-function setPrevious($route)
+function setPrevious(string $route): string
 {
     return (new SessionManager)->setPrevious($route);
 }
@@ -254,7 +213,7 @@ function setPrevious($route)
  * Function to access Requests's currentURL method.
  * @return string
  */
-function GetCurrentUrl()
+function GetCurrentUrl(): string
 {
     return request()->currentURL();
 }
@@ -263,8 +222,9 @@ function GetCurrentUrl()
  * Function to return a error view and kill the app
  * @param int $num
  */
-function ReturnError($num, $message = null)
+function ReturnError(int $num, ?string $message = null)
 {
+    http_response_code($num);
     if (is_dir(__DIR__ . '/../Views/Errors')) {
         require_once __DIR__ . '/../Views/Errors/' . $num . '.php';
         exit();
@@ -281,7 +241,7 @@ function ReturnError($num, $message = null)
  * @return string
  */
 if (!function_exists('env')) {
-    function env($name, $optional = null)
+    function env(string $name, ?string $optional = null): string
     {
         if (isset($_ENV[$name])) {
             return $_ENV[$name];
@@ -299,7 +259,7 @@ if (!function_exists('env')) {
  * @param string $name
  * @return mixed
  */
-function session($name = null)
+function session(?string $name = null): string | SessionManager
 {
     if (!is_null($name)) {
         return $_SESSION[$name];

@@ -33,14 +33,14 @@ class CreateMigration extends BaseCli
 
             return new class extends BaseMigration
             {
-                public function up()
+                public function up(): void
                 {
                     \$this->schema->create('', function(Blueprint \$table){
                     
                     });
                 }
 
-                public function down()
+                public function down(): void
                 {
                     \$this->schema->dropIfExists('');
                 }

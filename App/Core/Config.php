@@ -25,7 +25,7 @@ class Config
      * Define your models driver
      * @return string
      */
-    public static function modelDriver()
+    public static function modelDriver(): string
     {
         return env('APP_MODELS_DRIVER', 'asmvc');
     }
@@ -34,7 +34,7 @@ class Config
      * Define your csrf driver
      * @return string
      */
-    public static function csrfDriver()
+    public static function csrfDriver(): string
     {
         return env('APP_CSRF_DRIVER', 'asmvc');
     }
@@ -43,7 +43,7 @@ class Config
      * Define your templating engine provider
      * @return string
      */
-    public static function viewEngine()
+    public static function viewEngine(): string
     {
         return env('APP_VIEW_ENGINE', 'latte');
     }

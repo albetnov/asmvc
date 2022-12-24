@@ -30,7 +30,7 @@ class EloquentDB extends Eloquent
      * Get a database Connection
      * @return array
      */
-    public function getDbConnection()
+    public function getDbConnection(): array
     {
         return [
             'driver' => env('ELOQUENT_DRIVER', 'mysql'),

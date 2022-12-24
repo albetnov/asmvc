@@ -1,13 +1,12 @@
 <?php
 
-
 /**
  * Function to get a string after specific character.
  * @param string $char
  * @param string $string
  * @return string
  */
-function getStringAfter($char, $string)
+function getStringAfter(string $char, string $string): string
 {
     return substr($string, strpos($string, $char) + 1);
 }
@@ -17,7 +16,7 @@ function getStringAfter($char, $string)
  * @param string $text
  * @return string
  */
-function dotSupport($text)
+function dotSupport(string $text): string
 {
     if (!str_contains($text, '.')) {
         return $text; // mengemembalikkan text karena tidak ada '.'
@@ -31,7 +30,7 @@ function dotSupport($text)
  * @param string $string
  * @return string
  */
-function getStringBefore($char, $string)
+function getStringBefore(string $char, string $string): string
 {
     $arr = explode($char, $string, 2);
     return $arr[0];
@@ -44,7 +43,7 @@ function getStringBefore($char, $string)
  * @param string $end
  * @return string
  */
-function get_string_between($string, $start, $end)
+function get_string_between(string $string, string $start, string $end): string
 {
     $string = ' ' . $string;
     $ini = strpos($string, $start);
@@ -61,7 +60,7 @@ function get_string_between($string, $start, $end)
  * @param string $string
  * @return string
  */
-function mkPass($constant, $string)
+function mkPass(string $constant, string $string): string
 {
     return password_hash($string, $constant);
 }
@@ -70,9 +69,9 @@ function mkPass($constant, $string)
  * Compare an encryption.
  * @param string $first
  * @param string $second
- * @return string
+ * @return bool
  */
-function passCompare($first, $second)
+function passCompare(string $first, string $second): bool
 {
     return password_verify($first, $second);
 }

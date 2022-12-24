@@ -18,7 +18,7 @@ class Views
      * @param string $name
      * @var string $content
      */
-    public function section($name, $content = null)
+    public function section(string $name, string $content = null): void
     {
         if (!is_null($content)) {
             self::$section[$name][] = $content;
@@ -31,7 +31,7 @@ class Views
     /**
      * Function to end a section
      */
-    public function endSection()
+    public function endSection(): void
     {
         $content = ob_get_clean();
         if (self::$sectionList === []) {
@@ -51,7 +51,7 @@ class Views
      * Function to get a section
      * @param string $name
      */
-    public function getSection($name)
+    public function getSection(string $name): void
     {
         if (!isset(self::$section[$name])) {
             echo '';
@@ -69,7 +69,7 @@ class Views
      * Function to extends another views. A section calling is required to make sure everything run just fine.
      * @param string $path
      */
-    public function extends($path)
+    public function extends(string $path): void
     {
         if (self::$currentSection) {
             return view($path);
@@ -82,7 +82,7 @@ class Views
      * Function to include a view
      * @param string $path
      */
-    public function include($path)
+    public function include(string $path): void
     {
         return view($path);
     }
@@ -94,7 +94,7 @@ class Views
      * @param string $classname
      * @return string
      */
-    public function match($expected, $classname)
+    public function match(string $expected, string $classname): string
     {
         $expected = url() . $expected;
         if ($expected == GetCurrentUrl()) {
@@ -104,13 +104,52 @@ class Views
         }
     }
 
+    private function latteDriver(string $path, array $data): void
+    {
+        $latte = new \Latte\Engine;
+        $tmpPath = __DIR__ . '/../Views/Latte/Temps';
+        if (!is_dir($tmpPath)) {
+            mkdir(__DIR__ . '/../Views/Latte');
+            mkdir($tmpPath);
+        }
+
+        $latte->setTempDirectory($tmpPath);
+        if (env('APP_ENV') == 'production') {
+            $latte->setAutoRefresh(false);
+        }
+
+        $latte->addFunction('csrf', function ($route = null) {
+            return new \Latte\Runtime\Html(csrf_field($route));
+        });
+
+        $latte->addFunction('validateMsg', function ($field) {
+            return new \Latte\Runtime\Html(validateMsg($field));
+        });
+
+        $latte->addFunction('flash', function () {
+            return new Flash;
+        });
+
+        $latte->addFunction('match', function ($url, $htmlclass) {
+            return (new Views)->match($url, $htmlclass);
+        });
+
+        $latte->addFunction('url', function ($url) {
+            return url($url);
+        });
+
+        $view = dotSupport($path);
+        return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
+    }
+
     /**
      * Import a view
-     * @param string $path
-     * @param array $data
      */
-    public function view($path, $data)
+    public function view(string $path, array $data): void
     {
+        if (Config::viewEngine() == 'latte') {
+            return $this->latteDriver($path, $data);
+        }
         $final = dotSupport($path);
         extract($data);
         include __DIR__ . '/../Views/' . $final . ".php";

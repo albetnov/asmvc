@@ -34,7 +34,7 @@ class CreateModel extends BaseCli
                         
                         class {$try} extends BaseEloquent 
                         {
-                            protected \$table = '';
+                            protected string \$table = '';
                         }
 
                         data;
@@ -48,7 +48,7 @@ class CreateModel extends BaseCli
     
                         class {$try} extends BaseModel
                         {
-                            protected \$table = '';
+                            protected string \$table = '';
                         }
     
                         data;

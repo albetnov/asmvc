@@ -7,7 +7,7 @@ abstract class BaseMiddleware
     /**
      * @var $db
      */
-    protected $db;
+    protected Database | EloquentDB $db;
 
     /**
      * Consturctor to Query Builder
@@ -24,7 +24,7 @@ abstract class BaseMiddleware
     /**
      * Default method of denied.
      */
-    public function denied()
+    public function denied(): void
     {
         return redirect('/login');
     }
@@ -32,5 +32,5 @@ abstract class BaseMiddleware
     /**
      * Add an abstact about required baseMiddleware
      */
-    abstract function middleware();
+    abstract function middleware(): void;
 }

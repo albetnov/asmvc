@@ -7,7 +7,7 @@ class BaseModel extends Database
     /**
      * @var string $table
      */
-    protected $table;
+    protected string $table;
 
     /**
      * Constructor method

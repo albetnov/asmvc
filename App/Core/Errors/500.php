@@ -1,74 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>500</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <?php if (!empty(BS5_CSS)) {
-    ?>
-        <link rel="stylesheet" href="<?= asset(BS5_CSS) ?>">
-    <?php
-    } else {
-    ?>
-        <style>
-            .card {
-                padding: 10px;
-                border: 1px solid whitesmoke;
-                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-            }
-
-            .card-header {
-                font-size: 30px;
-                color: red;
-                margin-left: 15vw;
-                margin-right: auto;
-            }
-
-            a {
-                color: royalblue;
-                text-decoration: none;
-            }
-
-            a:hover {
-                text-decoration: underline;
-            }
-
-            button {
-                padding: 10px;
-                border: none;
-                background-color: rgb(82, 81, 81);
-                color: white;
-            }
-
-            button:hover {
-                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-                background-color: whitesmoke;
-                color: black;
-                cursor: pointer;
-            }
-
-            .justify-content-center {
-                margin: 20em auto 0px auto;
-                width: 50%;
-            }
-
-            .card-body {
-                margin-top: 1em;
-            }
-        </style>
-    <?php } ?>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 | Internal Server Error</title>
+    <link rel="stylesheet" href="<?= asset(TW_CSS) ?>">
 </head>
 
 <body>
-    <div class="container d-flex 100-vh align-items-center justify-content-center">
-        <div class="card">
-            <div class="card-header text-danger">
-                500 | <?= is_null($message) ? 'Internal Server Error' : $message ?>
-            </div>
+    <main class="container mx-auto p-14 min-h-screen w-full border-red-500 flex items-center justify-between text-zinc-800 flex-col lg:flex-row">
+        <div>
+            <h1 class="text-8xl font-bold">500</h1>
+            <p class="text-4xl font-semibold">Oops!</p>
+            <p class="text-lg"><?= $message ?? "Something Went Wrong" ?></p>
+            <div class="block border border-zinc-600 py-3 px-10 mt-4 shadow-lg shadow-zinc-300 transition-all delay-150 hover:cursor-wait active:opacity-80">Comeback Soon</div>
         </div>
-    </div>
+        <img src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-695.jpg?w=826&t=st=1671811502~exp=1671812102~hmac=d3f7c7f0597f5edf3f73ddca8ef740c9925fe97e6adc34987508f928a5924999" alt="severr">
+    </main>
 </body>
 
 </html>

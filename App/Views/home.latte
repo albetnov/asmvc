@@ -1,39 +1,3 @@
-{if !empty(BS5_CSS) && !empty(BS5_JS)}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>ASMVC</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{asset(BS5_CSS)}" />
-  <style>
-    * {
-      font-family: 'PT Sans', sans-serif;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="card">
-    <div class="card-header">Hi!</div>
-    <div class="card-body">
-      <h4 class="card-title">A Simple MVC</h4>
-      <p class="card-text">Created by Albet Novendo.</p>
-      <p>Follow me:</p>
-      <a href="https://github.com/albetnov">Github</a> /
-      <a href="https://instagram.com/al_nv4">Instagram</a>
-    </div>
-  </div>
-</body>
-
-</html>
-
-{else}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,47 +7,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="{asset(TW_CSS)}" />
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      font-family: 'PT Sans', sans-serif;
-    }
-
-    .card {
-      padding: 10px;
-      border: 1px solid whitesmoke;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    }
-
-    .card-header {
-      font-size: 30px;
-      color: rgb(82, 81, 81);
-    }
-
-    a {
-      color: royalblue;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
   <title>ASMVC</title>
 </head>
 
 <body>
-  <div class="card">
-    <div class="card-header">A Simple MVC</div>
-    <hr />
-    <h4 class="card-title">A Simple MVC</h4>
-    <p>Created by Albet Novendo.</p>
-    <p>Follow me:</p>
-    <a href="https://github.com/albetnov">Github</a> /
-    <a href="https://instagram.com/al_nv4">Instagram</a>
+  <div class="container min-h-screen mx-auto w-full flex items-center justify-center">
+  <div class="border border-zinc-700 shadow shadow-zinc-300 p-10 rounded w-[70%]">
+      <h1 class="text-4xl my-2 font-bold">A Simple MVC</h1>
+      <hr class="border-zinc-600 my-3" />
+      <h4 class="text-xl mb-3">A PHP MVC</h4>
+      <p class="text-base">Created by Albet Novendo.</p>
+      <p class="mb-2">Follow me:</p>
+      <div class="flex gap-3 mt-10 flex-col lg:flex-row">
+        <a class="py-3 px-7 border border-lime-700 rounded text-lime-600 transition-all delay-200 hover:bg-black hover:text-white hover:border-black" target="_blank" href="https://github.com/albetnov">Github</a>
+        <a class="py-3 px-7 border border-pink-700 rounded text-pink-600 transition-all delay-200 hover:bg-black hover:text-white hover:border-black" target="_blank" href="https://instagram.com/al_nv4">Instagram</a>
+      </div>
+    </div>
   </div>
 </body>
 
 </html>
-
-{/if}

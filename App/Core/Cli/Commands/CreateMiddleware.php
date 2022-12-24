@@ -31,7 +31,7 @@ class CreateMiddleware extends BaseCli
 
              class {$try} extends BaseMiddleware
              {
-                 public function middleware()
+                 public function middleware(): void
                  {
                     
                  }

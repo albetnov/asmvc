@@ -20,7 +20,7 @@ class RollbackMigration extends BaseCli
      * Clear history table
      * @param string $table
      */
-    private function clearHistory($table = null)
+    private function clearHistory(?string $table = null)
     {
         $eloquent = new EloquentDB;
         $check = $eloquent->schema()->hasTable('migration_history');
@@ -44,7 +44,7 @@ class RollbackMigration extends BaseCli
      * @param string $file
      * @return string
      */
-    private function noExtension($file)
+    private function noExtension(string $file)
     {
         $result = explode('.', $file);
         array_pop($result);

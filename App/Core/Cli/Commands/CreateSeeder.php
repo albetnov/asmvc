@@ -31,7 +31,7 @@ class CreateSeeder extends BaseCli
 
             class {$try} extends Seeders
             {
-                public function run()
+                public function run(): void
                 {
                     /**
                      * @param int \$count

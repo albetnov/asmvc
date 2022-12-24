@@ -9,7 +9,7 @@ class Flash
      * @param string $name
      * @param $message
      */
-    public static function flash($name, $message)
+    public static function flash(string $name, string $message): void
     {
         $_SESSION[$name] = $message;
     }
@@ -17,9 +17,9 @@ class Flash
     /**
      * Check if session exist
      * @param string $name
-     * @return boolean
+     * @return bool
      */
-    public static function checkFlash($name)
+    public static function checkFlash(string $name): bool
     {
         if (!isset($_SESSION[$name])) {
             return false;
@@ -33,7 +33,7 @@ class Flash
      * @param string $name
      * @return string
      */
-    public static function catchFlash($name)
+    public static function catchFlash(string $name): string
     {
         if (!isset($_SESSION[$name])) {
             return;

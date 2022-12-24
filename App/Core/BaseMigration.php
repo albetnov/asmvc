@@ -2,12 +2,11 @@
 
 namespace Albet\Asmvc\Core;
 
+use Illuminate\Database\Schema\Builder;
+
 abstract class BaseMigration
 {
-    /**
-     * @var EloquentDB $schema
-     */
-    protected $schema;
+    protected Builder $schema;
 
     /**
      * Constuctor method
@@ -20,10 +19,10 @@ abstract class BaseMigration
     /**
      * Up function for running migration.
      */
-    abstract function up();
+    abstract function up(): void;
 
     /**
      * Down function for rollback migration
      */
-    abstract function down();
+    abstract function down(): void;
 }

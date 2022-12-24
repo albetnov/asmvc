@@ -13,10 +13,10 @@ class BaseCli
 
     /**
      * Get where the arguments start
-     * @param boolean $get_counter
+     * @param bool $get_counter
      * @return int | string
      */
-    protected function getArgsStarts($get_counter = false)
+    protected function getArgsStarts(bool $get_counter = false): int | string
     {
         if (self::$args[0] == 'asmvc') {
             if ($get_counter) {
@@ -36,9 +36,9 @@ class BaseCli
     /**
      * Get the next argument
      * @param int $i
-     * @return string|boolean
+     * @return string|bool
      */
-    protected function next_arguments($i)
+    protected function next_arguments(int $i): string | bool
     {
         $i += $this->getArgsStarts(true);
         if (isset(self::$args[$i])) {
@@ -53,7 +53,7 @@ class BaseCli
      * @param string $question
      * @return string
      */
-    protected function ask($question, $default = null)
+    protected function ask(string $question, ?string $default = null): string
     {
         $q = readline($question . ' ? ');
         if (!$q && $default) {
@@ -65,7 +65,7 @@ class BaseCli
     /**
      * Function to do composer install automatically
      */
-    public function install()
+    public function install(): void
     {
         if (!function_exists('exec')) {
             throw new \Exception("Exec() function not detected. Please activate it in php.ini");
@@ -80,9 +80,9 @@ class BaseCli
 
     /**
      * Put args as variable
-     * @param string $args
+     * @param array $args
      */
-    protected function baseparse($args)
+    protected function baseparse(array $args): void
     {
         self::$args = $args;
     }
@@ -91,7 +91,7 @@ class BaseCli
      * Get command
      * @return string
      */
-    public function getCommand()
+    public function getCommand(): string
     {
         return $this->command;
     }
@@ -100,7 +100,7 @@ class BaseCli
      * Get Descriptions
      * @return string
      */
-    public function getDesc()
+    public function getDesc(): string
     {
         return $this->desc;
     }

@@ -7,7 +7,6 @@ use Albet\Asmvc\Core\Cli\BaseCli;
 
 class InstallBootstrap extends BaseCli
 {
-    use addBootstrap;
 
     /**
      * @var string $command
@@ -44,7 +43,6 @@ class InstallBootstrap extends BaseCli
         foreach ($pathjs as $js) {
             copy(base_path() . 'node_modules/bootstrap/dist/js/' . $js, public_path() . 'js/' . $js);
         }
-        $this->addBootstrap();
         echo 'Bootstrap installed successfully!' . PHP_EOL;
         echo "Note: If bootstrap javascript failed to load. You may need to import popper js.\n";
     }

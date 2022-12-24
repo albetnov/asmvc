@@ -35,7 +35,7 @@ abstract class Seeders
      * @param int $count
      * @return self
      */
-    public function count($count)
+    public function count(int $count): self
     {
         $this->count = $count;
         return $this;
@@ -46,7 +46,7 @@ abstract class Seeders
      * @param string|callable $table
      * @param array $data
      */
-    public function seed($table, $data)
+    public function seed(string|callable $table, array $data): void
     {
         for ($i = 0; $i < $this->count; $i++) {
             if (class_exists($table)) {
@@ -60,5 +60,5 @@ abstract class Seeders
     /**
      * Determine user to override run function.
      */
-    abstract function run();
+    abstract function run(): void;
 }

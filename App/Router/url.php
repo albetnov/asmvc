@@ -21,3 +21,6 @@ use Albet\Asmvc\Core\Route;
 
 //Your route
 Route::add('/', [HomeController::class, 'index']);
+Route::add('/:id', function ($param) {
+    echo $param;
+});

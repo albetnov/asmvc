@@ -15,7 +15,7 @@ class RunSeeder extends BaseCli
     protected $hint = "SeederName?";
     protected $desc = "Seeding a database table.";
 
-    private function noExtension($file)
+    private function noExtension(string $file): string
     {
         $result = explode('.', $file);
         array_pop($result);

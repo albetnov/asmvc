@@ -6,16 +6,16 @@ use Albet\Asmvc\Core\CsrfGenerator;
  * Function to access CsrfGenerator Class immediately.
  * @return CsrfGenerator
  */
-function csrf()
+function csrf(): CsrfGenerator
 {
     return new CsrfGenerator;
 }
 
 /**
  * Function to access CsrfGenerator's field method immediately.
- * @return CsrfGenerator
+ * @return string
  */
-function csrf_field($route = null)
+function csrf_field(?string $route = null): string
 {
     return (new CsrfGenerator)->field($route);
 }

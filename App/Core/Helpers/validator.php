@@ -8,7 +8,7 @@ use Albet\Asmvc\Core\Validator;
  * @param string $data
  * @return string
  */
-function old($field_name, $data = null)
+function old(string $field_name, ?string $data = null): string
 {
     if (isset($_SESSION['old'][$field_name])) {
         $return = $_SESSION['old'][$field_name];
@@ -24,7 +24,7 @@ function old($field_name, $data = null)
  * Function to set old to a field
  * @param string $field
  */
-function set_old($field)
+function set_old(string $field): void
 {
     $store = request()->input($field);
     $_SESSION['old'][$field] = $store;
@@ -33,7 +33,7 @@ function set_old($field)
 /**
  * Function to flush entire session old if there's no validation error
  */
-function flush_old()
+function flush_old(): void
 {
     unset($_SESSION['old']);
 }
@@ -41,29 +41,29 @@ function flush_old()
 /**
  * Function to access Validator's make method immediately
  * @param array $validate
- * @return Validator
+ * @return bool
  */
-function makeValidate($validate, $customMsg = [])
+function makeValidate(array $validate, array $customMsg = []): bool
 {
-    return (new Validator)::make($validate, $customMsg);
+    return Validator::make($validate, $customMsg);
 }
 
 /**
  * Function to access Validator's checkError method immediately
  * @param string $field
- * @return Validator
+ * @return bool
  */
-function checkError($field)
+function checkError(string $field): bool
 {
-    return (new Validator)::checkError($field);
+    return Validator::checkError($field);
 }
 
 /**
  * Function to access Validator's validMsg method immediately
  * @param string $field
- * @return Validator
+ * @return string
  */
-function validateMsg($field)
+function validateMsg(string $field): string
 {
-    return (new Validator)::validMsg($field);
+    return Validator::validMsg($field);
 }

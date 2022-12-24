@@ -21,8 +21,9 @@ csrf()->generateCsrf();
 /**
  * Define Bootstrap const.
  */
-define('BS5_CSS', '');
-define('BS5_JS', '');
+define('BS5_CSS', 'css/bootstrap.min.css');
+define('BS5_JS', 'js/bootstrap.min.js');
+define("TW_CSS", 'styles/output.css');
 
 /**
  * Calling your route

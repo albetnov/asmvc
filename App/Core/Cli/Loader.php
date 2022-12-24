@@ -7,7 +7,7 @@ class Loader
     /**
      * Load a command by it's clases.
      */
-    public function load()
+    public function load(): array
     {
         return [
             \Albet\Asmvc\Core\Cli\Commands\Setup::class,

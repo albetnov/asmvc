@@ -7,10 +7,10 @@ class Requests
     /**
      * Get an input field value
      * @param string $field
-     * @param boolean $escape
+     * @param bool $escape
      * @return string|array
      */
-    public function input($field, $escape = true)
+    public function input(string $field, bool $escape = true): string|bool|array
     {
         if ($field == '*') {
             return $_POST;
@@ -31,7 +31,7 @@ class Requests
      * Get user's current URL
      * @return string
      */
-    public function currentURL()
+    public function currentURL(): string
     {
         return get_http_protocol() . '://' . base_url() . $_SERVER['REQUEST_URI'];
     }
@@ -41,7 +41,7 @@ class Requests
      * @param string $name
      * @return mixed
      */
-    public function upload($name)
+    public function upload(string $name): mixed
     {
         if (isset($_FILES[$name])) {
             return $_FILES[$name];
@@ -55,7 +55,7 @@ class Requests
      * @param string $name
      * @return string
      */
-    public function query($name)
+    public function query(string $name): ?string
     {
         if (isset($_GET[$name])) {
             return htmlspecialchars($_GET[$name]);

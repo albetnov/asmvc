@@ -2,7 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
-use Albet\Asmvc\Controllers\AdminController;
+use Closure;
 
 class Route
 {
@@ -11,13 +11,22 @@ class Route
      * @var boolean $pagenotfound
      * @var boolean $ASMVC_LOCAL_URL
      */
-    private static $routes = [], $pagenotfound = false;
-    private static $ASMVC_LOCAL_URL = false, $previous;
+    private static array $routes = [];
+    private static bool $pagenotfound = false;
+    private static bool $ASMVC_LOCAL_URL = false;
+    private static string $previous;
 
-    /**
-     * Regex const
-     */
-    public const PARAMETER = "([0-9a-zA-Z]*)";
+    private static function parseParameter(string $path): string
+    {
+        $spliited = explode('/', $path);
+        $result = array_map(function ($item) {
+            if (str_starts_with($item, ":")) {
+                return "([0-9a-zA-Z]*)";
+            }
+        }, $spliited);
+
+        return join("/", $result);
+    }
 
     /**
      * Add routing to the array
@@ -25,7 +34,7 @@ class Route
      * @param array $controllerandmethod
      * @param array $http_method_or_middleware
      */
-    public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
+    public static function add(string $path, array|Closure $controllerandmethod, array|string|BaseMiddleware ...$http_method_or_middleware)
     {
         $http_method = 'GET';
         $middleware = null;
@@ -42,45 +51,24 @@ class Route
                 $http_method = $http_method_or_middleware[0];
             }
         }
-        self::$routes[] = [
-            'path' => $path,
-            'controller' => $controllerandmethod[0],
-            'method' => $controllerandmethod[1],
-            'http_method' => $http_method,
-            'middleware' => $middleware
-        ];
-    }
 
-    /**
-     * Add routing to the array but for anonymous function only.
-     * @param string $path
-     * @param callable $inline
-     * @param array $http_method_or_middleware.
-     */
-    public static function inline($path, $inline, ...$http_method_or_middleware)
-    {
-        $http_method = 'GET';
-        $middleware = null;
-        if ($http_method_or_middleware != []) {
-            if (count($http_method_or_middleware) > 1) {
-                $http_method = $http_method_or_middleware[0];
-                $middleware = $http_method_or_middleware[1];
-            } else if (count($http_method_or_middleware) > 3) {
-                throw new \Exception("Max arguments for inline() only allowed 4");
-            }
-            if (class_exists($http_method_or_middleware[0])) {
-                $middleware = $http_method_or_middleware[0];
-            } else {
-                $http_method = $http_method_or_middleware[0];
-            }
-        }
-        self::$routes[] = [
+        $path = self::parseParameter($path);
+
+        $initial = [
             'path' => $path,
-            'controller' => 'inline',
-            'method' => $inline,
             'http_method' => $http_method,
             'middleware' => $middleware
         ];
+
+        if ($controllerandmethod instanceof Closure) {
+            $initial['controller'] = 'inline';
+            $initial['method'] = $controllerandmethod;
+        } else {
+            $initial['controller'] = $controllerandmethod[0];
+            $initial['method'] = $controllerandmethod[1];
+        }
+
+        self::$routes[] = $initial;
     }
 
     /**
@@ -89,7 +77,7 @@ class Route
      * @param Array|String $view
      * @param array $http_method_or_middleware.
      */
-    public static function view($path, $view, ...$http_method_or_middleware)
+    public static function view(string $path, array|string $view, array|string|BaseMiddleware ...$http_method_or_middleware)
     {
         $http_method = 'GET';
         $middleware = null;
@@ -124,7 +112,7 @@ class Route
      * Get ASMVC_LOCAL_URL value
      * @return string
      */
-    public static function getAsmvcUrlLocal()
+    public static function getAsmvcUrlLocal(): string
     {
         return self::$ASMVC_LOCAL_URL;
     }
@@ -135,7 +123,7 @@ class Route
      * @param boolean $get
      * @return void|string
      */
-    public static function registerPrevious($route = null, $get = false)
+    public static function registerPrevious(?string $route = null, bool $get = false)
     {
         if (!isset($_SESSION['_previousUrl'])) {
             $_SESSION['_previousUrl'] = [GetCurrentUrl()];
@@ -165,7 +153,7 @@ class Route
         }
     }
 
-    public static function getPrevious()
+    public static function getPrevious(): string
     {
         return self::$previous;
     }
@@ -174,7 +162,7 @@ class Route
      * Run the routing
      * @return returnError
      */
-    public static function triggerRouter()
+    public static function triggerRouter(): void
     {
         if (str_contains($_SERVER['REQUEST_URI'], '?')) {
             $server = strtok($_SERVER['REQUEST_URI'], '?');
@@ -231,17 +219,13 @@ class Route
         }
         if (self::$pagenotfound) {
             if (php_sapi_name() == 'cli-server') {
-                $file = public_path($_SERVER['REQUEST_URI']);
+                $file = $_SERVER['REQUEST_URI'];
                 $requestPath = explode('/', $_SERVER['REQUEST_URI']);
                 $prefetchExt = explode('.', end($requestPath));
                 $extension = end($prefetchExt);
-                if ($extension != 'css' && $extension != 'js') {
-                    ReturnError(500);
-                    exit;
-                }
-                if (file_exists($file)) {
+                if ($extension === 'css' || $extension === 'js' && file_exists($file)) {
                     header("Content-Type: text/{$extension}");
-                    readfile($file);
+                    readfile(__DIR__ . '/../..' . $file);
                     exit;
                 }
             }
