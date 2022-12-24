@@ -6,7 +6,7 @@ use Albet\Asmvc\Core\Requests;
 
 class HomeController
 {
-    public function index(): void
+    public function index()
     {
         return view('home');
     }

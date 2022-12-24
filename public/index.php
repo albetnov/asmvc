@@ -11,7 +11,7 @@ use Albet\Asmvc\Core\SessionManager;
 /**
  * Generate a session
  */
-SessionManager::runSession();
+SessionManager::make()->runSession();
 
 /**
  * Generate a csrf

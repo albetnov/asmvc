@@ -46,7 +46,7 @@ class Requests
         if (isset($_FILES[$name])) {
             return $_FILES[$name];
         } else {
-            return;
+            return null;
         }
     }
 
@@ -60,7 +60,7 @@ class Requests
         if (isset($_GET[$name])) {
             return htmlspecialchars($_GET[$name]);
         } else {
-            return;
+            return null;
         }
     }
 }

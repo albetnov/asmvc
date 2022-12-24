@@ -162,7 +162,7 @@ class Route
      * Run the routing
      * @return returnError
      */
-    public static function triggerRouter(): void
+    public static function triggerRouter(): mixed
     {
         if (str_contains($_SERVER['REQUEST_URI'], '?')) {
             $server = strtok($_SERVER['REQUEST_URI'], '?');

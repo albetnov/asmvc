@@ -10,8 +10,8 @@ class SessionManager
      * @var boolean $validate
      * @var boolean $secure
      */
-    private static string $type;
-    private static bool $ip = false, $validate = false, $secure = false;
+    private string $type;
+    private bool $ip = false, $validate = false, $secure = false;
 
     /**
      * Constructor method
@@ -19,13 +19,18 @@ class SessionManager
     public function __construct()
     {
         $session = include __DIR__ . '/../Config/session.php';
-        self::$type = $session['type'];
-        self::$ip = $session['ip-validation'];
-        self::$validate = $session['session-basic-validation'];
-        self::$secure = $session['secure'];
+        $this->type = $session['type'];
+        $this->ip = $session['ip-validation'];
+        $this->validate = $session['session-basic-validation'];
+        $this->secure = $session['secure'];
     }
 
-    private static function sessionSetting(): void
+    public static function make(): self
+    {
+        return new SessionManager();
+    }
+
+    private function sessionSetting(): void
     {
         ini_set('session.name', 'ASMVCSESSID');
         ini_set('session.cookie_lifetime', 0);
@@ -41,7 +46,7 @@ class SessionManager
         ini_set('session.cache_limiter', 'nocache');
         ini_set('session.sid_length', 48);
         ini_set('session.sid_bits_per_character', 6);
-        if (self::$secure) {
+        if ($this->secure) {
             ini_set('session.cookie_secure', 'On');
         }
     }
@@ -49,11 +54,11 @@ class SessionManager
     /**
      * Configure default session then run it.
      */
-    public static function runSession(): void
+    public function runSession(): void
     {
         // Configuring ini
-        self::sessionSetting();
-        if (self::$type == 'redis') {
+        $this->sessionSetting();
+        if ($this->type == 'redis') {
             ini_set('session.save_handler', 'redis');
             $redisHost = env('REDIS_SERVER', '127.0.0.1');
             $redisDb = env('REDIS_DB_NUMBER', 0);
@@ -69,16 +74,16 @@ class SessionManager
             }
         }
 
-        self::generateSession();
-        if (self::$validate) {
-            self::validateSession();
+        $this->generateSession();
+        if ($this->validate) {
+            $this->validateSession();
         }
     }
 
     /**
      * Generating a new session.
      */
-    public static function generateSession(bool $regenerate = false): void
+    public function generateSession(bool $regenerate = false): void
     {
         if ($regenerate) {
             session_destroy();
@@ -88,7 +93,7 @@ class SessionManager
         if (!isset($_SESSION['USER_AGENT'])) {
             $_SESSION['USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
         }
-        if (self::$ip || !isset($_SESSION['USER_IP'])) {
+        if ($this->ip || !isset($_SESSION['USER_IP'])) {
             $_SESSION['USER_IP'] = $_SERVER['REMOTE_ADDR'];
         }
     }
@@ -96,13 +101,13 @@ class SessionManager
     /**
      * Validating user's session.
      */
-    private static function validateSession(): void
+    private function validateSession(): void
     {
         if ($_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) {
-            self::generateSession(true);
+            $this->generateSession(true);
         }
-        if (self::$ip || $_SESSION['USER_IP'] != $_SERVER['REMOTE_ADDR']) {
-            self::generateSession(true);
+        if ($this->ip || $_SESSION['USER_IP'] != $_SERVER['REMOTE_ADDR']) {
+            $this->generateSession(true);
         }
     }
 
@@ -132,7 +137,7 @@ class SessionManager
      */
     public function regenerate(): void
     {
-        return self::generateSession(true);
+        $this->generateSession(true);
     }
 
     /**

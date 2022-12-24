@@ -43,7 +43,7 @@ class Views
         }
         self::$section[$section][] = $content;
         if (self::$path) {
-            return view(self::$path);
+            view(self::$path);
         }
     }
 
@@ -72,7 +72,8 @@ class Views
     public function extends(string $path): void
     {
         if (self::$currentSection) {
-            return view($path);
+            view($path);
+            return;
         }
 
         self::$path = $path;
@@ -84,7 +85,7 @@ class Views
      */
     public function include(string $path): void
     {
-        return view($path);
+        view($path);
     }
 
     /**
@@ -104,7 +105,7 @@ class Views
         }
     }
 
-    private function latteDriver(string $path, array $data): void
+    private function latteDriver(string $path, array $data): mixed
     {
         $latte = new \Latte\Engine;
         $tmpPath = __DIR__ . '/../Views/Latte/Temps';
@@ -145,7 +146,7 @@ class Views
     /**
      * Import a view
      */
-    public function view(string $path, array $data): void
+    public function view(string $path, array $data): mixed
     {
         if (Config::viewEngine() == 'latte') {
             return $this->latteDriver($path, $data);
