@@ -5,7 +5,7 @@
  */
 require_once __DIR__ . '/../App/Core/init.php';
 
-use Albet\Asmvc\Core\Route;
+use Albet\Asmvc\Core\Routing\Route;
 use Albet\Asmvc\Core\SessionManager;
 
 /**
@@ -14,14 +14,13 @@ use Albet\Asmvc\Core\SessionManager;
 SessionManager::make()->runSession();
 
 /**
- * Define Bootstrap const.
+ * Define FrontEnd libraries const for easier integration.
  */
 define('BS5_CSS', 'css/bootstrap.min.css');
 define('BS5_JS', 'js/bootstrap.min.js');
 define("TW_CSS", 'styles/output.css');
 
 /**
- * Calling your route
+ * Call and map your route
  */
-require_once __DIR__ . '/../App/Router/url.php';
-Route::triggerRouter();
+Route::map()->triggerRoute();

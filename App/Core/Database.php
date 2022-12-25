@@ -2,6 +2,8 @@
 
 namespace Albet\Asmvc\Core;
 
+use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
+
 class Database
 {
     /**
@@ -11,6 +13,32 @@ class Database
     private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
     private $pdo;
     private static $last_insert_id;
+
+    public function __call($method, $arguments)
+    {
+        if (!method_exists($this, $method)) {
+            throw new CallingToUndefinedMethod($method);
+        }
+
+        if (is_array($arguments)) {
+            return $this->$method(...$arguments);
+        } else {
+            return $this->$method($arguments);
+        }
+    }
+
+    public static function __callStatic($method, $arguments)
+    {
+        if (!method_exists(self::class, $method)) {
+            throw new CallingToUndefinedMethod($method);
+        }
+
+        if (is_array($arguments)) {
+            return (new self)->$method(...$arguments);
+        } else {
+            return (new self)->$method($arguments);
+        }
+    }
 
     /**
      * Defining your table

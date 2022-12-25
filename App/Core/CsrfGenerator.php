@@ -22,7 +22,7 @@ class CsrfGenerator
     {
         $token = new CsrfToken(session('token'), request()->input('__token__'));
         $isValid = $this->csrf->isTokenValid($token);
-        $this->csrf->refreshToken($_SESSION['token']);
+        $this->csrf->refreshToken(session('token'));
 
         return $isValid;
     }

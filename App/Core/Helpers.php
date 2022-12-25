@@ -7,7 +7,7 @@ require_once __DIR__ . '/Helpers/strAlter.php';
 // Include validator Helper
 require_once __DIR__ . '/Helpers/validator.php';
 
-use Albet\Asmvc\Core\Route;
+// use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
 use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
@@ -111,9 +111,9 @@ function base_url(bool $portOnly = false): string
         return $_SERVER['SERVER_PORT'];
     }
     $port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
-    if (Route::getAsmvcUrlLocal()) {
-        return $_SERVER['SERVER_NAME'] . $port . '/' . Route::getAsmvcUrlLocal();
-    }
+    // if (Route::getAsmvcUrlLocal()) {
+    //     return $_SERVER['SERVER_NAME'] . $port . '/' . Route::getAsmvcUrlLocal();
+    // }
     return $_SERVER['SERVER_NAME'] . $port;
 }
 
@@ -260,6 +260,7 @@ if (!function_exists('env')) {
 function session(?string $name = null): string | SessionManager
 {
     if (!is_null($name)) {
+        if (!isset($_SESSION[$name])) return "";
         return $_SESSION[$name];
     }
     return new SessionManager;
