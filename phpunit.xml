@@ -11,7 +11,8 @@
          stopOnError="false"
          stopOnFailure="false"
          verbose="true"
-         bootstrap="App/Core/init.php"
+         bootstrap="App/Core/bootstrap.php"
+         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer"
 >
     <testsuites>
         <testsuite name="ASMVC Test Suite">

@@ -44,5 +44,6 @@ $cli = new CliParser;
 if ($install) {
     $cli->install();
 } else {
+    (new \NunoMaduro\Collision\Provider)->register();
     $cli->argument_parse($argv);
 }
