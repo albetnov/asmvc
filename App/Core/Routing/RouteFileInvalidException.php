@@ -2,7 +2,9 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-class RouteFileInvalidException extends \Exception
+use Albet\Asmvc\Core\Exceptions\DetailableException;
+
+class RouteFileInvalidException extends DetailableException
 {
     public function __construct(?string $message = "Route file is invalid.")
     {

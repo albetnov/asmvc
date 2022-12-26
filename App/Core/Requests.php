@@ -5,13 +5,16 @@ namespace Albet\Asmvc\Core;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\ServerRequestFactory;
 
-class Requests extends ServerRequestFactory
+class Requests
 {
     private ServerRequest $request;
 
+    /**
+     * Create Request from Globals.
+     */
     public function __construct()
     {
-        $this->request = $this->fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+        $this->request = (new ServerRequestFactory)->fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
     }
 
     /**
@@ -70,8 +73,19 @@ class Requests extends ServerRequestFactory
         return false;
     }
 
+    /**
+     * Return all instance of ServerRequest.
+     */
     public function getAll(): ServerRequest
     {
         return $this->request;
+    }
+
+    /**
+     * Check if request wants json
+     */
+    public function wantsJson(): bool
+    {
+        return $this->request->hasHeader('Content-Type') && $this->request->getHeader('Content-Type') === "application/json";
     }
 }

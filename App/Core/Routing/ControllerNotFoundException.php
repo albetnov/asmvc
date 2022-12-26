@@ -2,7 +2,9 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-class ControllerNotFoundException extends \Exception
+use Albet\Asmvc\Core\Exceptions\DetailableException;
+
+class ControllerNotFoundException extends DetailableException
 {
     public function __construct(?string $message = "Controller class not found.")
     {

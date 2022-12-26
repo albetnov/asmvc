@@ -18,7 +18,7 @@ class SessionManager
      */
     public function __construct()
     {
-        $session = require_once config_path('session.php');
+        $session = config('session');
         $this->type = $session['type'];
         $this->ip = $session['ip-validation'];
         $this->validate = $session['session-basic-validation'];

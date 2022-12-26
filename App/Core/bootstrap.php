@@ -6,11 +6,11 @@
  */
 
 use Albet\Asmvc\Core\Config;
+use Albet\Asmvc\Core\Containers\Container;
 use Albet\Asmvc\Core\EloquentDB;
-use Albet\Asmvc\Core\Requests;
-use DI\ContainerBuilder;
 use Dotenv\Dotenv;
-use Laminas\Diactoros\ServerRequestFactory;
+use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PrettyPageHandler;
 
 require_once __DIR__ . '/Helpers.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -31,7 +31,11 @@ $dotenv->safeLoad();
 if (!defined('ASMVC_CLI_START')) {
     $whoops = new \Whoops\Run;
     if (env('APP_ENV', 'development') != 'production') {
-        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+        if (request()->wantsJson()) {
+            $whoops->pushHandler(new JsonResponseHandler); // return this is request wants json.
+        } else {
+            $whoops->pushHandler(new PrettyPageHandler);
+        }
     } else {
         $whoops->pushHandler(function ($e) {
             returnErrorPage(500);
@@ -47,19 +51,7 @@ if (Config::modelDriver() == 'eloquent') {
     new EloquentDB;
 }
 
-if (!function_exists('container')) {
-    function container()
-    {
-        $containerBuilder = new ContainerBuilder();
-        $containerBuilder->addDefinitions();
-        $container = $containerBuilder->build();
-        return $container;
-    }
-}
-
-if (!function_exists('request')) {
-    function request()
-    {
-        return new Requests;
-    }
-}
+/**
+ * Boot DI Container for auto injecting.
+ */
+Container::make();

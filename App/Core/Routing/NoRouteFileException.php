@@ -2,7 +2,9 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-class NoRouteFileException extends \Exception
+use Albet\Asmvc\Core\Exceptions\DetailableException;
+
+class NoRouteFileException extends DetailableException
 {
     public function __construct(?string $message = "Route file not found.")
     {

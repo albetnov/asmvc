@@ -2,7 +2,9 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-class MethodNotAllowedException extends \Exception
+use Albet\Asmvc\Core\Exceptions\DetailableException;
+
+class MethodNotAllowedException extends DetailableException
 {
     public function __construct(string|int $method)
     {

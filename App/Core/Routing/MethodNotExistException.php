@@ -2,7 +2,9 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-class MethodNotExistException extends \Exception
+use Albet\Asmvc\Core\Exceptions\DetailableException;
+
+class MethodNotExistException extends DetailableException
 {
     public function __construct(?string $message = "Method of given class not found.")
     {

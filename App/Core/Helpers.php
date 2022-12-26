@@ -9,6 +9,7 @@ require_once __DIR__ . '/Helpers/validator.php';
 
 // use Albet\Asmvc\Core\Route;
 use Albet\Asmvc\Core\Connection;
+use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Views;
 
@@ -17,6 +18,14 @@ use Albet\Asmvc\Core\Views;
  */
 define('ASMVC_VERSION', '2.5');
 define('ASMVC_STATE', 'development');
+
+if (!function_exists('request')) {
+    function request()
+    {
+        return new Requests;
+    }
+}
+
 
 if (!function_exists('include_view')) {
     /**
@@ -299,5 +308,16 @@ if (!function_exists('config_path')) {
         if ($file) return __DIR__ . "/../Config/$file";
 
         return __DIR__ . "/../Config/";
+    }
+}
+
+if (!function_exists('config')) {
+    /**
+     * Function to access config file immadiately
+     */
+
+    function config(string $fileName)
+    {
+        return require_once config_path($fileName . '.php');
     }
 }

@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'CheckPerformance' => true,
+];

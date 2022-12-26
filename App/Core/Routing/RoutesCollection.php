@@ -2,8 +2,7 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-use Albet\Asmvc\Core\BaseMiddleware;
-use Albet\Asmvc\Core\DependencyResolver;
+use Albet\Asmvc\Core\Containers\Container;
 use Closure;
 
 class RoutesCollection
@@ -79,8 +78,7 @@ class RoutesCollection
                 $this->checkForMiddleware($middleware);
                 $this->checkForCsrf($method);
 
-                $resolver = new DependencyResolver();
-                $resolver->methodResolver($handler[0], $handler[1], ...$args);
+                Container::getContainer()->call([$handler[0], $handler[1]], $args);
             };
         }
 
