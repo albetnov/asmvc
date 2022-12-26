@@ -2,8 +2,9 @@
 
 namespace Albet\Asmvc\Core\Routing;
 
-use Albet\Asmvc\Core\Middleware;
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
+use Albet\Asmvc\Core\Middleware\FluentMiddleware;
+use Albet\Asmvc\Core\Middleware\Middleware;
 use Closure;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -53,11 +54,11 @@ class Route
             throw new RouteFileInvalidException();
         }
 
-        $routes($this);
+        $routes($this, new FluentMiddleware());
         return $this;
     }
 
-    protected function parseRoute(string $method, string $path, array|Closure $handler, ?Middleware $middleware = null): void
+    protected function parseRoute(string $method, string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): void
     {
         if ($handler instanceof Closure) {
             $this->definedRouteCollection->setAsClosure() // set add to behave handling closure
@@ -76,49 +77,49 @@ class Route
         $this->definedRouteCollection->add($path, $handler, $method, $middleware);
     }
 
-    public function get(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function get(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('GET', $path, $handler, $middleware);
         return $this;
     }
 
-    public function post(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function post(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('POST', $path, $handler, $middleware);
         return $this;
     }
 
-    public function put(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function put(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('PUT', $path, $handler, $middleware);
         return $this;
     }
 
-    public function patch(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function patch(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('PATCH', $path, $handler, $middleware);
         return $this;
     }
 
-    public function delete(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function delete(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('DELETE', $path, $handler, $middleware);
         return $this;
     }
 
-    public function head(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function head(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('HEAD', $path, $handler, $middleware);
         return $this;
     }
 
-    public function options(string $path, array|Closure $handler, ?Middleware $middleware = null): self
+    public function options(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
     {
         $this->parseRoute('OPTIONS', $path, $handler, $middleware);
         return $this;
     }
 
-    public function view(string $path, string $viewPath, ?Middleware $middleware = null): self
+    public function view(string $path, string $viewPath, FluentMiddleware|array $middleware = []): self
     {
         $this->definedRouteCollection
             ->setAsView()

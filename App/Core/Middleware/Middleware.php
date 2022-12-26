@@ -1,7 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace Albet\Asmvc\Core\Middleware;
 
+use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Database\Database;
 use Albet\Asmvc\Core\Eloquent\EloquentDB;
 
@@ -17,11 +18,11 @@ abstract class Middleware
      */
     public function __construct()
     {
-        if (Config::modelDriver() == 'eloquent') {
-            $this->db = new EloquentDB;
-        } else {
-            $this->db = new Database;
-        }
+        // if (Config::modelDriver() == 'eloquent') {
+        //     $this->db = new EloquentDB;
+        // } else {
+        //     $this->db = new Database;
+        // }
     }
 
     /**
@@ -29,11 +30,11 @@ abstract class Middleware
      */
     public function denied(): void
     {
-        return redirect('/login');
+        redirect('/login');
     }
 
     /**
      * Add an abstact about required baseMiddleware
      */
-    abstract function middleware(): void;
+    abstract function middleware($params): void;
 }

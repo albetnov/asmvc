@@ -3,6 +3,7 @@
 namespace Albet\Asmvc\Core\Routing;
 
 use Albet\Asmvc\Core\Containers\Container;
+use Albet\Asmvc\Core\Middleware\FluentMiddleware;
 use Closure;
 
 class RoutesCollection
@@ -23,15 +24,25 @@ class RoutesCollection
         return $this;
     }
 
-    private function checkForMiddleware(?string $middleware = null)
+    private function callMiddleware(array $middlewareClass)
+    {
+        if (!class_exists($middlewareClass[0])) {
+            throw new MiddlewareNotFoundException($middlewareClass[0]);
+        }
+        $middleware = Container::fullfil($middlewareClass[0]);
+        $middleware->middleware($middlewareClass[1]);
+    }
+
+    private function checkForMiddleware(?array $middleware = null)
     {
         if ($middleware) {
-            if (!class_exists($middleware)) {
-                throw new MiddlewareNotFoundException($middleware);
+            if (is_array($middleware)) {
+                foreach ($middleware as $item) {
+                    $this->callMiddleware($item);
+                }
+            } else {
+                $this->callMiddleware($middleware);
             }
-
-            $middlewareClass = new $middleware;
-            $middlewareClass->middleware();
         }
     }
 
@@ -67,7 +78,7 @@ class RoutesCollection
         };
     }
 
-    public function add(string $path, array|string|Closure $handler, ?string $method = 'GET', ?string $middleware = null)
+    public function add(string $path, array|string|Closure $handler, ?string $method = 'GET', FluentMiddleware|array $middleware = null)
     {
         if ($this->isView) {
             $this->viewHandler($middleware, $handler);
@@ -78,7 +89,7 @@ class RoutesCollection
                 $this->checkForMiddleware($middleware);
                 $this->checkForCsrf($method);
 
-                Container::getContainer()->call([$handler[0], $handler[1]], $args);
+                Container::inject([$handler[0], $handler[1]], $args);
             };
         }
 

@@ -27,7 +27,7 @@ class CreateMiddleware extends Cli
 
              namespace Albet\Asmvc\Middleware;
 
-             use Albet\Asmvc\Core\Middleware;
+             use Albet\Asmvc\Core\Middleware\Middleware;
 
              class {$try} extends Middleware
              {

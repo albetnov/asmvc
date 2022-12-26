@@ -44,13 +44,13 @@ class Container
         return self::$container;
     }
 
-    public static function inject(callable $instance, array $parameters)
+    public static function inject($instance, ?array $parameters = [])
     {
         self::checkForInstance();
         return self::$container->call($instance, $parameters);
     }
 
-    public static function fullfil(callable $instance)
+    public static function fullfil($instance)
     {
         self::checkForInstance();
         return self::$container->get($instance);

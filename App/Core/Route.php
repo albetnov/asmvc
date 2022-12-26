@@ -2,6 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
+use Albet\Asmvc\Core\Middleware\Middleware;
 use Closure;
 
 class Route
