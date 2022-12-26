@@ -9,7 +9,7 @@
  * Contribution: https://github.com/albetnov/simple-php-mvc
  */
 
-use Albet\Asmvc\Core\Cli;
+use Albet\Asmvc\Core\CliParser;
 
 /**
  * Define that ASMVC Cli is started.
@@ -27,8 +27,8 @@ if (is_dir(__DIR__ . '/vendor/')) {
     $install = true;
 }
 require_once __DIR__ . '/App/Core/Helpers.php';
-require_once __DIR__ . '/App/Core/Cli/BaseCli.php';
-require_once __DIR__ . '/App/Core/Cli.php';
+require_once __DIR__ . '/App/Core/Cli/Cli.php';
+require_once __DIR__ . '/App/Core/CliParser.php';
 
 /**
  * Validate that ASMVC must be running by CLI interface only.
@@ -40,7 +40,7 @@ if (PHP_SAPI !== 'cli') {
 /**
  * Parsing the argument written by user.
  */
-$cli = new Cli;
+$cli = new CliParser;
 if ($install) {
     $cli->install();
 } else {

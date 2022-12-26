@@ -11,6 +11,14 @@ class Cli
     protected static $args = [];
     protected $hint;
 
+    private function getArg(int $index): string
+    {
+        if (!isset(self::$args[$index])) {
+            throw new ArgumentInvalidException();
+        }
+        return self::$args[$index];
+    }
+
     /**
      * Get where the arguments start
      * @param bool $get_counter
@@ -22,13 +30,13 @@ class Cli
             if ($get_counter) {
                 return 1;
             } else {
-                return self::$args[1];
+                return $this->getArg(1);
             }
         } else {
             if ($get_counter) {
                 return 0;
             } else {
-                return self::$args[0];
+                return $this->getArg(0);
             }
         }
     }
