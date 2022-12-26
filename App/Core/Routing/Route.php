@@ -3,8 +3,8 @@
 namespace Albet\Asmvc\Core\Routing;
 
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
+use Albet\Asmvc\Core\Logger\Logger;
 use Albet\Asmvc\Core\Middleware\FluentMiddleware;
-use Albet\Asmvc\Core\Middleware\Middleware;
 use Closure;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -159,11 +159,14 @@ class Route
 
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
+                Logger::info("Route not found.", ['url' => $request->getCurrentUrl()]);
                 returnErrorPage(404);
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
+                Logger::info("Method not allowed.", ['url' => $request->getCurrentUrl()]);
                 throw new MethodNotAllowedException($request->getAll()->getMethod());
             case Dispatcher::FOUND:
+                Logger::info("Route found.", ['url' => $request->getCurrentUrl()]);
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 $handler($vars);

@@ -3,6 +3,7 @@
 namespace Albet\Asmvc\Core\Routing;
 
 use Albet\Asmvc\Core\Containers\Container;
+use Albet\Asmvc\Core\Logger\Logger;
 use Albet\Asmvc\Core\Middleware\FluentMiddleware;
 use Closure;
 
@@ -30,6 +31,7 @@ class RoutesCollection
             throw new MiddlewareNotFoundException($middlewareClass[0]);
         }
         $middleware = Container::fullfil($middlewareClass[0]);
+        Logger::info('Middleware executed', ['middleware' => $middlewareClass[0]]);
         $middleware->middleware($middlewareClass[1]);
     }
 

@@ -6,9 +6,9 @@ if (!function_exists('config_path')) {
      */
     function config_path(?string $file = null): string
     {
-        if ($file) return __DIR__ . "/../Config/$file";
+        if ($file) return __DIR__ . "/../../Config/$file";
 
-        return __DIR__ . "/../Config/";
+        return __DIR__ . "/../../Config/";
     }
 }
 
@@ -18,13 +18,14 @@ if (!function_exists('config')) {
      */
     function config(string $fileName): array
     {
-        return require_once config_path($fileName . '.php');
+        $config = require config_path($fileName . '.php');
+        return ((array) $config);
     }
 }
 
 if (!function_exists('provider_config')) {
     function provider_config(): array
     {
-        return config("providers");
+        return (array) config('providers');
     }
 }

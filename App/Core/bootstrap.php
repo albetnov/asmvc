@@ -7,6 +7,8 @@
 
 use Albet\Asmvc\Core\Containers\Container;
 use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use Albet\Asmvc\Core\Exceptions\DetailableException;
+use Albet\Asmvc\Core\Logger\Logger;
 use Albet\Asmvc\Core\Route as OldRouter;
 use Albet\Asmvc\Core\Routing\Route;
 use Dotenv\Dotenv;
@@ -27,6 +29,12 @@ if (env('APP_ENV') == 'testing') {
 $dotenv->safeLoad();
 
 /**
+ * Initiate logger
+ */
+Logger::make();
+Logger::info("Application booting", ['src' => 'Core/boostrap.php']);
+
+/**
  * Load Whoops error handler.
  */
 if (!defined('ASMVC_CLI_START')) {
@@ -42,6 +50,13 @@ if (!defined('ASMVC_CLI_START')) {
             returnErrorPage(500);
         });
     }
+    $whoops->pushHandler(function ($e) {
+        if ($e instanceof DetailableException) {
+            Logger::error($e->getMessage(), ['detail' => $e->getDetail(), 'trace' => $e->getTrace()]);
+        } else {
+            Logger::error($e->getMessage(), $e->getTrace());
+        }
+    });
     $whoops->register();
 }
 

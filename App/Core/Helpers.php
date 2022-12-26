@@ -275,10 +275,10 @@ if (!function_exists('env')) {
      * Function to get an env, If there's no env you can put
      * optional value.
      * @param string $name
-     * @param string $optional
+     * @param mixed $optional
      * @return string
      */
-    function env(string $name, ?string $optional = null): string
+    function env(string $name, mixed $optional = null): string
     {
         if (isset($_ENV[$name])) {
             return $_ENV[$name];
@@ -304,5 +304,18 @@ if (!function_exists('session')) {
             return $_SESSION[$name];
         }
         return new SessionManager;
+    }
+}
+
+if (!function_exists('cache_path')) {
+    function cache_path(?string $fileName = null)
+    {
+        $path = __DIR__ . "/../Cache/";
+
+        if ($fileName) {
+            $path .= $fileName;
+        }
+
+        return $path;
     }
 }

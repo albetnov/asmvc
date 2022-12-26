@@ -18,7 +18,7 @@ class Container
             if (count($config) <= 1 && $config['CheckPerformance']) {
                 throw new OptimizationRequiredException();
             }
-            $containerBuilder->enableCompilation(__DIR__ . '/Cache/');
+            $containerBuilder->enableCompilation(cache_path());
         }
         unset($config['CheckPerformance']); // emit CheckPerformance so it won't get compiled
         $containerBuilder->addDefinitions($config);
