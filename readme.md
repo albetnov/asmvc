@@ -7,7 +7,7 @@ Created By Albet Novendo. <br>
 - Apache2 with:
   - Rewrite
   - Override
-- MySQL (If you need it. Right now ASMVC Support limited to MySQL only).
+- MySQL (If you need it)
 - PHP 8.0 and upper
 - Composer
 
@@ -21,7 +21,11 @@ Created By Albet Novendo. <br>
 
 ## Composer Way
 
-`composer create-project albet/asmvc -s dev project-name`
+`composer create-project albet/asmvc project-name`
+
+# Documentation
+
+The documentation of ASMVC can be found in: [ASMVC Docs](https://albetnov.github.io/asmvc-docs)
 
 # License
 

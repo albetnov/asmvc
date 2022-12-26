@@ -12,15 +12,16 @@ class Container
     public function __construct()
     {
         $containerBuilder = new ContainerBuilder();
+        $config = config('container');
         if (env("APP_ENV", "development") === "production") {
-            $config = config('container');
 
             if (count($config) <= 1 && $config['CheckPerformance']) {
                 throw new OptimizationRequiredException();
             }
             $containerBuilder->enableCompilation(__DIR__ . '/Cache/');
         }
-        $containerBuilder->addDefinitions(config_path("container.php"));
+        unset($config['CheckPerformance']); // emit CheckPerformance so it won't get compiled
+        $containerBuilder->addDefinitions($config);
         $container = $containerBuilder->build();
         self::$container = $container;
     }
