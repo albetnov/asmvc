@@ -2,10 +2,10 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\addBootstrap;
 use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
 
-class InstallBootstrap extends BaseCli
+class InstallBootstrap extends Cli
 {
 
     /**

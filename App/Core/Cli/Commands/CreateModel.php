@@ -2,10 +2,10 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
 use Albet\Asmvc\Core\Config;
 
-class CreateModel extends BaseCli
+class CreateModel extends Cli
 {
     /**
      * @var string $command
@@ -30,9 +30,9 @@ class CreateModel extends BaseCli
 
                         namespace Albet\Asmvc\Models;
 
-                        use Albet\Asmvc\Core\BaseEloquent;
+                        use Albet\Asmvc\Core\Eloquent\Eloquent;
                         
-                        class {$try} extends BaseEloquent 
+                        class {$try} extends Eloquent 
                         {
                             protected string \$table = '';
                         }
@@ -44,9 +44,9 @@ class CreateModel extends BaseCli
     
                         namespace Albet\Asmvc\Models;
     
-                        use Albet\Asmvc\Core\BaseModel;
+                        use Albet\Asmvc\Core\Database\Model;
     
-                        class {$try} extends BaseModel
+                        class {$try} extends Model
                         {
                             protected string \$table = '';
                         }

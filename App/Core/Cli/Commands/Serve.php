@@ -2,9 +2,10 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
+use Albet\Asmvc\Core\Cli\ExecDisabledException;
 
-class Serve extends BaseCli
+class Serve extends Cli
 {
     /**
      * @var string $command
@@ -19,7 +20,7 @@ class Serve extends BaseCli
     public function register()
     {
         if (!function_exists('exec')) {
-            throw new \Exception("Exec() is not detected. Please activate it in php.ini");
+            throw new ExecDisabledException();
         }
         $port = 9090;
         $default = @fsockopen('localhost', $port);

@@ -2,9 +2,9 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
 
-class CreateTest extends BaseCli
+class CreateTest extends Cli
 {
     /**
      * @var string $command

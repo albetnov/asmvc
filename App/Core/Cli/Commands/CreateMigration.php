@@ -2,9 +2,9 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
 
-class CreateMigration extends BaseCli
+class CreateMigration extends Cli
 {
     /**
      * @var string $command
@@ -30,7 +30,7 @@ class CreateMigration extends BaseCli
             use Albet\\Asmvc\\Core\\BaseMigration;
             use Illuminate\\Database\\Schema\\Blueprint;
 
-            return new class extends BaseMigration
+            return new class extends Migration
             {
                 public function up(): void
                 {

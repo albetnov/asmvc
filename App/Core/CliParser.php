@@ -2,10 +2,10 @@
 
 namespace Albet\Asmvc\Core;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
 use Albet\Asmvc\Core\Cli\Loader;
 
-class Cli extends BaseCli
+class CliParser extends Cli
 {
 
     /**

@@ -2,9 +2,10 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
+use Albet\Asmvc\Core\Exceptions\SystemInvalidException;
 
-class RunTest extends BaseCli
+class RunTest extends Cli
 {
     /**
      * @var string $command
@@ -27,6 +28,9 @@ class RunTest extends BaseCli
             $path = 'vendor/bin/phpunit';
         }
         if ($try) {
+            if (!function_exists('system')) {
+                throw new SystemInvalidException();
+            }
             system("{$path} --configuration phpunit.xml App/Tests/{$try}.php", $result);
             echo $result;
         } else {

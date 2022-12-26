@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace Albet\Asmvc\Core\Database;
 
-class BaseModel extends Database
+class Model extends Database
 {
     /**
      * @var string $table

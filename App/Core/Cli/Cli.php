@@ -2,7 +2,7 @@
 
 namespace Albet\Asmvc\Core\Cli;
 
-class BaseCli
+class Cli
 {
     /**
      * @var array $args
@@ -68,11 +68,11 @@ class BaseCli
     public function install(): void
     {
         if (!function_exists('exec')) {
-            throw new \Exception("Exec() function not detected. Please activate it in php.ini");
+            throw new ExecDisabledException();
         }
         exec('composer install');
         if (!is_dir(base_path('vendor'))) {
-            throw new \Exception("Composer install failed to ran.");
+            throw new ComposerInstallFailedException();
         } else {
             exec('php asmvc setup');
         }

@@ -2,9 +2,10 @@
 
 namespace Albet\Asmvc\Core;
 
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
 use Illuminate\Database\Schema\Builder;
 
-abstract class BaseMigration
+abstract class Migration
 {
     protected Builder $schema;
 

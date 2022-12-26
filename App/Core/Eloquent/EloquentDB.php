@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace Albet\Asmvc\Core\Eloquent;
 
 use Illuminate\Database\Capsule\Manager as Eloquent;
 use Illuminate\Events\Dispatcher;

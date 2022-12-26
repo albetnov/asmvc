@@ -2,10 +2,10 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
-use Albet\Asmvc\Core\EloquentDB;
+use Albet\Asmvc\Core\Cli\Cli;
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
 
-class RollbackMigration extends BaseCli
+class RollbackMigration extends Cli
 {
     /**
      * @var string $command
@@ -13,7 +13,7 @@ class RollbackMigration extends BaseCli
      * @var string $desc
      */
     protected $command = "migration:rollback";
-    protected $hint = "MigrationName?,clean?";
+    protected $hint = "clean?";
     protected $desc = "Rollback your migration.";
 
     /**
@@ -40,18 +40,6 @@ class RollbackMigration extends BaseCli
     }
 
     /**
-     * Remove extension from a file name
-     * @param string $file
-     * @return string
-     */
-    private function noExtension(string $file)
-    {
-        $result = explode('.', $file);
-        array_pop($result);
-        return implode('.', $result);
-    }
-
-    /**
      * Register the command
      */
     public function register()
@@ -59,47 +47,22 @@ class RollbackMigration extends BaseCli
         $try = $this->next_arguments(1) != "clean" ? $this->next_arguments(1) : true;
         $next = $try ? true : $this->next_arguments(2);
 
-        if ($try && $try != "clean") {
-            if (!class_exists($this->noExtension($try))) {
-                $get = require_once base_path("App/Database/Migrations/{$try}.php");
-                $get->down();
-                echo "Rollback: {$try}.\n";
-            } else {
-                $class = "\\Albet\\Asmvc\Database\\Migrations\\{$try}";
-                (new $class())->down();
-            }
-            if ($next) {
-                $this->clearHistory($try . '.php');
-            }
-        } else {
-            $diffed = array_diff(scandir(base_path() . "/App/Database/Migrations"), ['.', '..', '.gitkeep']);
-            $dirtho = [];
-            foreach ($diffed as $diffed) {
-                if (!str_contains($diffed, '.')) {
-                    $dirs = array_diff(scandir($path . $diffed . '/'), ['.', '..']);
-                    $dirtho[] = $diffed;
-                    foreach ($dirs as $dir) {
-                        echo "Rollback: {$dir}.\n";
-                        $noext = $this->noExtension($dir);
-                        if (!class_exists($noext)) {
-                            $get = require_once base_path("App/Database/Migrations/{$dir}");
-                            $get->down();
-                        } else {
-                            $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                            (new $class())->down();
-                        }
-                    }
-                } else {
-                    echo "Rollback: $diffed\n";
-                    $noext = $this->noExtension($diffed);
-                    if (!class_exists($noext)) {
-                        $get = require_once base_path("App/Database/Migrations/{$diffed}");
-                        $get->down();
-                    } else {
-                        $class = "\\Albet\\Asmvc\\Database\\Migrations\\{$noext}";
-                        (new $class())->down();
-                    }
+        $path = base_path() . "/App/Database/Migrations";
+        $diffed = array_diff(scandir($path), ['.', '..', '.gitkeep']);
+        $dirtho = [];
+        foreach ($diffed as $diffed) {
+            if (!str_contains($diffed, '.')) {
+                $dirs = array_diff(scandir($path . $diffed . '/'), ['.', '..']);
+                $dirtho[] = $diffed;
+                foreach ($dirs as $dir) {
+                    echo "Rollback: {$dir}.\n";
+                    $get = require_once base_path("App/Database/Migrations/{$dir}");
+                    $get->down();
                 }
+            } else {
+                echo "Rollback: $diffed\n";
+                $get = require_once base_path("App/Database/Migrations/{$diffed}");
+                $get->down();
             }
             if ($next) {
                 $this->clearHistory();

@@ -2,9 +2,9 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
+use Albet\Asmvc\Core\Cli\Cli;
 
-class CreateMiddleware extends BaseCli
+class CreateMiddleware extends Cli
 {
     /**
      * @var string $command
@@ -27,9 +27,9 @@ class CreateMiddleware extends BaseCli
 
              namespace Albet\Asmvc\Middleware;
 
-             use Albet\Asmvc\Core\BaseMiddleware;
+             use Albet\Asmvc\Core\Middleware;
 
-             class {$try} extends BaseMiddleware
+             class {$try} extends Middleware
              {
                  public function middleware(): void
                  {

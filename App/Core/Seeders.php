@@ -2,7 +2,7 @@
 
 namespace Albet\Asmvc\Core;
 
-use Albet\Asmvc\Models\Test;
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
 use Faker\Factory;
 
 abstract class Seeders

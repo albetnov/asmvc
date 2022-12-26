@@ -2,12 +2,12 @@
 
 namespace Albet\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
-use Albet\Asmvc\Core\EloquentDB;
+use Albet\Asmvc\Core\Cli\Cli;
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
 
-class RunMigration extends BaseCli
+class RunMigration extends Cli
 {
     /**
      * @var string $command

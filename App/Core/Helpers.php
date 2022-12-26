@@ -8,15 +8,16 @@ require_once __DIR__ . '/Helpers/strAlter.php';
 require_once __DIR__ . '/Helpers/validator.php';
 
 // use Albet\Asmvc\Core\Route;
-use Albet\Asmvc\Core\Connection;
+
+use Albet\Asmvc\Core\Database\Connection;
 use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
-use Albet\Asmvc\Core\Views;
+use Albet\Asmvc\Core\Views\Views;
 
 /**
  * ASMVC Version and State
  */
-define('ASMVC_VERSION', '2.5');
+define('ASMVC_VERSION', '3.0-dev');
 define('ASMVC_STATE', 'development');
 
 if (!function_exists('request')) {

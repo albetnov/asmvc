@@ -1,7 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace Albet\Asmvc\Core\Database;
 
+use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 
 class Database
@@ -57,7 +58,7 @@ class Database
     {
         $env = Config::modelDriver();
         if ($env != 'asmvc') {
-            throw new \Exception("You can't use asmvc driver since your current driver is: {$env}. Please use it with {$env} way.");
+            throw new ModelDriverException();
         }
         $this->pdo = (new Connection)->getConnection();
     }
@@ -128,7 +129,7 @@ class Database
     public function whereNoFormat(): self
     {
         if ($this->whereStmt) {
-            throw new \Exception("Please use whereNoFormat before where()");
+            throw new QueryBuilderException("whereNoFormat", "Please use whereNoFormat before where query.");
         }
         $this->whereNoFormat = true;
         return $this;
@@ -144,7 +145,7 @@ class Database
     public function orWhere(string $field, string $value, ?string $operator = null): self
     {
         if (!$this->whereStmt) {
-            throw new \Exception("Please use orWhere() after where()");
+            throw new QueryBuilderException("orWhere", "Please use orWhere() after where()");
         }
         if ($this->whereStmt) {
             $string = " OR {$field} ";

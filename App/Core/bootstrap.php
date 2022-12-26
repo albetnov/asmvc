@@ -7,7 +7,7 @@
 
 use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Containers\Container;
-use Albet\Asmvc\Core\EloquentDB;
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
 use Dotenv\Dotenv;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;

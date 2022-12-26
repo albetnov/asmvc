@@ -1,6 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace Albet\Asmvc\Core\Views;
+
+use Albet\Asmvc\Core\Config;
+use Albet\Asmvc\Core\Flash;
 
 class Views
 {
@@ -35,7 +38,7 @@ class Views
     {
         $content = ob_get_clean();
         if (self::$sectionList === []) {
-            throw new \Exception("Section undefined.");
+            throw new InvalidSectionException();
         }
         $section = array_pop(self::$sectionList);
         if (!array_key_exists($section, self::$section)) {

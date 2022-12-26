@@ -2,9 +2,11 @@
 
 namespace Albet\Asmvc\Core;
 
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use Albet\Asmvc\Core\Eloquent\ModelDriverException;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseEloquent extends Model
+class Eloquent extends Model
 {
     /**
      * Add eloquent query builder
@@ -21,7 +23,7 @@ class BaseEloquent extends Model
         parent::__construct($attributes);
         $env = Config::modelDriver();
         if ($env != 'eloquent') {
-            throw new \Exception("You can't use eloquent driver since your current driver is: {$env}. Please use it with {$env} way.");
+            throw new ModelDriverException();
         }
         $this->db = new EloquentDB;
     }

@@ -2,7 +2,10 @@
 
 namespace Albet\Asmvc\Core;
 
-abstract class BaseMiddleware
+use Albet\Asmvc\Core\Database\Database;
+use Albet\Asmvc\Core\Eloquent\EloquentDB;
+
+abstract class Middleware
 {
     /**
      * @var $db

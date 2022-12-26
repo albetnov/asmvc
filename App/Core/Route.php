@@ -35,7 +35,7 @@ class Route
      * @param array $controllerandmethod
      * @param array $http_method_or_middleware
      */
-    public static function add(string $path, array|Closure $controllerandmethod, array|string|BaseMiddleware ...$http_method_or_middleware)
+    public static function add(string $path, array|Closure $controllerandmethod, array|string|Middleware ...$http_method_or_middleware)
     {
         $http_method = 'GET';
         $middleware = null;
@@ -78,7 +78,7 @@ class Route
      * @param Array|String $view
      * @param array $http_method_or_middleware.
      */
-    public static function include_view(string $path, array|string $view, array|string|BaseMiddleware ...$http_method_or_middleware)
+    public static function include_view(string $path, array|string $view, array|string|Middleware ...$http_method_or_middleware)
     {
         $http_method = 'GET';
         $middleware = null;
