@@ -26,7 +26,7 @@ class RoutesCollection
 
                 if (in_array($method, $csrfMethod)) {
                     if (!csrf()->validateCsrf()) {
-                        ReturnError(500, "CSRF validation failed");
+                        returnErrorPage(500, "CSRF validation failed");
                     }
                 }
 

@@ -78,7 +78,7 @@ class Route
      * @param Array|String $view
      * @param array $http_method_or_middleware.
      */
-    public static function view(string $path, array|string $view, array|string|BaseMiddleware ...$http_method_or_middleware)
+    public static function include_view(string $path, array|string $view, array|string|BaseMiddleware ...$http_method_or_middleware)
     {
         $http_method = 'GET';
         $middleware = null;
@@ -87,7 +87,7 @@ class Route
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
             } else if (count($http_method_or_middleware) > 3) {
-                throw new \Exception("Max arguments for view() only allowed 4");
+                throw new \Exception("Max arguments for include_view() only allowed 4");
             }
             if (class_exists($http_method_or_middleware[0])) {
                 $middleware = $http_method_or_middleware[0];
@@ -127,14 +127,14 @@ class Route
     public static function registerPrevious(?string $route = null, bool $get = false)
     {
         if (!isset($_SESSION['_previousUrl'])) {
-            $_SESSION['_previousUrl'] = [GetCurrentUrl()];
+            $_SESSION['_previousUrl'] = [getCurrentUrl()];
         }
 
         if ($route) {
             $_SESSION['_previousUrl'] = $route;
         }
 
-        $_SESSION['_previousUrl'][] = GetCurrentUrl();
+        $_SESSION['_previousUrl'][] = getCurrentUrl();
         if (sizeof($_SESSION['_previousUrl']) > 1) {
             $getPrevious = $_SESSION['_previousUrl'][array_key_last($_SESSION['_previousUrl']) - 1];
         } else {
@@ -161,7 +161,7 @@ class Route
 
     /**
      * Run the routing
-     * @return returnError
+     * @return returnErrorPage
      */
     public static function triggerRouter(): mixed
     {
@@ -191,7 +191,7 @@ class Route
                     throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} is not support for this url. Instead use {$route['http_method']}!");
                 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (!csrf()->validateCsrf()) {
-                        return ReturnError(500, "Csrf Not Valid.");
+                        return returnErrorPage(500, "Csrf Not Valid.");
                     };
                 }
                 self::registerPrevious();
@@ -201,9 +201,9 @@ class Route
                 }
                 if ($route['controller'] == 'view') {
                     if (isset($route['method']['data'])) {
-                        return view($route['method']['view'], $route['method']['data']);
+                        return include_view($route['method']['view'], $route['method']['data']);
                     } else {
-                        return view($route['method']);
+                        return include_view($route['method']);
                     }
                 } else if ($route['controller'] == 'inline') {
                     return call_user_func_array($route['method'], $variables);
@@ -230,7 +230,7 @@ class Route
                     exit;
                 }
             }
-            return ReturnError(404);
+            return returnErrorPage(404);
         }
     }
 }

@@ -27,7 +27,7 @@ class Validator
     public static function make(array $validate, array $customMsg = [], bool $redirect = false): bool
     {
         $validator = new RakitValidator();
-        $validation = $validator->make(request()->input('*'), $validate);
+        $validation = $validator->make(request()->getInput("*"), $validate);
 
         if ($customMsg !== []) {
             $validation->setMessages($customMsg);

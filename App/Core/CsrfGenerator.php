@@ -8,6 +8,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 class CsrfGenerator
 {
     private CsrfTokenManager $csrf;
+    private const tokenModifier = "__token__";
 
     public function __construct()
     {
@@ -20,7 +21,7 @@ class CsrfGenerator
      */
     public function validateCsrf(): bool
     {
-        $token = new CsrfToken(session('token'), request()->input('__token__'));
+        $token = new CsrfToken(session('token'), request()->getInput(self::tokenModifier));
         $isValid = $this->csrf->isTokenValid($token);
         $this->csrf->refreshToken(session('token'));
 
@@ -40,6 +41,6 @@ class CsrfGenerator
         $token = $this->csrf->getToken($uniqueId);
         $_SESSION['token'] = $uniqueId;
 
-        return '<input name="__token__" type="hidden" value="' . $token . '" />';
+        return '<input name="' . self::tokenModifier . '" type="hidden" value="' . $token . '" />';
     }
 }

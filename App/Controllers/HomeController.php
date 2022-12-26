@@ -8,6 +8,6 @@ class HomeController
 {
     public function index()
     {
-        return view('home');
+        return include_view('home');
     }
 }

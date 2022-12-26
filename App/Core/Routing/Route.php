@@ -3,12 +3,10 @@
 namespace Albet\Asmvc\Core\Routing;
 
 use Albet\Asmvc\Core\BaseMiddleware;
-use Albet\Asmvc\Core\DependencyResolver;
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 use Closure;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
-use Laminas\Diactoros\ServerRequestFactory;
 
 use function FastRoute\simpleDispatcher;
 
@@ -127,7 +125,7 @@ class Route
 
                 $filePath = public_path($args['file']);
                 if (!file_exists($filePath)) {
-                    ReturnError(404);
+                    returnErrorPage(404);
                 }
 
                 header("Content-Type: text/$ext");
@@ -136,20 +134,19 @@ class Route
             });
         });
 
-
-        $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+        $request = request();
 
         $routeInfo = $dispatcher->dispatch(
-            $request->getMethod(),
-            $request->getUri()->getPath()
+            $request->getAll()->getMethod(),
+            $request->getAll()->getUri()->getPath()
         );
 
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                ReturnError(404);
+                returnErrorPage(404);
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
-                throw new MethodNotAllowedException($request->getMethod());
+                throw new MethodNotAllowedException($request->getAll()->getMethod());
             case Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];

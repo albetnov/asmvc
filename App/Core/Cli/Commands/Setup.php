@@ -29,7 +29,7 @@ class Setup extends BaseCli
                     $session_default = $this->ask("Which one do you prefer as Session Driver (Default: redis) [php/redis]", 'redis');
                 } while ($session_default != 'redis' && $session_default != 'php');
                 $data = <<<data
-                APP_ENV=production
+                APP_ENV=development
                 APP_MODELS_DRIVER=asmvc
                 APP_VIEW_ENGINE=latte
 

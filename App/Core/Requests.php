@@ -2,43 +2,44 @@
 
 namespace Albet\Asmvc\Core;
 
-class Requests
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequestFactory;
+
+class Requests extends ServerRequestFactory
 {
+    private ServerRequest $request;
+
+    public function __construct()
+    {
+        $this->request = $this->fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+    }
+
     /**
      * Get an input field value
      * @param string $field
      * @param bool $escape
      * @return string|array
      */
-    public function input(string $field, bool $escape = true): string|bool|array
+    public function getInput(string $field): string|bool|array
     {
         if ($field == '*') {
-            return $_POST;
+            return $this->request->getParsedBody();
         }
 
-        if (!isset($_POST[$field])) {
+        if (!isset($this->request->getParsedBody()[$field])) {
             return false;
         }
 
-        if (!$escape) {
-            $check = $_POST[$field];
-        } else {
-            $check = htmlspecialchars($_POST[$field]);
-        }
-        if (isset($check)) {
-            return $check;
-        } else {
-            return false;
-        }
+        return $this->request->getParsedBody()[$field];
     }
 
     /**
      * Get user's current URL
      * @return string
      */
-    public function currentURL(): string
+    public function getCurrentUrl(): string
     {
-        return get_http_protocol() . '://' . base_url() . $_SERVER['REQUEST_URI'];
+        return $this->request->getUri()->__toString();
     }
 
     /**
@@ -46,26 +47,31 @@ class Requests
      * @param string $name
      * @return mixed
      */
-    public function upload(string $name): mixed
+    public function getUpload(string $name): mixed
     {
-        if (isset($_FILES[$name])) {
-            return $_FILES[$name];
-        } else {
-            return null;
+        vdd($this->request->getUploadedFiles(), $_FILES);
+        if (isset($this->request->getUploadedFiles()[$name])) {
+            return $this->request->getUploadedFiles()[$name];
         }
+
+        return false;
     }
 
     /**
      * Get url query parameter values
      * @param string $name
-     * @return string
+     * @return string|bool
      */
-    public function query(string $name): ?string
+    public function getQuery(string $name): string | bool
     {
-        if (isset($_GET[$name])) {
-            return htmlspecialchars($_GET[$name]);
-        } else {
-            return null;
+        if (isset($this->request->getQueryParams()[$name])) {
+            return $this->request->getQueryParams()[$name];
         }
+        return false;
+    }
+
+    public function getAll(): ServerRequest
+    {
+        return $this->request;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Call autoload
+ * Bootstrap the application
  */
-require_once __DIR__ . '/../App/Core/init.php';
+require_once __DIR__ . '/../App/Core/bootstrap.php';
 
 use Albet\Asmvc\Core\Routing\Route;
 use Albet\Asmvc\Core\SessionManager;

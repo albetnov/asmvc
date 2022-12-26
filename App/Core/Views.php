@@ -43,7 +43,7 @@ class Views
         }
         self::$section[$section][] = $content;
         if (self::$path) {
-            view(self::$path);
+            include_view(self::$path);
         }
     }
 
@@ -72,7 +72,7 @@ class Views
     public function extends(string $path): void
     {
         if (self::$currentSection) {
-            view($path);
+            include_view($path);
             return;
         }
 
@@ -85,7 +85,7 @@ class Views
      */
     public function include(string $path): void
     {
-        view($path);
+        include_view($path);
     }
 
     /**
@@ -98,7 +98,7 @@ class Views
     public function match(string $expected, string $classname): string
     {
         $expected = url() . $expected;
-        if ($expected == GetCurrentUrl()) {
+        if ($expected == getCurrentUrl()) {
             return $classname;
         } else {
             return '';
@@ -123,8 +123,8 @@ class Views
             return new \Latte\Runtime\Html(csrf_field($route));
         });
 
-        $latte->addFunction('validateMsg', function ($field) {
-            return new \Latte\Runtime\Html(validateMsg($field));
+        $latte->addFunction('getErrorMsg', function ($field) {
+            return new \Latte\Runtime\Html(getErrorMsg($field));
         });
 
         $latte->addFunction('flash', function () {
@@ -146,7 +146,7 @@ class Views
     /**
      * Import a view
      */
-    public function view(string $path, array $data): mixed
+    public function include_view(string $path, array $data): mixed
     {
         if (Config::viewEngine() == 'latte') {
             return $this->latteDriver($path, $data);

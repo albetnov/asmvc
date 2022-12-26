@@ -20,7 +20,7 @@ define('ASMVC_CLI_START', true);
  * Calling autoload. If it's not exist. Install composer's autoload.
  */
 if (is_dir(__DIR__ . '/vendor/')) {
-    require_once __DIR__ . '/App/Core/init.php';
+    require_once __DIR__ . '/App/Core/bootstrap.php';
     $install = false;
 } else {
     echo "ASMVC will try to install dependencies by running composer install...\n";

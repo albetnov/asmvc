@@ -7,7 +7,10 @@
 
 use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\EloquentDB;
+use Albet\Asmvc\Core\Requests;
+use DI\ContainerBuilder;
 use Dotenv\Dotenv;
+use Laminas\Diactoros\ServerRequestFactory;
 
 require_once __DIR__ . '/Helpers.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -31,7 +34,7 @@ if (!defined('ASMVC_CLI_START')) {
         $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
     } else {
         $whoops->pushHandler(function ($e) {
-            ReturnError(500);
+            returnErrorPage(500);
         });
     }
     $whoops->register();
@@ -42,4 +45,21 @@ if (!defined('ASMVC_CLI_START')) {
  */
 if (Config::modelDriver() == 'eloquent') {
     new EloquentDB;
+}
+
+if (!function_exists('container')) {
+    function container()
+    {
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->addDefinitions();
+        $container = $containerBuilder->build();
+        return $container;
+    }
+}
+
+if (!function_exists('request')) {
+    function request()
+    {
+        return new Requests;
+    }
 }
