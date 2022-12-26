@@ -5,6 +5,7 @@ namespace Albet\Asmvc\Core\Routing;
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 use Albet\Asmvc\Core\Logger\Logger;
 use Albet\Asmvc\Core\Middleware\FluentMiddleware;
+use Albet\Asmvc\Core\SessionManager;
 use Closure;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -169,6 +170,9 @@ class Route
                 Logger::info("Route found.", ['url' => $request->getCurrentUrl()]);
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
+                if (!str_contains($request->getCurrentUrl(), "/public/")) {
+                    SessionManager::registerPrevious($request->getCurrentUrl());
+                }
                 $handler($vars);
                 break;
         }

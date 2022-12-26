@@ -217,24 +217,12 @@ if (!function_exists('back')) {
      * @param bool $jsonly
      * @return string
      */
-    function back(bool $jsonly = false): string
+    function back(bool $jsonly = false): ?string
     {
         if ($jsonly) {
             return "history.go(-1)";
         }
         return (new SessionManager)->back();
-    }
-}
-
-if (!function_exists('setPrevious')) {
-    /**
-     * A function to set a previous
-     * @param string $route
-     * @return string
-     */
-    function setPrevious(string $route): string
-    {
-        return (new SessionManager)->setPrevious($route);
     }
 }
 
@@ -297,7 +285,7 @@ if (!function_exists('session')) {
      * @param string $name
      * @return mixed
      */
-    function session(?string $name = null): string | SessionManager
+    function session(?string $name = null): string | array | SessionManager
     {
         if (!is_null($name)) {
             if (!isset($_SESSION[$name])) return "";

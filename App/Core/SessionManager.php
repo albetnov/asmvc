@@ -25,6 +25,13 @@ class SessionManager
         $this->secure = $session['secure'];
     }
 
+    public static function __callStatic($method, $parameters)
+    {
+        if ($method === "registerPrevious") {
+            return self::registerPrevious(...$parameters);
+        }
+    }
+
     public static function make(): self
     {
         return new SessionManager();
@@ -143,18 +150,20 @@ class SessionManager
     /**
      * Get a previous url
      */
-    public function back(): string
+    public static function back(): ?string
     {
-        return Route::getPrevious();
+        if (count(session('_previousRoute')) <= 1) {
+            return null;
+        }
+        return session('_previousRoute')[array_key_last(session('_previousRoute')) - 1];
     }
 
-    /**
-     * Register customized previous url
-     * @param string $route
-     * @return string
-     */
-    public function setPrevious(string $route): string
+    private static function registerPrevious(string $url)
     {
-        return Route::registerPrevious($route, true);
+        if (count(session('_previousRoute')) > 2) {
+            unset(session('_previousRoute')[array_key_last(session('_previousRoute'))]);
+        }
+
+        $_SESSION['_previousRoute'][] = $url;
     }
 }
