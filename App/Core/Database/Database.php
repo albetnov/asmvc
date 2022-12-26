@@ -2,7 +2,6 @@
 
 namespace Albet\Asmvc\Core\Database;
 
-use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 
 class Database
@@ -56,7 +55,7 @@ class Database
      */
     public function __construct()
     {
-        $env = Config::modelDriver();
+        $env = provider_config()['model'];
         if ($env != 'asmvc') {
             throw new ModelDriverException();
         }

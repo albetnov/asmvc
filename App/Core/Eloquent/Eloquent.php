@@ -21,7 +21,7 @@ class Eloquent extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $env = Config::modelDriver();
+        $env = provider_config()['model'];
         if ($env != 'eloquent') {
             throw new ModelDriverException();
         }

@@ -2,7 +2,6 @@
 
 namespace Albet\Asmvc\Core\Middleware;
 
-use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Database\Database;
 use Albet\Asmvc\Core\Eloquent\EloquentDB;
 

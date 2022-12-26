@@ -1,11 +1,13 @@
 <?php
 
-//Include csrf Helper
+// Include csrf Helper
 require_once __DIR__ . '/Helpers/csrf.php';
-//Include strAlter Helper
-require_once __DIR__ . '/Helpers/strAlter.php';
+// Include strAlter Helper
+require_once __DIR__ . '/Helpers/str.php';
 // Include validator Helper
 require_once __DIR__ . '/Helpers/validator.php';
+// Include config Helper
+require_once __DIR__ . '/Helpers/config.php';
 
 // use Albet\Asmvc\Core\Route;
 
@@ -297,28 +299,5 @@ if (!function_exists('session')) {
             return $_SESSION[$name];
         }
         return new SessionManager;
-    }
-}
-
-if (!function_exists('config_path')) {
-    /**
-     * FUnction that return config path.
-     */
-    function config_path(?string $file = null): string
-    {
-        if ($file) return __DIR__ . "/../Config/$file";
-
-        return __DIR__ . "/../Config/";
-    }
-}
-
-if (!function_exists('config')) {
-    /**
-     * Function to access config file immadiately
-     */
-
-    function config(string $fileName)
-    {
-        return require_once config_path($fileName . '.php');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Albet\Asmvc\Core\Views;
 
-use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Flash;
 
 class Views
@@ -151,7 +150,7 @@ class Views
      */
     public function include_view(string $path, array $data): mixed
     {
-        if (Config::viewEngine() == 'latte') {
+        if (provider_config()['view'] == 'latte') {
             return $this->latteDriver($path, $data);
         }
         $final = dotSupport($path);
