@@ -12,6 +12,7 @@ require_once __DIR__ . '/Helpers/config.php';
 // use Albet\Asmvc\Core\Route;
 
 use Albet\Asmvc\Core\Database\Connection;
+use Albet\Asmvc\Core\Exceptions\InvalidHttpCodePageException;
 use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Views\Views;
@@ -251,16 +252,20 @@ if (!function_exists('getCurrentUrl')) {
 if (!function_exists('returnErrorPage')) {
     /**
      * Function to return a error view and kill the app
-     * @param int $num
      */
-    function returnErrorPage(int $num, ?string $message = null)
+    function returnErrorPage(int $code, bool $showPage = true, ?string $message = null)
     {
-        http_response_code($num);
+        http_response_code($code);
+        if (!$showPage) return;
+        $whitelistCode = ['404', '500'];
+        if (!in_array($code, $whitelistCode)) {
+            throw new InvalidHttpCodePageException($code, $whitelistCode);
+        }
         if (is_dir(__DIR__ . '/../Views/Errors')) {
-            require_once __DIR__ . '/../Views/Errors/' . $num . '.php';
+            require_once __DIR__ . '/../Views/Errors/' . $code . '.php';
             exit();
         }
-        require_once __DIR__ . '/Errors/' . $num . '.php';
+        require_once __DIR__ . '/Errors/' . $code . '.php';
         exit();
     }
 }
