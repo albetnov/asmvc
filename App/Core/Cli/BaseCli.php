@@ -22,13 +22,13 @@ class BaseCli
             if ($get_counter) {
                 return 1;
             } else {
-                return self::$args[1];
+                return !isset(self::$args[1]) ? throw new \Exception("Argument invalid. Please consult php asmvc help") : self::$args[1];
             }
         } else {
             if ($get_counter) {
                 return 0;
             } else {
-                return self::$args[0];
+                return !isset(self::$args[0]) ? throw new \Exception("Argument invalid. Please consult php asmvc help") : self::$args[0];
             }
         }
     }
