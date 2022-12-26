@@ -57,8 +57,14 @@ class Route
         return $this;
     }
 
-    protected function parseRoute(string $method, string $path, array $handler, ?BaseMiddleware $middleware = null): void
+    protected function parseRoute(string $method, string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): void
     {
+        if ($handler instanceof Closure) {
+            $this->definedRouteCollection->setAsClosure() // set add to behave handling closure
+                ->add($path, $handler, $method, $middleware)
+                ->setAsClosure(false); // return it back to normal so it won't collide with other types.
+            return;
+        }
         if (!class_exists($handler[0])) {
             throw new ControllerNotFoundException();
         }
@@ -70,45 +76,54 @@ class Route
         $this->definedRouteCollection->add($path, $handler, $method, $middleware);
     }
 
-    public function get(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function get(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('GET', $path, $handler, $middleware);
         return $this;
     }
 
-    public function post(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function post(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('POST', $path, $handler, $middleware);
         return $this;
     }
 
-    public function put(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function put(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('PUT', $path, $handler, $middleware);
         return $this;
     }
 
-    public function patch(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function patch(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('PATCH', $path, $handler, $middleware);
         return $this;
     }
 
-    public function delete(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function delete(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('DELETE', $path, $handler, $middleware);
         return $this;
     }
 
-    public function head(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function head(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('HEAD', $path, $handler, $middleware);
         return $this;
     }
 
-    public function options(string $path, array $handler, ?BaseMiddleware $middleware = null): self
+    public function options(string $path, array|Closure $handler, ?BaseMiddleware $middleware = null): self
     {
         $this->parseRoute('OPTIONS', $path, $handler, $middleware);
+        return $this;
+    }
+
+    public function view(string $path, string $viewPath, ?BaseMiddleware $middleware = null): self
+    {
+        $this->definedRouteCollection
+            ->setAsView()
+            ->add($path, $viewPath, 'GET', $middleware, true) // this add handler will behave to add a view.
+            ->setAsView(false); // disable setAsView.
         return $this;
     }
 
