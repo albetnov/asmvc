@@ -32,6 +32,7 @@ class Setup extends Cli
                 APP_ENV=development
                 APP_MODELS_DRIVER=asmvc
                 APP_VIEW_ENGINE=latte
+                ROUTING_ENGINE=new
 
                 DATABASE_HOST={$db_host}
                 DATABASE_USERNAME={$db_user}

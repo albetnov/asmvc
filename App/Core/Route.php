@@ -16,6 +16,25 @@ class Route
     private static bool $ASMVC_LOCAL_URL = false;
     private static string $previous;
 
+    public static function __callStatic($method, $parameters)
+    {
+        if ($method === "boot") {
+            $path = __DIR__ . "/../Routes/url.php";
+            if (!file_exists($path)) {
+                file_put_contents($path, <<<RouteFile
+                <?php
+
+                use Albet\Asmvc\Core\Route;
+                use Albet\Asmvc\Controllers\HomeController;
+
+                Route::add('/', [HomeController::class, 'index']);
+                
+                RouteFile);
+            }
+            require_once $path;
+        }
+    }
+
     private static function parseParameter(string $path): string
     {
         $spliited = explode('/', $path);
@@ -78,7 +97,7 @@ class Route
      * @param Array|String $view
      * @param array $http_method_or_middleware.
      */
-    public static function include_view(string $path, array|string $view, array|string|Middleware ...$http_method_or_middleware)
+    public static function view(string $path, array|string $view, array|string|Middleware ...$http_method_or_middleware)
     {
         $http_method = 'GET';
         $middleware = null;

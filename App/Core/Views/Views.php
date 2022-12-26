@@ -111,9 +111,9 @@ class Views
     private function latteDriver(string $path, array $data): mixed
     {
         $latte = new \Latte\Engine;
-        $tmpPath = __DIR__ . '/../Views/Latte/Temps';
+        $tmpPath = __DIR__ . '/../../Views/Latte/Temps';
         if (!is_dir($tmpPath)) {
-            mkdir(__DIR__ . '/../Views/Latte');
+            mkdir(__DIR__ . '/../../Views/Latte');
             mkdir($tmpPath);
         }
 
@@ -143,7 +143,7 @@ class Views
         });
 
         $view = dotSupport($path);
-        return $latte->render(__DIR__ . '/../Views/' . $view . '.latte', $data);
+        return $latte->render(__DIR__ . '/../../Views/' . $view . '.latte', $data);
     }
 
     /**
@@ -156,6 +156,6 @@ class Views
         }
         $final = dotSupport($path);
         extract($data);
-        include __DIR__ . '/../Views/' . $final . ".php";
+        include __DIR__ . '/../../Views/' . $final . ".php";
     }
 }

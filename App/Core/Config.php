@@ -38,4 +38,12 @@ class Config
     {
         return env('APP_VIEW_ENGINE', 'latte');
     }
+
+    /**
+     * Define your router driver provider
+     */
+    public static function routerDriver(): string
+    {
+        return env("ROUTING_DRIVER", "new");
+    }
 }

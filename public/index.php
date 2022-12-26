@@ -5,7 +5,6 @@
  */
 require_once __DIR__ . '/../App/Core/bootstrap.php';
 
-use Albet\Asmvc\Core\Routing\Route;
 use Albet\Asmvc\Core\SessionManager;
 
 /**
@@ -21,6 +20,6 @@ define('BS5_JS', 'js/bootstrap.min.js');
 define("TW_CSS", 'styles/output.css');
 
 /**
- * Call and map your route
+ * Call and map your routes
  */
-Route::map()->triggerRoute();
+bootRoutes();

@@ -8,6 +8,8 @@
 use Albet\Asmvc\Core\Config;
 use Albet\Asmvc\Core\Containers\Container;
 use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use Albet\Asmvc\Core\Route as OldRouter;
+use Albet\Asmvc\Core\Routing\Route;
 use Dotenv\Dotenv;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -55,3 +57,18 @@ if (Config::modelDriver() == 'eloquent') {
  * Boot DI Container for auto injecting.
  */
 Container::make();
+
+/**
+ * Boot route bootstrapper.
+ */
+if (!function_exists('bootRoutes')) {
+    function bootRoutes()
+    {
+        if (Config::routerDriver() === "new") {
+            Route::map()->triggerRoute();
+        } else {
+            OldRouter::boot();
+            OldRouter::triggerRouter();
+        }
+    }
+}
