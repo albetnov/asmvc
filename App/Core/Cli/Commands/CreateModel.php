@@ -14,7 +14,7 @@ class CreateModel extends Cli
      */
     protected $command = "create:model";
     protected $hint = "model";
-    protected $desc = "Creating Model";
+    protected $desc = "Create a Model";
 
     /**
      * Register the command

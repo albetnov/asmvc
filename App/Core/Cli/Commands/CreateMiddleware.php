@@ -13,7 +13,7 @@ class CreateMiddleware extends Cli
      */
     protected $command = "create:middleware";
     protected $hint = "middleware";
-    protected $desc = "Creating Middleware";
+    protected $desc = "Create a Middleware";
 
     /**
      * Register the command

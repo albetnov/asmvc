@@ -13,7 +13,7 @@ class CreateSeeder extends Cli
      */
     protected $command = "create:seeder";
     protected $hint = "SeederName";
-    protected $desc = "Creating Seeder";
+    protected $desc = "Create a Seeder";
 
     /**
      * Register the command

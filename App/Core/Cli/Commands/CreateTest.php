@@ -13,7 +13,7 @@ class CreateTest extends Cli
      */
     protected $command = 'create:test';
     protected $hint = "test";
-    protected $desc = 'Creating test';
+    protected $desc = 'Create a test';
 
     /**
      * Register the command

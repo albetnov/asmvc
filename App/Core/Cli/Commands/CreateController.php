@@ -13,7 +13,7 @@ class CreateController extends Cli
      */
     protected $command = "create:controller";
     protected $hint = "controller";
-    protected $desc = "Creating Controller";
+    protected $desc = "Create a Controller";
 
     /**
      * Register the command
