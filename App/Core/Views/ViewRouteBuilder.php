@@ -6,6 +6,9 @@ use Albet\Asmvc\Core\Exceptions\ArrayIsNotAssiactiveException;
 
 class ViewRouteBuilder
 {
+    /**
+     * Put a view with data
+     */
     public function put(string $viewPath, ?array $bind = []): object
     {
         if (count($bind) > 0 && !isAssociativeArray($bind)) {

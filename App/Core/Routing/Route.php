@@ -18,6 +18,9 @@ class Route
 {
     private RoutesCollection $definedRouteCollection;
 
+    /**
+     * Create Routes Collection
+     */
     public function __construct()
     {
         $this->definedRouteCollection = new RoutesCollection();
@@ -45,6 +48,9 @@ class Route
         }
     }
 
+    /**
+     * Map the routing based on routes file.
+     */
     private function map(): self
     {
         $routeFile = base_path('App/Routes/routes.php');
@@ -61,6 +67,9 @@ class Route
         return $this;
     }
 
+    /**
+     * Parse the routing and pass it to route collection
+     */
     protected function parseRoute(string $method, string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): void
     {
         if ($handler instanceof Closure) {
@@ -80,48 +89,72 @@ class Route
         $this->definedRouteCollection->add($path, $handler, $method, $middleware);
     }
 
+    /**
+     * Add route with get as it's http method
+     */
     public function get(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('GET', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Add route with post as it's http method
+     */
     public function post(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('POST', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Add route with put as it's http method
+     */
     public function put(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('PUT', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Add route with patch as it's http method
+     */
     public function patch(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('PATCH', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Add route with delete as it's http method
+     */
     public function delete(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('DELETE', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Add route with head as it's http method
+     */
     public function head(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('HEAD', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Add route with options as it's http method
+     */
     public function options(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('OPTIONS', $path, $handler, $middleware);
         return $this;
     }
 
+    /**
+     * Make a GET for view.
+     */
     public function view(string $path, string|Closure $view, ?MiddlewareRouteBuilder $middleware = null): self
     {
         if (is_string($view) && !($view instanceof Closure)) {
@@ -137,6 +170,9 @@ class Route
         return $this;
     }
 
+    /**
+     * Register previos route handler
+     */
     private function registerPrevious(Requests $request): void
     {
         if (!str_contains($request->getCurrentUrl(), "/public/")) {
@@ -144,6 +180,10 @@ class Route
         }
     }
 
+    /**
+     * Trigger and run the router.
+     * Which later will redirect users to corresponding handler.
+     */
     private function triggerRoute()
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $routes) {

@@ -27,19 +27,26 @@ class CreateSeeder extends Cli
 
             namespace Albet\Asmvc\Database\Seeders;
 
-            use Albet\Asmvc\Core\Seeders;
+            use Albet\Asmvc\Core\Seeders\Seeders;
+            use Faker\Generator;
 
             class {$try} extends Seeders
             {
                 public function run(): void
                 {
                     /**
-                     * @param int \$count
-                     * @param string|callable \$table
-                     * @param array \$data
-                     * count() method is optional.
-                     */
-                    \$this->count(\$count)->seed(\$table, \$data);
+                     * 
+                     * Fluent Seeder
+                     * 
+                     * Please visit https://albetnov.github.io/asmvc-docs/#/seeder for more
+                     * documentation
+                     * 
+                     **/
+                     
+                    \$this->fake(1, fn(Generator \$fake) => [
+                        'key' => \$fake->name()
+                    ])
+                    ->done(); // mark as finish 
                 }
             }
                  

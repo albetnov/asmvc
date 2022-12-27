@@ -9,6 +9,9 @@ class Container
 {
     private static ?DIContainer $container = null;
 
+    /**
+     * Prepare DI Container
+     */
     public function __construct()
     {
         $containerBuilder = new ContainerBuilder();
@@ -26,31 +29,46 @@ class Container
         self::$container = $container;
     }
 
-    public static function make()
+    /**
+     * Make the container instance
+     */
+    public static function make(): self
     {
         return new Container;
     }
 
-    private static function checkForInstance()
+    /**
+     * Check whenever the container has booted or not
+     */
+    private static function checkForInstance(): never
     {
         if (!self::$container) {
             throw new ContainerNotBootedException();
         }
     }
 
-    public static function getContainer()
+    /**
+     * Get the contianer instance
+     */
+    public static function getContainer(): ?DIContainer
     {
         self::checkForInstance();
         return self::$container;
     }
 
-    public static function inject($instance, ?array $parameters = [])
+    /** 
+     * Inject a class using container.
+     */
+    public static function inject($instance, ?array $parameters = []): mixed
     {
         self::checkForInstance();
         return self::$container->call($instance, $parameters);
     }
 
-    public static function fullfil($instance)
+    /**
+     * Fulfill depedency requirements of a class
+     */
+    public static function fulfill($instance)
     {
         self::checkForInstance();
         return self::$container->get($instance);

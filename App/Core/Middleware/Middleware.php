@@ -32,5 +32,8 @@ abstract class Middleware
         $this->params = (object) $params;
     }
 
+    /**
+     * Middleware function to be executed
+     */
     abstract function middleware(): void;
 }

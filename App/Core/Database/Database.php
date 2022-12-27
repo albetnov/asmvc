@@ -219,8 +219,9 @@ class Database
     }
 
     /**
-     * Join Function
-     * @param string $table
+     * Perform Inner Join Function
+     *
+     *  @param string $table
      * @param string $from_id
      * @param string $to_id
      * @return self
@@ -230,16 +231,40 @@ class Database
         return $this->joinHandler("INNER JOIN", $table, $from_id, $to_id);
     }
 
+    /**
+     * Perform Left Join Function
+     *
+     *  @param string $table
+     * @param string $from_id
+     * @param string $to_id
+     * @return self
+     */
     public function leftJoin(string $table, string $from_id, string $to_id): self
     {
         return $this->joinHandler("LEFT JOIN", $table, $from_id, $to_id);
     }
 
+    /**
+     * Perform Right Join Function
+     *
+     *  @param string $table
+     * @param string $from_id
+     * @param string $to_id
+     * @return self
+     */
     public function rightJoin(string $table, string $from_id, string $to_id): self
     {
         return $this->joinHandler("RIGHT JOIN", $table, $from_id, $to_id);
     }
 
+    /**
+     * Perform Full Join Function
+     *
+     *  @param string $table
+     * @param string $from_id
+     * @param string $to_id
+     * @return self
+     */
     public function fullJoin(string $table, string $from_id, string $to_id): self
     {
         return $this->joinHandler("FULL JOIN", $table, $from_id, $to_id);

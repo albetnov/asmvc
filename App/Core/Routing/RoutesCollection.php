@@ -28,7 +28,7 @@ class RoutesCollection
 
     private function callMiddleware(stdClass $middlewareClass)
     {
-        $middleware = Container::fullfil($middlewareClass->class);
+        $middleware = Container::fulfill($middlewareClass->class);
         Logger::info('Middleware executed', ['middleware' => $middlewareClass->class]);
         $middleware->inject($middlewareClass->parameters);
         $middleware->middleware();

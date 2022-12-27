@@ -24,6 +24,9 @@ if (!function_exists('config')) {
 }
 
 if (!function_exists('provider_config')) {
+    /**
+     * Function to access provider config files.
+     */
     function provider_config(): array
     {
         return (array) config('providers');

@@ -64,6 +64,9 @@ if (!function_exists('vdd')) {
      */
     function vdd(mixed ...$dump): never
     {
+        if (PHP_SAPI === "cli") {
+            exit(var_dump($dump));
+        }
         echo "<pre>";
         var_dump($dump);
         echo "</pre>";

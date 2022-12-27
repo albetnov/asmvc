@@ -163,6 +163,9 @@ class SessionManager
         return session('_previousRoute')[array_key_last(session('_previousRoute')) - 1];
     }
 
+    /**
+     * Register a previous url
+     */
     private static function registerPrevious(string $url)
     {
         if (count(session('_previousRoute')) > 2) {
