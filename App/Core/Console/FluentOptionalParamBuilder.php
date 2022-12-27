@@ -2,7 +2,6 @@
 
 namespace App\Asmvc\Core\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 class FluentOptionalParamBuilder
@@ -11,7 +10,7 @@ class FluentOptionalParamBuilder
     private ?string $default = null;
     private int $inputType = InputOption::VALUE_NONE;
     private ?string $desc;
-    private string|array $shortcut = null;
+    private string|array|null $shortcut = null;
 
     public function __call($method, $parameters)
     {
@@ -86,6 +85,7 @@ class FluentOptionalParamBuilder
                 'desc' => $this->desc,
                 'type' => $this->inputType,
                 'default' => $this->default,
+                'shortcut' => $this->shortcut
             ]
         ];
     }

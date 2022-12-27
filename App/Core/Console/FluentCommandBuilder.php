@@ -7,8 +7,8 @@ use Closure;
 class FluentCommandBuilder
 {
     private array $params = [];
-    private ?string $name;
-    private ?string $desc;
+    private ?string $name = null;
+    private ?string $desc = null;
     private array $aliases = [];
     private ?string $help = null;
     private array $optionalParams = [];

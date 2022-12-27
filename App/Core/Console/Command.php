@@ -32,7 +32,9 @@ abstract class Command extends SymfonyCommand
         $this->setName($builder->name);
         $this->setDescription($builder->desc);
         $this->setAliases($builder->aliases);
-        $this->setHelp($builder->help);
+        if ($builder->help) {
+            $this->setHelp($builder->help);
+        }
 
         foreach ($builder->params as $key => $value) {
             $this->addArgument($key, $value['type'], $value['desc'], $value['default']);
