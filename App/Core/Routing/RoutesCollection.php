@@ -4,8 +4,9 @@ namespace Albet\Asmvc\Core\Routing;
 
 use Albet\Asmvc\Core\Containers\Container;
 use Albet\Asmvc\Core\Logger\Logger;
-use Albet\Asmvc\Core\Middleware\FluentMiddleware;
+use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
 use Closure;
+use stdClass;
 
 class RoutesCollection
 {
@@ -25,19 +26,18 @@ class RoutesCollection
         return $this;
     }
 
-    private function callMiddleware(array $middlewareClass)
+    private function callMiddleware(stdClass $middlewareClass)
     {
-        if (!class_exists($middlewareClass[0])) {
-            throw new MiddlewareNotFoundException($middlewareClass[0]);
-        }
-        $middleware = Container::fullfil($middlewareClass[0]);
-        Logger::info('Middleware executed', ['middleware' => $middlewareClass[0]]);
-        $middleware->middleware($middlewareClass[1]);
+        $middleware = Container::fullfil($middlewareClass->class);
+        Logger::info('Middleware executed', ['middleware' => $middlewareClass->class]);
+        $middleware->inject($middlewareClass->parameters);
+        $middleware->middleware();
     }
 
-    private function checkForMiddleware(?array $middleware = null)
+    private function checkForMiddleware(?MiddlewareRouteBuilder $middleware = null)
     {
         if ($middleware) {
+            $middleware = $middleware->parse();
             if (is_array($middleware)) {
                 foreach ($middleware as $item) {
                     $this->callMiddleware($item);
@@ -63,8 +63,7 @@ class RoutesCollection
     {
         $handler = function ($args) use ($middleware, $handler) {
             $this->checkForMiddleware($middleware);
-
-            return include_view($handler, $args);
+            return include_view($handler[0], array_merge($handler[1], $args));
         };
 
         return $handler;
@@ -78,14 +77,16 @@ class RoutesCollection
 
             return $handler($args);
         };
+
+        return $handler;
     }
 
-    public function add(string $path, array|string|Closure $handler, ?string $method = 'GET', FluentMiddleware|array $middleware = null)
+    public function add(string $path, array|string|Closure $handler, ?string $method = 'GET', ?MiddlewareRouteBuilder $middleware = null)
     {
         if ($this->isView) {
-            $this->viewHandler($middleware, $handler);
+            $handler = $this->viewHandler($middleware, $handler);
         } else if ($this->isClosure) {
-            $this->closureHandler($method, $middleware, $handler);
+            $handler = $this->closureHandler($method, $middleware, $handler);
         } else {
             $handler =  function ($args) use ($middleware, $handler, $method) {
                 $this->checkForMiddleware($middleware);

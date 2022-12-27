@@ -31,10 +31,7 @@ class CreateMiddleware extends Cli
 
              class {$try} extends Middleware
              {
-                 public function middleware(): void
-                 {
-                    
-                 }
+                public function middleware(): void {}
              }  
             data;
             file_put_contents(base_path() . "App/Middleware/{$try}.php", $data);

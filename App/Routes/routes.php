@@ -10,10 +10,10 @@
  */
 
 use Albet\Asmvc\Controllers\HomeController;
-use Albet\Asmvc\Core\Middleware\FluentMiddleware;
 use Albet\Asmvc\Core\Routing\Route;
-use Albet\Asmvc\Core\Middleware\FluentParamParser;
+use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
+use Albet\Asmvc\Core\Views\ViewRouteBuilder;
 
-return function (Route $router, FluentMiddleware $mw) {
+return function (Route $router, MiddlewareRouteBuilder $mwBuilder) {
     $router->get('/', [HomeController::class, 'index']);
 };

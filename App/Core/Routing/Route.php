@@ -4,8 +4,9 @@ namespace Albet\Asmvc\Core\Routing;
 
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 use Albet\Asmvc\Core\Logger\Logger;
-use Albet\Asmvc\Core\Middleware\FluentMiddleware;
+use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
 use Albet\Asmvc\Core\SessionManager;
+use Albet\Asmvc\Core\Views\ViewRouteBuilder;
 use Closure;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -55,11 +56,11 @@ class Route
             throw new RouteFileInvalidException();
         }
 
-        $routes($this, new FluentMiddleware());
+        $routes($this, new MiddlewareRouteBuilder());
         return $this;
     }
 
-    protected function parseRoute(string $method, string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): void
+    protected function parseRoute(string $method, string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): void
     {
         if ($handler instanceof Closure) {
             $this->definedRouteCollection->setAsClosure() // set add to behave handling closure
@@ -78,53 +79,59 @@ class Route
         $this->definedRouteCollection->add($path, $handler, $method, $middleware);
     }
 
-    public function get(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function get(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('GET', $path, $handler, $middleware);
         return $this;
     }
 
-    public function post(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function post(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('POST', $path, $handler, $middleware);
         return $this;
     }
 
-    public function put(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function put(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('PUT', $path, $handler, $middleware);
         return $this;
     }
 
-    public function patch(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function patch(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('PATCH', $path, $handler, $middleware);
         return $this;
     }
 
-    public function delete(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function delete(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('DELETE', $path, $handler, $middleware);
         return $this;
     }
 
-    public function head(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function head(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('HEAD', $path, $handler, $middleware);
         return $this;
     }
 
-    public function options(string $path, array|Closure $handler, FluentMiddleware|array $middleware = []): self
+    public function options(string $path, array|Closure $handler, ?MiddlewareRouteBuilder $middleware = null): self
     {
         $this->parseRoute('OPTIONS', $path, $handler, $middleware);
         return $this;
     }
 
-    public function view(string $path, string $viewPath, FluentMiddleware|array $middleware = []): self
+    public function view(string $path, string|Closure $view, ?MiddlewareRouteBuilder $middleware = null): self
     {
+        if (is_string($view) && !($view instanceof Closure)) {
+            $data = [$view, []];
+        } else {
+            $view = $view(new ViewRouteBuilder());
+            $data = [$view->path, $view->bind];
+        }
         $this->definedRouteCollection
             ->setAsView()
-            ->add($path, $viewPath, 'GET', $middleware, true) // this add handler will behave to add a view.
+            ->add($path, $data, 'GET', $middleware, true) // this add handler will behave to add a view.
             ->setAsView(false); // disable setAsView.
         return $this;
     }

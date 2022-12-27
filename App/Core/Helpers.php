@@ -307,3 +307,10 @@ if (!function_exists('cache_path')) {
         return $path;
     }
 }
+
+if (!function_exists('isAssociativeArray')) {
+    function isAssociativeArray($array)
+    {
+        return array_keys($array) !== range(0, count($array) - 1);
+    }
+}

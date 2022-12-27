@@ -8,32 +8,29 @@ use Albet\Asmvc\Core\Eloquent\EloquentDB;
 abstract class Middleware
 {
     /**
-     * @var $db
+     * @var $params
      */
-    protected Database | EloquentDB $db;
+    protected object $params;
 
     /**
      * Consturctor to Query Builder
      */
-    public function __construct()
+    protected function db()
     {
-        // if (Config::modelDriver() == 'eloquent') {
-        //     $this->db = new EloquentDB;
-        // } else {
-        //     $this->db = new Database;
-        // }
+        if (provider_config()['model'] == 'eloquent') {
+            return new EloquentDB;
+        } else {
+            return new Database;
+        }
     }
 
     /**
-     * Default method of denied.
+     * Inject parameters (override)
      */
-    public function denied(): void
+    public function inject(array $params): void
     {
-        redirect('/login');
+        $this->params = (object) $params;
     }
 
-    /**
-     * Add an abstact about required baseMiddleware
-     */
-    abstract function middleware($params): void;
+    abstract function middleware(): void;
 }

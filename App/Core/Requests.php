@@ -52,7 +52,6 @@ class Requests
      */
     public function getUpload(string $name): mixed
     {
-        vdd($this->request->getUploadedFiles(), $_FILES);
         if (isset($this->request->getUploadedFiles()[$name])) {
             return $this->request->getUploadedFiles()[$name];
         }

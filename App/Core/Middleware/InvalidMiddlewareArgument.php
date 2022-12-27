@@ -8,11 +8,11 @@ class InvalidMiddlewareArgument extends DetailableException
 {
     public function __construct()
     {
-        parent::__construct("You haven't set middleware yet.");
+        parent::__construct("Middleware invalid.");
     }
 
     public function getDetail(): string
     {
-        return "Please call set() method first with your middleware class in it.";
+        return "every middlewares must extends Middleware class provided by 'Asmvc/Core'.";
     }
 }
