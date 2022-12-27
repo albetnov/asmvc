@@ -88,4 +88,6 @@ if (!function_exists('bootRoutes')) {
     }
 }
 
-(new Cli())->register()->load();
+if (PHP_SAPI === "cli") {
+    (new Cli())->register()->load();
+}

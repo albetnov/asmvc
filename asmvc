@@ -25,10 +25,12 @@ if (is_dir(__DIR__ . '/vendor/')) {
 } else {
     echo "ASMVC will try to install dependencies by running composer install...\n";
     $install = true;
+    if (!function_exists('exec')) {
+        echo "Exec function is disabled!\n";
+        exit;
+    }
+    exec("composer install");
 }
-// require_once __DIR__ . '/App/Core/Helpers.php';
-// require_once __DIR__ . '/App/Core/Cli/Cli.php';
-// require_once __DIR__ . '/App/Core/CliParser.php';
 
 /**
  * Validate that ASMVC must be running by CLI interface only.
@@ -36,14 +38,3 @@ if (is_dir(__DIR__ . '/vendor/')) {
 if (PHP_SAPI !== 'cli') {
     exit('ASMVC Only limited to run in CLI Environment Only' . PHP_EOL);
 }
-
-/**
- * Parsing the argument written by user.
- */
-// $cli = new CliParser;
-// if ($install) {
-//     $cli->install();
-// } else {
-//     (new \NunoMaduro\Collision\Provider)->register();
-//     $cli->argument_parse($argv);
-// }

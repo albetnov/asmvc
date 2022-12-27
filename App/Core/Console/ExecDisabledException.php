@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Asmvc\Core\Cli;
+namespace App\Asmvc\Core\Console;
 
 use App\Asmvc\Core\Exceptions\DetailableException;
 
