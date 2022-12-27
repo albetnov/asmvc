@@ -5,7 +5,7 @@
  */
 require_once __DIR__ . '/../App/Core/bootstrap.php';
 
-use Albet\Asmvc\Core\SessionManager;
+use App\Asmvc\Core\SessionManager;
 
 /**
  * Generate a session

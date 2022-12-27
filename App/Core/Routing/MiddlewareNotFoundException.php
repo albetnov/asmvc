@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core\Routing;
+namespace App\Asmvc\Core\Routing;
 
 class MiddlewareNotFoundException extends \Exception
 {

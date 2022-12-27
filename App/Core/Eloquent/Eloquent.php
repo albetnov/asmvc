@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace App\Asmvc\Core;
 
-use Albet\Asmvc\Core\Eloquent\EloquentDB;
-use Albet\Asmvc\Core\Eloquent\ModelDriverException;
+use App\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Core\Eloquent\ModelDriverException;
 use Illuminate\Database\Eloquent\Model;
 
 class Eloquent extends Model

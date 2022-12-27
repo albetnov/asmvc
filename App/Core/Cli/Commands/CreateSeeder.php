@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\Cli;
 
 class CreateSeeder extends Cli
 {
@@ -25,9 +25,9 @@ class CreateSeeder extends Cli
             $data = <<<data
             <?php
 
-            namespace Albet\Asmvc\Database\Seeders;
+            namespace App\Asmvc\Database\Seeders;
 
-            use Albet\Asmvc\Core\Seeders\Seeders;
+            use App\Asmvc\Core\Seeders\Seeders;
             use Faker\Generator;
 
             class {$try} extends Seeders

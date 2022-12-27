@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Containers;
+namespace App\Asmvc\Core\Containers;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class OptimizationRequiredException extends DetailableException
 {

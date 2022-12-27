@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Seeders;
+namespace App\Asmvc\Core\Seeders;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class PayloadInvalidException extends DetailableException
 {

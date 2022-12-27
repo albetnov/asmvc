@@ -5,12 +5,13 @@
  * Powered by Composer's PSR4
  */
 
-use Albet\Asmvc\Core\Containers\Container;
-use Albet\Asmvc\Core\Eloquent\EloquentDB;
-use Albet\Asmvc\Core\Exceptions\DetailableException;
-use Albet\Asmvc\Core\Logger\Logger;
-use Albet\Asmvc\Core\Route as OldRouter;
-use Albet\Asmvc\Core\Routing\Route;
+use App\Asmvc\Core\Console\Cli;
+use App\Asmvc\Core\Containers\Container;
+use App\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Logger\Logger;
+use App\Asmvc\Core\Route as OldRouter;
+use App\Asmvc\Core\Routing\Route;
 use Dotenv\Dotenv;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -86,3 +87,5 @@ if (!function_exists('bootRoutes')) {
         }
     }
 }
+
+(new Cli())->register()->load();

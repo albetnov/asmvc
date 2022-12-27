@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core\Logger;
+namespace App\Asmvc\Core\Logger;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;

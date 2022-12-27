@@ -1,10 +1,10 @@
 <?php
 
-namespace Albet\Asmvc\Core\Routing;
+namespace App\Asmvc\Core\Routing;
 
-use Albet\Asmvc\Core\Containers\Container;
-use Albet\Asmvc\Core\Logger\Logger;
-use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
+use App\Asmvc\Core\Containers\Container;
+use App\Asmvc\Core\Logger\Logger;
+use App\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
 use Closure;
 use stdClass;
 

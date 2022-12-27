@@ -1,6 +1,6 @@
 <?php
 
-use Albet\Asmvc\Core\CsrfGenerator;
+use App\Asmvc\Core\CsrfGenerator;
 
 if (!function_exists('csrf')) {
     /**

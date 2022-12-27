@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core\Exceptions;
+namespace App\Asmvc\Core\Exceptions;
 
 class InvalidHttpCodePageException extends \Exception
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Albet\Asmvc\Core\Routing;
+namespace App\Asmvc\Core\Routing;
 
-use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
-use Albet\Asmvc\Core\Logger\Logger;
-use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
-use Albet\Asmvc\Core\Requests;
-use Albet\Asmvc\Core\SessionManager;
-use Albet\Asmvc\Core\Views\ViewRouteBuilder;
+use App\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
+use App\Asmvc\Core\Logger\Logger;
+use App\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
+use App\Asmvc\Core\Requests;
+use App\Asmvc\Core\SessionManager;
+use App\Asmvc\Core\Views\ViewRouteBuilder;
 use Closure;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;

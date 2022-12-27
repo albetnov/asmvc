@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace App\Asmvc\Core;
 
-use Albet\Asmvc\Core\Middleware\Middleware;
+use App\Asmvc\Core\Middleware\Middleware;
 use Closure;
 
 class Route
@@ -25,8 +25,8 @@ class Route
                 file_put_contents($path, <<<RouteFile
                 <?php
 
-                use Albet\Asmvc\Core\Route;
-                use Albet\Asmvc\Controllers\HomeController;
+                use App\Asmvc\Core\Route;
+                use App\Asmvc\Controllers\HomeController;
 
                 Route::add('/', [HomeController::class, 'index']);
                 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Seeders;
+namespace App\Asmvc\Core\Seeders;
 
-use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Core\Eloquent\EloquentDB;
 use Closure;
 use Faker\Factory;
 

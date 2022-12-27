@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Views;
+namespace App\Asmvc\Core\Views;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class InvalidSectionException extends DetailableException
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Logger;
+namespace App\Asmvc\Core\Logger;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class LogNotBootedException extends DetailableException
 {

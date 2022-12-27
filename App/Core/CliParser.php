@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace App\Asmvc\Core;
 
-use Albet\Asmvc\Core\Cli\Cli;
-use Albet\Asmvc\Core\Cli\Loader;
+use App\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\Loader;
 
 class CliParser extends Cli
 {

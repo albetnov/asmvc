@@ -9,13 +9,14 @@ require_once __DIR__ . '/Helpers/validator.php';
 // Include config Helper
 require_once __DIR__ . '/Helpers/config.php';
 
-// use Albet\Asmvc\Core\Route;
+// use App\Asmvc\Core\Route;
 
-use Albet\Asmvc\Core\Database\Connection;
-use Albet\Asmvc\Core\Exceptions\InvalidHttpCodePageException;
-use Albet\Asmvc\Core\Requests;
-use Albet\Asmvc\Core\SessionManager;
-use Albet\Asmvc\Core\Views\Views;
+use App\Asmvc\Core\Database\Connection;
+use App\Asmvc\Core\Exceptions\InvalidHttpCodePageException;
+use App\Asmvc\Core\Requests;
+use App\Asmvc\Core\SessionManager;
+use App\Asmvc\Core\Views\Views;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ASMVC Version and State
@@ -299,6 +300,9 @@ if (!function_exists('session')) {
 }
 
 if (!function_exists('cache_path')) {
+    /**
+     * function to access cache path
+     */
     function cache_path(?string $fileName = null)
     {
         $path = __DIR__ . "/../Cache/";
@@ -312,8 +316,22 @@ if (!function_exists('cache_path')) {
 }
 
 if (!function_exists('isAssociativeArray')) {
+    /**
+     * function to check whenever the array is associative or not
+     */
     function isAssociativeArray($array)
     {
         return array_keys($array) !== range(0, count($array) - 1);
+    }
+}
+
+if (!function_exists('collect')) {
+    /**
+     * function to create a new collection
+     * based on Doctrine/Collection
+     */
+    function collect(array $data)
+    {
+        return new ArrayCollection($data);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Controllers;
+namespace App\Asmvc\Controllers;
 
-use Albet\Asmvc\Core\Requests;
+use App\Asmvc\Core\Requests;
 
 class HomeController
 {

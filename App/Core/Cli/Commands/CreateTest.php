@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\Cli;
 
 class CreateTest extends Cli
 {
@@ -26,7 +26,7 @@ class CreateTest extends Cli
                 $data = <<<data
                         <?php
     
-                        namespace Albet\Asmvc\Tests;
+                        namespace App\Asmvc\Tests;
     
                         use PHPUnit\Framework\TestCase;
     
@@ -43,7 +43,7 @@ class CreateTest extends Cli
                 $data = <<<data
                         <?php
 
-                        namespace Albet\Asmvc\Tests;
+                        namespace App\Asmvc\Tests;
 
                         use PHPUnit\Framework\TestCase;
 

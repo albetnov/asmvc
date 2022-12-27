@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
-use Albet\Asmvc\Core\Exceptions\SystemInvalidException;
+use App\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Exceptions\SystemInvalidException;
 
 class RunTest extends Cli
 {

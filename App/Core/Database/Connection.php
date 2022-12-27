@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core\Database;
+namespace App\Asmvc\Core\Database;
 
 class Connection
 {

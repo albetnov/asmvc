@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\Cli;
 
 class CreateModel extends Cli
 {
@@ -27,9 +27,9 @@ class CreateModel extends Cli
                 $data = <<<data
                         <?php
 
-                        namespace Albet\Asmvc\Models;
+                        namespace App\Asmvc\Models;
 
-                        use Albet\Asmvc\Core\Eloquent\Eloquent;
+                        use App\Asmvc\Core\Eloquent\Eloquent;
                         
                         class {$try} extends Eloquent 
                         {
@@ -41,9 +41,9 @@ class CreateModel extends Cli
                 $data = <<<data
                         <?php
     
-                        namespace Albet\Asmvc\Models;
+                        namespace App\Asmvc\Models;
     
-                        use Albet\Asmvc\Core\Database\Model;
+                        use App\Asmvc\Core\Database\Model;
     
                         class {$try} extends Model
                         {

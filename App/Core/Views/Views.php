@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Views;
+namespace App\Asmvc\Core\Views;
 
-use Albet\Asmvc\Core\Flash;
+use App\Asmvc\Core\Flash;
 
 class Views
 {

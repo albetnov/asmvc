@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Database;
+namespace App\Asmvc\Core\Database;
 
-use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
+use App\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 
 class Database
 {

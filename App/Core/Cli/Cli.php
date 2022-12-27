@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli;
+namespace App\Asmvc\Core\Cli;
 
 class Cli
 {

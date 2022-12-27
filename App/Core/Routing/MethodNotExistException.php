@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Routing;
+namespace App\Asmvc\Core\Routing;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class MethodNotExistException extends DetailableException
 {

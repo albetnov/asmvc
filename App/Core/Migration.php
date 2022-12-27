@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace App\Asmvc\Core;
 
-use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Core\Eloquent\EloquentDB;
 use Illuminate\Database\Schema\Builder;
 
 abstract class Migration

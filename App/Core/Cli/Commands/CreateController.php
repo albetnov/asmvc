@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\Cli;
 
 class CreateController extends Cli
 {
@@ -25,9 +25,9 @@ class CreateController extends Cli
             $data = <<<data
             <?php
 
-            namespace Albet\Asmvc\Controllers;
+            namespace App\Asmvc\Controllers;
             
-            use Albet\Asmvc\Core\Requests;
+            use App\Asmvc\Core\Requests;
             
             class {$try}
             {

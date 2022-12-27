@@ -1,6 +1,6 @@
 <?php
 
-use Albet\Asmvc\Core\Validator;
+use App\Asmvc\Core\Validator;
 
 if (!function_exists('old')) {
     /**

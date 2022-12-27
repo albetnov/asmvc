@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\Cli;
 
 class CreateMiddleware extends Cli
 {
@@ -25,9 +25,9 @@ class CreateMiddleware extends Cli
             $data = <<<data
             <?php
 
-             namespace Albet\Asmvc\Middleware;
+             namespace App\Asmvc\Middleware;
 
-             use Albet\Asmvc\Core\Middleware\Middleware;
+             use App\Asmvc\Core\Middleware\Middleware;
 
              class {$try} extends Middleware
              {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\BaseCli;
-use Albet\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Cli\BaseCli;
+use App\Asmvc\Core\Cli\Cli;
 
 class InstallBootstrap extends Cli
 {

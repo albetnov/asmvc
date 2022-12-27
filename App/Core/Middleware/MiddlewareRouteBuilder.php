@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core\Middleware;
+namespace App\Asmvc\Core\Middleware;
 
-use Albet\Asmvc\Core\Exceptions\ArrayIsNotAssiactiveException;
-use Albet\Asmvc\Core\Routing\MiddlewareNotFoundException;
+use App\Asmvc\Core\Exceptions\ArrayIsNotAssiactiveException;
+use App\Asmvc\Core\Routing\MiddlewareNotFoundException;
 
 class MiddlewareRouteBuilder
 {
@@ -26,7 +26,7 @@ class MiddlewareRouteBuilder
             throw new MiddlewareNotFoundException($middleware);
         }
 
-        if (!(str_contains($middleware, 'Albet\Asmvc\Middleware'))) {
+        if (!(str_contains($middleware, 'App\Asmvc\Middleware'))) {
             throw new InvalidMiddlewareArgument();
         }
 

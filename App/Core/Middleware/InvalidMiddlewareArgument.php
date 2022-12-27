@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Middleware;
+namespace App\Asmvc\Core\Middleware;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class InvalidMiddlewareArgument extends DetailableException
 {

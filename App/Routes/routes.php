@@ -9,10 +9,10 @@
  * This file must return a anonymous function.
  */
 
-use Albet\Asmvc\Controllers\HomeController;
-use Albet\Asmvc\Core\Routing\Route;
-use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
-use Albet\Asmvc\Core\Views\ViewRouteBuilder;
+use App\Asmvc\Controllers\HomeController;
+use App\Asmvc\Core\Routing\Route;
+use App\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
+use App\Asmvc\Core\Views\ViewRouteBuilder;
 
 return function (Route $router, MiddlewareRouteBuilder $mwBuilder) {
     $router->get('/', [HomeController::class, 'index']);

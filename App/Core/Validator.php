@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core;
+namespace App\Asmvc\Core;
 
 use Rakit\Validation\Validator as RakitValidator;
 

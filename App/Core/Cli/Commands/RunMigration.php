@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Cli\Commands;
 
-use Albet\Asmvc\Core\Cli\Cli;
-use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Eloquent\EloquentDB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -20,7 +20,7 @@ class RunMigration extends Cli
 
     /**
      * Check history table exist.
-     * @return Albet\Asmvc\Core\EloquentDB
+     * @return App\Asmvc\Core\EloquentDB
      */
     private function historyCheckup(): Builder
     {

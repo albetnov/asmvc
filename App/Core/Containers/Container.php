@@ -1,6 +1,6 @@
 <?php
 
-namespace Albet\Asmvc\Core\Containers;
+namespace App\Asmvc\Core\Containers;
 
 use DI\Container as DIContainer;
 use DI\ContainerBuilder;
@@ -40,7 +40,7 @@ class Container
     /**
      * Check whenever the container has booted or not
      */
-    private static function checkForInstance(): never
+    private static function checkForInstance()
     {
         if (!self::$container) {
             throw new ContainerNotBootedException();

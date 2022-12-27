@@ -1,6 +1,6 @@
 <?php
 
-use Albet\Asmvc\Core\Requests;
+use App\Asmvc\Core\Requests;
 
 use function DI\autowire;
 

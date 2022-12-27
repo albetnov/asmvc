@@ -1,9 +1,9 @@
 <?php
 
-namespace Albet\Asmvc\Core\Middleware;
+namespace App\Asmvc\Core\Middleware;
 
-use Albet\Asmvc\Core\Database\Database;
-use Albet\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Core\Database\Database;
+use App\Asmvc\Core\Eloquent\EloquentDB;
 
 abstract class Middleware
 {

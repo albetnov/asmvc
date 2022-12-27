@@ -1,8 +1,8 @@
 <?php
 
-namespace Albet\Asmvc\Core\Cli;
+namespace App\Asmvc\Core\Cli;
 
-use Albet\Asmvc\Core\Exceptions\DetailableException;
+use App\Asmvc\Core\Exceptions\DetailableException;
 
 class ArgumentInvalidException extends DetailableException
 {
