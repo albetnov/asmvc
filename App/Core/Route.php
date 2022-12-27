@@ -146,24 +146,24 @@ class Route
      */
     public static function registerPrevious(?string $route = null, bool $get = false)
     {
-        if (!isset($_SESSION['_previousUrl'])) {
-            $_SESSION['_previousUrl'] = [getCurrentUrl()];
+        if (!isset($_SESSION['_previousRoute'])) {
+            $_SESSION['_previousRoute'] = [getCurrentUrl()];
         }
 
         if ($route) {
-            $_SESSION['_previousUrl'] = $route;
+            $_SESSION['_previousRoute'] = $route;
         }
 
-        $_SESSION['_previousUrl'][] = getCurrentUrl();
-        if (sizeof($_SESSION['_previousUrl']) > 1) {
-            $getPrevious = $_SESSION['_previousUrl'][array_key_last($_SESSION['_previousUrl']) - 1];
+        $_SESSION['_previousRoute'][] = getCurrentUrl();
+        if (sizeof($_SESSION['_previousRoute']) > 1) {
+            $getPrevious = $_SESSION['_previousRoute'][array_key_last($_SESSION['_previousRoute']) - 1];
         } else {
-            $getPrevious = $_SESSION['_previousUrl'][array_key_first($_SESSION['_previousUrl'])];
+            $getPrevious = $_SESSION['_previousRoute'][array_key_first($_SESSION['_previousRoute'])];
         }
 
-        if (sizeof($_SESSION['_previousUrl']) > 4) {
+        if (sizeof($_SESSION['_previousRoute']) > 4) {
             for ($i = 0; $i < 5; $i++) {
-                unset($_SESSION['_previousUrl'][$i]);
+                unset($_SESSION['_previousRoute'][$i]);
             }
         }
 
