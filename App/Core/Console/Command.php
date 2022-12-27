@@ -6,11 +6,18 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function Termwind\render;
+
 abstract class Command extends SymfonyCommand
 {
     protected string $name = "";
     protected array $aliases = [];
     protected string $desc = "";
+
+    protected function render(string $html)
+    {
+        return render($html);
+    }
 
     public function __call($method, $parameters)
     {
@@ -22,6 +29,7 @@ abstract class Command extends SymfonyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         return $this->handler($input, $output);
     }
 

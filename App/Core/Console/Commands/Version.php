@@ -17,7 +17,11 @@ class Version extends Command
 
     public function handler($input, $output): int
     {
-        $output->writeln('ASMVC Version ' . ASMVC_VERSION . ' ' . ASMVC_STATE);
+        $ver = ASMVC_VERSION;
+        $state = ASMVC_STATE;
+        $this->render(<<<html
+            <div class="p-10 bg-sky-500 font-bold text-white font-bold m-1">ASMVC Version $ver : $state</div>   
+        html);
         return Command::SUCCESS;
     }
 }
