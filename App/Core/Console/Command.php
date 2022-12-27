@@ -3,7 +3,6 @@
 namespace App\Asmvc\Core\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -12,7 +11,6 @@ abstract class Command extends SymfonyCommand
     protected string $name = "";
     protected array $aliases = [];
     protected string $desc = "";
-    protected array $args = [];
 
     public function __call($method, $parameters)
     {
@@ -20,6 +18,7 @@ abstract class Command extends SymfonyCommand
     }
 
     abstract function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int;
+    abstract protected function setup(FluentCommandBuilder $builder): FluentCommandBuilder;
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -28,40 +27,19 @@ abstract class Command extends SymfonyCommand
 
     private function parse(): self
     {
-        if (trim($this->name) === "") {
-            throw new InvalidCommandNameException();
+        $builder = $this->setup(new FluentCommandBuilder)->parse();
+
+        $this->setName($builder->name);
+        $this->setDescription($builder->desc);
+        $this->setAliases($builder->aliases);
+        $this->setHelp($builder->help);
+
+        foreach ($builder->params as $key => $value) {
+            $this->addArgument($key, $value['type'], $value['desc'], $value['default']);
         }
 
-        if (trim($this->desc) === "") {
-            throw new InvalidCommandDescException();
-        }
-
-        if (!isAssociativeArray($this->args)) {
-            throw new InvalidCommandArgumentException();
-        }
-
-        $this->setName($this->name);
-        $this->setDescription($this->desc);
-        $this->setAliases($this->aliases);
-
-        foreach ($this->args as $key => $value) {
-            /**
-             * @TODO
-             * Determine whenever the string contains "--" mark it as optional.
-             */
-            $inputType = InputArgument::REQUIRED;
-
-            if (str_starts_with($key, "--")) {
-                $inputType = InputArgument::OPTIONAL;
-                $key = explode("--", $key)[1];
-            }
-
-
-            if (isAssociativeArray($value)) {
-                $this->addArgument($key, $inputType, $value['desc'], $value['default']);
-            } else {
-                $this->addArgument($key, $inputType, $value);
-            }
+        foreach ($builder->optionalParams as $key => $value) {
+            $this->addOption($key, $value['shortcut'], $value['type'], $value['desc'], $value['default']);
         }
 
         return $this;
