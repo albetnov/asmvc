@@ -10,14 +10,15 @@
 </head>
 
 <body>
-    <main class="container mx-auto p-14 min-h-screen w-full border-red-500 flex items-center justify-between text-zinc-800 flex-col lg:flex-row">
-        <div>
+    <main class="container mx-auto py-14 min-h-screen relative flex flex-col lg:flex-row w-full justify-center items-center w-full">
+        <div class="mx-auto">
             <h1 class="text-8xl font-bold">404</h1>
-            <p class="text-4xl font-semibold">Oops!</p>
-            <p class="text-lg"><?= $message ?? "Page Not Found" ?></p>
-            <a href="/" class="block border border-zinc-600 py-3 px-10 mt-4 shadow-lg shadow-zinc-300 transition-all delay-150 hover:-translate-y-1 active:opacity-80">Back To Home</a>
         </div>
-        <img src="https://img.freepik.com/free-vector/empty-concept-illustration_114360-1233.jpg?w=826&t=st=1671810472~exp=1671811072~hmac=e77c998e11017ad2e15c4c5388128635c01e82934a2dd6a018d4c68957e20abb" alt="notfound">
+        <div class="mx-auto">
+            <p class="text-4xl font-semibold">Oops!</p>
+            <p class="text-lg mb-3"><?= $message ?? "Page Not Found" ?></p>
+        </div>
+        <a href="/" class="absolute top-[60%] w-52 lg:top-auto lg:bottom-3 btn btn-outline lg:w-96 mt-10">Back To Home</a>
     </main>
 </body>
 

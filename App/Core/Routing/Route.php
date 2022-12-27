@@ -5,6 +5,7 @@ namespace Albet\Asmvc\Core\Routing;
 use Albet\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 use Albet\Asmvc\Core\Logger\Logger;
 use Albet\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
+use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Views\ViewRouteBuilder;
 use Closure;
@@ -136,6 +137,13 @@ class Route
         return $this;
     }
 
+    private function registerPrevious(Requests $request): void
+    {
+        if (!str_contains($request->getCurrentUrl(), "/public/")) {
+            SessionManager::registerPrevious($request->getCurrentUrl());
+        }
+    }
+
     private function triggerRoute()
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $routes) {
@@ -168,18 +176,18 @@ class Route
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
                 Logger::info("Route not found.", ['url' => $request->getCurrentUrl()]);
+                $this->registerPrevious($request);
                 returnErrorPage(404);
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 Logger::info("Method not allowed.", ['url' => $request->getCurrentUrl()]);
+                $this->registerPrevious($request);
                 throw new MethodNotAllowedException($request->getAll()->getMethod());
             case Dispatcher::FOUND:
                 Logger::info("Route found.", ['url' => $request->getCurrentUrl()]);
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
-                if (!str_contains($request->getCurrentUrl(), "/public/")) {
-                    SessionManager::registerPrevious($request->getCurrentUrl());
-                }
+                $this->registerPrevious($request);
                 $handler($vars);
                 break;
         }

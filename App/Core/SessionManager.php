@@ -85,6 +85,10 @@ class SessionManager
         if ($this->validate) {
             $this->validateSession();
         }
+
+        if (!isset($_SESSION['_previousRoute']) || !is_array($_SESSION['_previousRoute'])) {
+            $_SESSION['_previousRoute'] = []; // register PreviosRoute as array.
+        }
     }
 
     /**
@@ -155,6 +159,7 @@ class SessionManager
         if (count(session('_previousRoute')) <= 1) {
             return null;
         }
+
         return session('_previousRoute')[array_key_last(session('_previousRoute')) - 1];
     }
 
