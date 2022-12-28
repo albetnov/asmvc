@@ -2,7 +2,6 @@
 
 namespace App\Asmvc\Core\Console\Commands;
 
-use App\Asmvc\Core\Console\Contracts\BadgeColor;
 use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,12 +18,12 @@ class InstallBootstrap extends Command
     public function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int
     {
         if (!is_dir(base_path('node_modules'))) {
-            $this->badge("Node Modules not detected. ASMVC will tried to run 'npm install'", "WARN", BadgeColor::Yellow);
+            $this->badgeWarn("Node Modules not detected. ASMVC will tried to run 'npm install'");
             system('npm i');
             if (is_dir(base_path('node_modules'))) {
-                $this->badge("Command executed successfully", "SUCCESS", BadgeColor::Green);
+                $this->badgeSuccess("Command executed successfully");
             } else {
-                $this->badge("Failed to execute npm install. Please execute it manually.", "ERROR", BadgeColor::Red);
+                $this->badgeError("Failed to execute npm install. Please execute it manually.");
                 return Command::FAILURE;
             }
         }

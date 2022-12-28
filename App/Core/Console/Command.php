@@ -43,6 +43,26 @@ abstract class Command extends SymfonyCommand
         html);
     }
 
+    protected function badgeWarn(string $message)
+    {
+        return $this->badge($message, "WARN:", BadgeColor::Yellow);
+    }
+
+    protected function badgeSuccess(string $message)
+    {
+        return $this->badge($message, 'SUCCESS:', BadgeColor::Green);
+    }
+
+    protected function badgeError(string $message)
+    {
+        return $this->badge($message, 'ERROR:', BadgeColor::Red);
+    }
+
+    protected function badgeInfo(string $message)
+    {
+        return $this->badge($message, 'INFO:', BadgeColor::Blue);
+    }
+
     protected function badge(string $message, string $badgeTitle, BadgeColor $color = BadgeColor::Green)
     {
         return $this->render(<<<html

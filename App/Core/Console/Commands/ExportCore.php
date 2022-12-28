@@ -38,7 +38,7 @@ class ExportCore extends Command
         $list = array_diff(scandir(base_path() . 'App/Core/Errors/'), ['.', '..']);
         foreach ($list as $file) {
             copy(base_path() . 'App/Core/Errors/' . $file, base_path() . 'App/Views/Errors/' . $file);
-            $this->badge("Copied: $file", "INFO:", BadgeColor::Blue);
+            $this->badgeInfo("Copied: $file", "INFO:", BadgeColor::Blue);
         }
 
         $this->success("Exported Successfully!");

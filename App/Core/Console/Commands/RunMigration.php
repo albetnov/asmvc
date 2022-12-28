@@ -1,22 +1,30 @@
 <?php
 
-namespace App\Asmvc\Core\Cli\Commands;
+namespace App\Asmvc\Core\Console\Commands;
 
-use App\Asmvc\Core\Cli\Cli;
+use App\Asmvc\Core\Console\Command;
+use App\Asmvc\Core\Console\FluentCommandBuilder;
+use App\Asmvc\Core\Console\FluentOptionalParamBuilder;
 use App\Asmvc\Core\Eloquent\EloquentDB;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class RunMigration extends Cli
+class RunMigration extends Command
 {
-    /**
-     * @var string $command
-     * @var string $hint
-     * @var string $desc
-     */
-    protected $command = "run:migration";
-    protected $hint = "fresh?";
-    protected $desc = "Run a migration file or refresh your migration.";
+    protected function setup(FluentCommandBuilder $builder): FluentCommandBuilder
+    {
+        return $builder->setName("run:migration")
+            ->setAliases("migrate")
+            ->setDesc("Migrate your database")
+            ->addOptionalParam(
+                fn (FluentOptionalParamBuilder $opb) => $opb->setName('fresh')
+                    ->setInputTypeNone()
+                    ->setDesc('Refresh your migration')
+                    ->setShortcut('f')
+            );
+    }
 
     /**
      * Check history table exist.
@@ -68,16 +76,15 @@ class RunMigration extends Cli
         }
     }
 
-    /**
-     * Register the command
-     */
-    public function register()
+    public function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int
     {
-        if ($this->next_arguments(1) == 'fresh') {
+        if ($inputInterface->hasOption('fresh')) {
             (new EloquentDB)->schema()->dropAllTables();
-            echo "Tables Dropped successfully!\n";
-            echo "Starting migrating...\n";
+            $this->badgeSuccess("Tables dropped successfully.");
         }
+
+        $this->badgeInfo("Starting migration...");
+
         $diffed = array_diff(scandir(base_path() . "/App/Database/Migrations"), ['.', '..', '.gitkeep']);
         $dirtho = [];
         foreach ($diffed as $diffed) {
@@ -86,9 +93,9 @@ class RunMigration extends Cli
                 $dirtho[] = $diffed;
                 foreach ($dirs as $dir) {
                     if ($this->checkHistoryMigration($dir)) {
-                        echo "Table: {$dir} already exist. Skipping...\n";
+                        $this->badgeWarn("Table: {$dir} already exist. Skipping...");
                     } else {
-                        echo "Migrated: {$dir}.\n";
+                        $this->badgeSuccess("Migrated: {$dir}.");
                         $get = include base_path("App/Database/Migrations/{$dir}");
                         $get->up();
                         $this->fillHistory($dir);
@@ -96,14 +103,18 @@ class RunMigration extends Cli
                 }
             } else {
                 if ($this->checkHistoryMigration($diffed)) {
-                    echo "Table: {$diffed} already exist. Skipping...\n";
+                    $this->badgeWarn("Table: {$diffed} already exist. Skipping...");
                 } else {
-                    echo "Migrated: $diffed\n";
+                    $this->badgeSuccess("Migrated: $diffed");
                     $get = include base_path("App/Database/Migrations/{$diffed}");
                     $get->up();
                     $this->fillHistory($diffed);
                 }
             }
         }
+
+        $this->success("Migration finished!");
+
+        return Command::SUCCESS;
     }
 }
