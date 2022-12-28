@@ -15,8 +15,5 @@ use App\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
 use App\Asmvc\Core\Views\ViewRouteBuilder;
 
 return function (Route $router, MiddlewareRouteBuilder $mwBuilder) {
-    $router->get('/', [HomeController::class, 'index'])
-        ->get('/examine', function () {
-            dd("Hello", "world!");
-        });
+    $router->get('/', [HomeController::class, 'index']);
 };
