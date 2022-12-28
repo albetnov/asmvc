@@ -18,7 +18,7 @@ class MiddlewareRouteBuilder
 
     public function put(string $middleware, ?array $bind = []): self
     {
-        if (count($bind) > 0 && !isAssociativeArray($bind)) {
+        if ((array) $bind !== [] && !isAssociativeArray($bind)) {
             throw new ArrayIsNotAssiactiveException();
         }
 

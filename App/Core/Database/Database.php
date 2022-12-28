@@ -10,9 +10,9 @@ class Database
      * Define require variables
      */
     private $table, $data, $tableDefined = false;
-    private $whereStmt = null, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
-    private $pdo;
-    private static $last_insert_id;
+    private $whereStmt, $orderStmt, $limitStmt, $joinStmt, $whereNoFormat = false;
+    private \PDO $pdo;
+    private static string|bool|null $last_insert_id = null;
 
     public function __call($method, $arguments)
     {
@@ -22,9 +22,8 @@ class Database
 
         if (is_array($arguments)) {
             return $this->$method(...$arguments);
-        } else {
-            return $this->$method($arguments);
         }
+        return $this->$method($arguments);
     }
 
     public static function __callStatic($method, $arguments)
@@ -35,14 +34,12 @@ class Database
 
         if (is_array($arguments)) {
             return (new self)->$method(...$arguments);
-        } else {
-            return (new self)->$method($arguments);
         }
+        return (new self)->$method($arguments);
     }
 
     /**
      * Defining your table
-     * @param string $table
      */
     public function defineTable(string $table): void
     {
@@ -76,7 +73,7 @@ class Database
     private function totalPrepare(): string
     {
         $total_prepare = "";
-        for ($i = 0; $i < count($this->data); $i++) {
+        foreach ($this->data as $singleData) {
             $total_prepare .= "?,";
         }
         return rtrim($total_prepare, ',');
@@ -84,8 +81,6 @@ class Database
 
     /**
      * Define Table Function
-     * @param string $name
-     * @return self
      */
     public function table(string $name): self
     {
@@ -95,18 +90,12 @@ class Database
 
     /**
      * Where function
-     * @param string $field
      * @param string value
      * @param string $operator
-     * @return self
      */
     public function where(string $field, string $value, ?string $operator = null): self
     {
-        if ($this->whereStmt) {
-            $string = " AND {$field} ";
-        } else {
-            $string = "WHERE {$field} ";
-        }
+        $string = $this->whereStmt ? " AND {$field} " : "WHERE {$field} ";
         if (!is_null($operator)) {
             $string .= "{$operator} ";
         } else {
@@ -123,7 +112,6 @@ class Database
 
     /**
      * Where function without formatted strings.
-     * @return self
      */
     public function whereNoFormat(): self
     {
@@ -136,10 +124,8 @@ class Database
 
     /**
      * orWhere function
-     * @param string $field
      * @param string value
      * @param string $operator
-     * @return self
      */
     public function orWhere(string $field, string $value, ?string $operator = null): self
     {
@@ -161,16 +147,13 @@ class Database
 
     /**
      * Order by function
-     * @param string $column
-     * @param string $order
-     * @return self
      */
     public function orderBy(string $column, string $order): self
     {
         noSelfChained($this->orderStmt, 'orderBy');
         if (!is_array($column)) {
             $string = "ORDER BY {$column} {$order}";
-        } else if (is_array($column) && count($column) > 1) {
+        } elseif (is_array($column) && count($column) > 1) {
             $join = implode(',', $column);
             $string = "ORDER BY {$join} {$order}";
         }
@@ -196,14 +179,11 @@ class Database
 
     /**
      * Limit function
-     * @param int $limit
-     * @return self
      */
     public function limit(int $limit): self
     {
         noSelfChained($this->limitStmt, 'limit');
-        $string = "LIMIT {$limit}";
-        $this->limitStmt = $string;
+        $this->limitStmt = "LIMIT {$limit}";
         return $this;
     }
 
@@ -220,11 +200,6 @@ class Database
 
     /**
      * Perform Inner Join Function
-     *
-     *  @param string $table
-     * @param string $from_id
-     * @param string $to_id
-     * @return self
      */
     public function join(string $table, string $from_id, string $to_id): self
     {
@@ -233,11 +208,6 @@ class Database
 
     /**
      * Perform Left Join Function
-     *
-     *  @param string $table
-     * @param string $from_id
-     * @param string $to_id
-     * @return self
      */
     public function leftJoin(string $table, string $from_id, string $to_id): self
     {
@@ -246,11 +216,6 @@ class Database
 
     /**
      * Perform Right Join Function
-     *
-     *  @param string $table
-     * @param string $from_id
-     * @param string $to_id
-     * @return self
      */
     public function rightJoin(string $table, string $from_id, string $to_id): self
     {
@@ -259,11 +224,6 @@ class Database
 
     /**
      * Perform Full Join Function
-     *
-     *  @param string $table
-     * @param string $from_id
-     * @param string $to_id
-     * @return self
      */
     public function fullJoin(string $table, string $from_id, string $to_id): self
     {
@@ -272,7 +232,6 @@ class Database
 
     /**
      * Run and format every possible query statement in use
-     * @return string
      */
     private function validateOptional(): string
     {
@@ -340,7 +299,7 @@ class Database
         foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $result) {
         }
         $this->clean();
-        return $result;
+        return $result ?? null;
     }
 
     /**
@@ -354,14 +313,11 @@ class Database
         foreach ($sql->fetchAll(\PDO::FETCH_OBJ) as $result) {
         }
         $this->clean();
-        return $result;
+        return $result ?? null;
     }
 
     /**
      * Insert a data
-     * @param array $data
-     * @param boolean $last_insert_id
-     * @return boolean
      */
     public function insert(array $data, bool $last_insert_id = false): bool
     {
@@ -372,15 +328,11 @@ class Database
             self::$last_insert_id =  $this->pdo->lastInsertId();
         }
         $this->clean();
-        if ($attempt) {
-            return true;
-        }
-        return false;
+        return (bool) $attempt;
     }
 
     /**
      * Get Last Insert Id
-     * @return string|int
      */
     public function lastInsertId(): string | int
     {
@@ -389,45 +341,35 @@ class Database
 
     /**
      * Update function
-     * @param array $data
-     * @return boolean
      */
     public function update(array $data): bool
     {
         $this->data = $data;
         $prepare = "SET ";
         $field = array_keys($data);
-        for ($i = 0; $i < count($data); $i++) {
+        foreach (array_keys($data) as $i) {
             $prepare .= "{$field[$i]} = ?,";
         }
         $prepare = rtrim($prepare, ',') . " {$this->validateOptional()}";
         $prepare = $this->pdo->prepare("UPDATE {$this->table} {$prepare}");
         $attempt = $prepare->execute(array_values($data));
         $this->clean();
-        if ($attempt) {
-            return true;
-        }
-        return false;
+        return (bool) $attempt;
     }
 
     /**
      * Delete function
-     * @return boolean
      */
     public function delete(): bool
     {
         $prepare = $this->pdo->prepare("DELETE FROM {$this->table} {$this->validateOptional()}");
         $attempt = $prepare->execute();
         $this->clean();
-        if ($attempt) {
-            return true;
-        }
-        return false;
+        return (bool) $attempt;
     }
 
     /**
      * Debug function
-     * @return string
      */
     public function debug(): string
     {

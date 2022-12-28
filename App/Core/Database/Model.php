@@ -4,9 +4,6 @@ namespace App\Asmvc\Core\Database;
 
 class Model extends Database
 {
-    /**
-     * @var string $table
-     */
     protected string $table;
 
     /**

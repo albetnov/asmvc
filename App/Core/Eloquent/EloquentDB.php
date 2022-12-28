@@ -28,7 +28,7 @@ class EloquentDB extends Eloquent
 
     /**
      * Get a database Connection
-     * @return array
+     * @return array{driver: mixed, host: mixed, database: mixed, username: mixed, password: mixed, charset: string, collation: string, prefix: string}
      */
     public function getDbConnection(): array
     {

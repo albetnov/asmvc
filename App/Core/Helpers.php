@@ -25,7 +25,7 @@ define('ASMVC_VERSION', '3.0-dev');
 define('ASMVC_STATE', 'development');
 
 if (!function_exists('request')) {
-    function request()
+    function request(): \App\Asmvc\Core\Requests
     {
         return new Requests;
     }
@@ -46,7 +46,6 @@ if (!function_exists('rawDB')) {
 
     /**
      * Function to access PDO immediately
-     * @param string $query
      * @return PDO
      */
     function rawDB(string $query): array | false
@@ -61,23 +60,19 @@ if (!function_exists('rawDB')) {
 if (!function_exists('get_http_protocol')) {
     /**
      * Function to get if server is running on HTTPS or HTTP.
-     * @return string
      */
     function get_http_protocol(): string
     {
         if (!empty($_SERVER['HTTPS'])) {
             return "https";
-        } else {
-            return "http";
         }
+        return "http";
     }
 }
 
 if (!function_exists('public_path')) {
     /**
      * Function to access public folder.
-     * @param string $path
-     * @return string
      */
     function public_path(?string $path = null): string
     {
@@ -91,8 +86,6 @@ if (!function_exists('public_path')) {
 if (!function_exists('base_path')) {
     /**
      * Function to access base path of project
-     * @param string $path
-     * @return string
      */
     function base_path(?string $path = null): string
     {
@@ -106,8 +99,6 @@ if (!function_exists('base_path')) {
 if (!function_exists('base_url')) {
     /**
      * Function to access base url of project
-     * @param bool $portOnly
-     * @return string
      */
     function base_url(bool $portOnly = false): string
     {
@@ -125,8 +116,6 @@ if (!function_exists('base_url')) {
 if (!function_exists('url')) {
     /**
      * Function to access base url of project
-     * @param string $url
-     * @return string
      */
     function url(?string $url = null): string
     {
@@ -140,17 +129,14 @@ if (!function_exists('url')) {
 if (!function_exists('asset')) {
     /**
      * Function to access public folder
-     * @param string $asset
-     * @return string
      */
     function asset(?string $asset = null): string
     {
         $assetPath = get_http_protocol() . '://' . base_url() . '/public/';
         if (is_null($asset)) {
             return $assetPath;
-        } else {
-            return $assetPath . $asset;
         }
+        return $assetPath . $asset;
     }
 }
 
@@ -189,7 +175,6 @@ if (!function_exists('noSelfChained')) {
 if (!function_exists('views')) {
     /**
      * Function to access Views class immediately
-     * @return Views
      */
     function views(): Views
     {
@@ -200,8 +185,6 @@ if (!function_exists('views')) {
 if (!function_exists('back')) {
     /**
      * Function to return javascript history -1.
-     * @param bool $jsonly
-     * @return string
      */
     function back(bool $jsonly = false): ?string
     {
@@ -215,7 +198,6 @@ if (!function_exists('back')) {
 if (!function_exists('getCurrentUrl')) {
     /**
      * Function to access Requests's currentURL method.
-     * @return string
      */
     function getCurrentUrl(): string
     {
@@ -248,27 +230,24 @@ if (!function_exists('env')) {
     /**
      * Function to get an env, If there's no env you can put
      * optional value.
-     * @param string $name
-     * @param mixed $optional
-     * @return string
      */
-    function env(string $name, mixed $optional = null): string
+    function env(string $name, mixed $default = null): string|bool
     {
         if (isset($_ENV[$name])) {
             return $_ENV[$name];
-        } else if (!is_null($optional)) {
-            return $optional;
-        } else {
-            return '';
         }
+        if (!is_null($default)) {
+            return $default;
+        }
+
+        return false;
     }
 }
 
 if (!function_exists('session')) {
     /**
      * Function to access SessionManager directly
-     * 
-     * @param string $name
+     *
      * @return mixed
      */
     function session(?string $name = null): string | array | SessionManager
@@ -301,9 +280,9 @@ if (!function_exists('isAssociativeArray')) {
     /**
      * function to check whenever the array is associative or not
      */
-    function isAssociativeArray($array)
+    function isAssociativeArray($array): bool
     {
-        return array_keys($array) !== range(0, count($array) - 1);
+        return array_keys($array) !== range(0, (is_countable($array) ? count($array) : 0) - 1);
     }
 }
 
@@ -312,7 +291,7 @@ if (!function_exists('collect')) {
      * function to create a new collection
      * based on Doctrine/Collection
      */
-    function collect(array $data)
+    function collect(array $data): \Doctrine\Common\Collections\ArrayCollection
     {
         return new ArrayCollection($data);
     }

@@ -26,7 +26,7 @@ class RoutesCollection
         return $this;
     }
 
-    private function callMiddleware(stdClass $middlewareClass)
+    private function callMiddleware(stdClass $middlewareClass): void
     {
         $middleware = Container::fulfill($middlewareClass->class);
         Logger::info('Middleware executed', ['middleware' => $middlewareClass->class]);
@@ -34,9 +34,9 @@ class RoutesCollection
         $middleware->middleware();
     }
 
-    private function checkForMiddleware(?MiddlewareRouteBuilder $middleware = null)
+    private function checkForMiddleware(?MiddlewareRouteBuilder $middleware = null): void
     {
-        if ($middleware) {
+        if ($middleware !== null) {
             $middleware = $middleware->parse();
             if (is_array($middleware)) {
                 foreach ($middleware as $item) {
@@ -48,47 +48,44 @@ class RoutesCollection
         }
     }
 
-    private function checkForCsrf(string $method)
+    private function checkForCsrf(string $method): void
     {
         $csrfMethod = ['POST', 'PUT', 'PATCH', 'DELETE'];
-
-        if (in_array($method, $csrfMethod)) {
-            if (!csrf()->validateCsrf()) {
-                returnErrorPage(500, "CSRF validation failed");
-            }
+        if (!in_array($method, $csrfMethod)) {
+            return;
         }
+        if (csrf()->validateCsrf()) {
+            return;
+        }
+        returnErrorPage(500, "CSRF validation failed");
     }
 
-    private function viewHandler($middleware, $handler)
+    private function viewHandler(?MiddlewareRouteBuilder $middleware, string|\Closure|array $handler)
     {
-        $handler = function ($args) use ($middleware, $handler) {
+        return function ($args) use ($middleware, $handler) {
             $this->checkForMiddleware($middleware);
             return include_view($handler[0], array_merge($handler[1], $args));
         };
-
-        return $handler;
     }
 
-    private function closureHandler($method, $middleware, $handler)
+    private function closureHandler(string $method, ?MiddlewareRouteBuilder $middleware, string|\Closure|array $handler)
     {
-        $handler = function ($args) use ($method, $middleware, $handler) {
+        return function ($args) use ($method, $middleware, $handler) {
             $this->checkForMiddleware($middleware);
             $this->checkForCsrf($method);
 
             return $handler($args);
         };
-
-        return $handler;
     }
 
     public function add(string $path, array|string|Closure $handler, ?string $method = 'GET', ?MiddlewareRouteBuilder $middleware = null)
     {
         if ($this->isView) {
             $handler = $this->viewHandler($middleware, $handler);
-        } else if ($this->isClosure) {
+        } elseif ($this->isClosure) {
             $handler = $this->closureHandler($method, $middleware, $handler);
         } else {
-            $handler =  function ($args) use ($middleware, $handler, $method) {
+            $handler =  function ($args) use ($middleware, $handler, $method): void {
                 $this->checkForMiddleware($middleware);
                 $this->checkForCsrf($method);
 

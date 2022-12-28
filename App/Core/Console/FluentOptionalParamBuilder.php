@@ -6,10 +6,10 @@ use Symfony\Component\Console\Input\InputOption;
 
 class FluentOptionalParamBuilder
 {
-    private ?string $name;
+    private ?string $name = null;
     private ?string $default = null;
     private int $inputType = InputOption::VALUE_NONE;
-    private ?string $desc;
+    private ?string $desc = null;
     private string|array|null $shortcut = null;
 
     public function __call($method, $parameters)

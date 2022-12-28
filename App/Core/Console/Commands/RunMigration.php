@@ -35,7 +35,7 @@ class RunMigration extends Command
         $eloquent = new EloquentDB;
         $check = $eloquent->schema()->hasTable('migration_history');
         if (!$check) {
-            $eloquent->schema()->create('migration_history', function (Blueprint $table) {
+            $eloquent->schema()->create('migration_history', function (Blueprint $table): void {
                 $table->id();
                 $table->string('migration_name');
                 $table->timestamp('created_at');
@@ -46,7 +46,6 @@ class RunMigration extends Command
 
     /**
      * Register a history
-     * @param string $table
      */
     private function fillHistory(string $table): void
     {
@@ -59,21 +58,14 @@ class RunMigration extends Command
 
     /**
      * Check if table exist in migration.
-     * @param string $table
-     * @return bool
      */
     private function checkHistoryMigration(string $table): bool
     {
         if ($this->historyCheckup()->count() > 0) {
             $check = $this->historyCheckup()->where('migration_name', $table)->first();
-            if (isset($check->migration_name) && $check->migration_name == $table) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+            return isset($check->migration_name) && $check->migration_name == $table;
         }
+        return false;
     }
 
     public function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int
@@ -101,15 +93,13 @@ class RunMigration extends Command
                         $this->fillHistory($dir);
                     }
                 }
+            } elseif ($this->checkHistoryMigration($diffed)) {
+                $this->badgeWarn("Table: {$diffed} already exist. Skipping...");
             } else {
-                if ($this->checkHistoryMigration($diffed)) {
-                    $this->badgeWarn("Table: {$diffed} already exist. Skipping...");
-                } else {
-                    $this->badgeSuccess("Migrated: $diffed");
-                    $get = include base_path("App/Database/Migrations/{$diffed}");
-                    $get->up();
-                    $this->fillHistory($diffed);
-                }
+                $this->badgeSuccess("Migrated: $diffed");
+                $get = include base_path("App/Database/Migrations/{$diffed}");
+                $get->up();
+                $this->fillHistory($diffed);
             }
         }
 

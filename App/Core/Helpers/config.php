@@ -29,6 +29,6 @@ if (!function_exists('provider_config')) {
      */
     function provider_config(): array
     {
-        return (array) config('providers');
+        return config('providers');
     }
 }

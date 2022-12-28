@@ -29,7 +29,7 @@ class RollbackMigration extends Command
      * Clear history table
      * @param string $table
      */
-    private function clearHistory()
+    private function clearHistory(): void
     {
         $eloquent = new EloquentDB;
         $check = $eloquent->schema()->hasTable('migration_history');

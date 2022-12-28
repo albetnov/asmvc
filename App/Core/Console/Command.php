@@ -114,9 +114,8 @@ abstract class Command extends SymfonyCommand
     abstract function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int;
     abstract protected function setup(FluentCommandBuilder $builder): FluentCommandBuilder;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         return $this->handler($input, $output);
     }
 

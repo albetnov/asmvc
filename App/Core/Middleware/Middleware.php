@@ -15,13 +15,12 @@ abstract class Middleware
     /**
      * Consturctor to Query Builder
      */
-    protected function db()
+    protected function db(): EloquentDB|Database
     {
         if (provider_config()['model'] == 'eloquent') {
             return new EloquentDB;
-        } else {
-            return new Database;
         }
+        return new Database;
     }
 
     /**

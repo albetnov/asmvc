@@ -7,11 +7,6 @@ use Closure;
 
 class Route
 {
-    /**
-     * @var array $routes
-     * @var boolean $pagenotfound
-     * @var boolean $ASMVC_LOCAL_URL
-     */
     private static array $routes = [];
     private static bool $pagenotfound = false;
     private static bool $ASMVC_LOCAL_URL = false;
@@ -39,19 +34,18 @@ class Route
     private static function parseParameter(string $path): string
     {
         $spliited = explode('/', $path);
-        $result = array_map(function ($item) {
+        $result = array_map(function ($item): string {
             if (str_starts_with($item, ":")) {
                 return "([0-9a-zA-Z]*)";
             }
             return $item;
         }, $spliited);
 
-        return join("/", $result);
+        return implode("/", $result);
     }
 
     /**
      * Add routing to the array
-     * @param string $path
      * @param array $controllerandmethod
      * @param array $http_method_or_middleware
      */
@@ -63,7 +57,7 @@ class Route
             if (count($http_method_or_middleware) > 1) {
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
-            } else if (count($http_method_or_middleware) > 3) {
+            } elseif (count($http_method_or_middleware) > 3) {
                 throw new \Exception("Max arguments for add() only allowed 4");
             }
             if (class_exists($http_method_or_middleware[0])) {
@@ -94,8 +88,6 @@ class Route
 
     /**
      * Add routing to the array but for views only.
-     * @param string $path
-     * @param Array|String $view
      * @param array $http_method_or_middleware.
      */
     public static function view(string $path, array|string $view, array|string|Middleware ...$http_method_or_middleware)
@@ -106,7 +98,7 @@ class Route
             if (count($http_method_or_middleware) > 1) {
                 $http_method = $http_method_or_middleware[0];
                 $middleware = $http_method_or_middleware[1];
-            } else if (count($http_method_or_middleware) > 3) {
+            } elseif (count($http_method_or_middleware) > 3) {
                 throw new \Exception("Max arguments for include_view() only allowed 4");
             }
             if (class_exists($http_method_or_middleware[0])) {
@@ -121,17 +113,12 @@ class Route
             'http_method' => $http_method,
             'middleware' => $middleware
         ];
-        if (is_array($view)) {
-            $array['method'] = ['view' => $view[0], 'data' => $view[1]];
-        } else {
-            $array['method'] = $view;
-        }
-        array_push(self::$routes, $array);
+        $array['method'] = is_array($view) ? ['view' => $view[0], 'data' => $view[1]] : $view;
+        self::$routes[] = $array;
     }
 
     /**
      * Get ASMVC_LOCAL_URL value
-     * @return string
      */
     public static function getAsmvcUrlLocal(): string
     {
@@ -140,8 +127,6 @@ class Route
 
     /**
      * Register user previously visit url
-     * @param string $route
-     * @param boolean $get
      * @return void|string
      */
     public static function registerPrevious(?string $route = null, bool $get = false)
@@ -155,13 +140,13 @@ class Route
         }
 
         $_SESSION['_previousRoute'][] = getCurrentUrl();
-        if (sizeof($_SESSION['_previousRoute']) > 1) {
+        if ((is_countable($_SESSION['_previousRoute']) ? count($_SESSION['_previousRoute']) : 0) > 1) {
             $getPrevious = $_SESSION['_previousRoute'][array_key_last($_SESSION['_previousRoute']) - 1];
         } else {
             $getPrevious = $_SESSION['_previousRoute'][array_key_first($_SESSION['_previousRoute'])];
         }
 
-        if (sizeof($_SESSION['_previousRoute']) > 4) {
+        if ((is_countable($_SESSION['_previousRoute']) ? count($_SESSION['_previousRoute']) : 0) > 4) {
             for ($i = 0; $i < 5; $i++) {
                 unset($_SESSION['_previousRoute'][$i]);
             }
@@ -169,9 +154,8 @@ class Route
 
         if ($get) {
             return $getPrevious;
-        } else {
-            self::$previous = $getPrevious;
         }
+        self::$previous = $getPrevious;
     }
 
     public static function getPrevious(): string
@@ -185,11 +169,7 @@ class Route
      */
     public static function triggerRouter(): mixed
     {
-        if (str_contains($_SERVER['REQUEST_URI'], '?')) {
-            $server = strtok($_SERVER['REQUEST_URI'], '?');
-        } else {
-            $server = $_SERVER['REQUEST_URI'];
-        }
+        $server = str_contains($_SERVER['REQUEST_URI'], '?') ? strtok($_SERVER['REQUEST_URI'], '?') : $_SERVER['REQUEST_URI'];
         $exploded = explode('\\', realpath('../'));
         $match = $exploded[array_key_last($exploded)] . '/public/index.php';
 
@@ -200,11 +180,15 @@ class Route
             // Define where your url start with.
             self::$ASMVC_LOCAL_URL =  $exploded[array_key_last($exploded)];
         }
-        if (empty(self::$routes)) {
+        if (self::$routes === []) {
             self::$pagenotfound = true;
         }
         foreach (self::$routes as $route) {
             $pattern = "#^{$route['path']}$#";
+            if ($server != $route['path']) {
+                self::$pagenotfound = true;
+            }
+
             if (preg_match($pattern, $server, $variables)) {
                 array_shift($variables);
                 if ($_SERVER['REQUEST_METHOD'] != $route['http_method']) {
@@ -228,15 +212,10 @@ class Route
                 } else if ($route['controller'] == 'inline') {
                     return call_user_func_array($route['method'], $variables);
                 } else {
-                    $pattern = "#^{$route['path']}$#";
                     $method = $route['method'];
                     $resolver = new DependencyResolver;
                     return $resolver->methodResolver($route['controller'], $method, ...$variables);
                 }
-                exit;
-            } else if ($server != $route['path']) {
-                self::$pagenotfound = true;
-            }
         }
         if (self::$pagenotfound) {
             if (php_sapi_name() == 'cli-server') {

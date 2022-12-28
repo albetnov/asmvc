@@ -31,7 +31,7 @@ class ConfigCache extends Command
         // something like below but use scandir().
         // parse the cache name by splitting extension
         // exclude ['container.php', '.', '..'] using array_diff_key
-        file_put_contents(cache_path("database.json"), json_encode(config('database')));
+        file_put_contents(cache_path("database.json"), json_encode(config('database'), JSON_THROW_ON_ERROR));
         $this->badgeSuccess("Cached database.php");
 
         return Command::SUCCESS;

@@ -6,10 +6,10 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class FluentParamBuilder
 {
-    private ?string $name;
+    private ?string $name = null;
     private ?string $default = null;
     private int $inputType = InputArgument::REQUIRED;
-    private ?string $desc;
+    private ?string $desc = null;
 
     public function __call($method, $parameters)
     {

@@ -14,7 +14,7 @@ trait FileBuilder
         return $builder->setName($this->identifier[0])
             ->setDesc("Create a {$parsedName} file for you.")
             ->setAliases($this->identifier[1])
-            ->addParam(fn (FluentParamBuilder $pb) => $pb->setName('fileName')
+            ->addParam(fn (FluentParamBuilder $pb): FluentParamBuilder => $pb->setName('fileName')
                 ->setDesc("File Name to generate")
                 ->setInputTypeRequired());
     }

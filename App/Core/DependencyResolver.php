@@ -7,8 +7,6 @@ class DependencyResolver
 
     /**
      * Return a class with dependencies automatically.
-     * @param string $class
-     * @return mixed
      * @throws Exception
      */
     public function resolve(string $class): mixed
@@ -33,10 +31,6 @@ class DependencyResolver
 
     /**
      * Return a class back after running a method. (The method will be called with dependencies automatically)
-     * @param string $class
-     * @param string $method
-     * @param mixed $definedParam
-     * @return mixed
      * @throws Exception
      */
     public function methodResolver(string $class, string $method, mixed $definedParam = []): mixed
@@ -62,12 +56,10 @@ class DependencyResolver
 
     /**
      * Get a dependencies.
-     * @param array $parameters
-     * @return array
      */
     public function getDependencies(array $parameters): array
     {
-        $dependencies = array();
+        $dependencies = [];
         foreach ($parameters as $parameter) {
             $dependency = $parameter->getType();
             if (is_null($dependency)) {
@@ -85,15 +77,12 @@ class DependencyResolver
 
     /**
      * Return default value if exist.
-     * @param ReflectionParameter $parameter
-     * @return mixed
      */
     public function resolveNonClass(\ReflectionParameter $parameter): mixed
     {
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
-        } else {
-            return "";
         }
+        return "";
     }
 }

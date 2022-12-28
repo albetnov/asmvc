@@ -6,7 +6,6 @@ class Connection
 {
     /**
      * Function to get a connection
-     * @return \PDO
      */
     public function getConnection(): \PDO
     {

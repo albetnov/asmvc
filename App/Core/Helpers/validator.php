@@ -5,17 +5,10 @@ use App\Asmvc\Core\Validator;
 if (!function_exists('old')) {
     /**
      * Function to get old value of field.
-     * @param string $field_name
-     * @param string $data
-     * @return string
      */
     function old(string $field_name, ?string $data = null): ?string
     {
-        if (isset($_SESSION['old'][$field_name])) {
-            $return = $_SESSION['old'][$field_name];
-            unset($_SESSION['old'][$field_name]);
-            return $return;
-        } else if (!is_null($data)) {
+        if (!is_null($data)) {
             return $data;
         }
 
@@ -26,7 +19,6 @@ if (!function_exists('old')) {
 if (!function_exists('set_old')) {
     /**
      * Function to set old to a field
-     * @param string $field
      */
     function set_old(string $field): void
     {
@@ -48,8 +40,6 @@ if (!function_exists('flush_old')) {
 if (!function_exists('makeValidate')) {
     /**
      * Function to access Validator's make method immediately
-     * @param array $validate
-     * @return bool
      */
     function makeValidate(array $validate, array $customMsg = []): bool
     {
@@ -60,8 +50,6 @@ if (!function_exists('makeValidate')) {
 if (!function_exists('checkError')) {
     /**
      * Function to access Validator's checkError method immediately
-     * @param string $field
-     * @return bool
      */
     function checkError(string $field): bool
     {
@@ -72,8 +60,6 @@ if (!function_exists('checkError')) {
 if (!function_exists('getErrorMsg')) {
     /**
      * Function to access Validator's validMsg method immediately
-     * @param string $field
-     * @return string
      */
     function getErrorMsg(string $field): string
     {

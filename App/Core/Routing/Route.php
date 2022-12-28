@@ -186,12 +186,12 @@ class Route
      */
     private function triggerRoute()
     {
-        $dispatcher = simpleDispatcher(function (RouteCollector $routes) {
+        $dispatcher = simpleDispatcher(function (RouteCollector $routes): void {
             $routeCollection = $this->definedRouteCollection->getRoutes();
             foreach ($routeCollection as $route) {
                 $routes->addRoute($route['httpMethod'], $route['path'], $route['handler']);
             }
-            $routes->addRoute('GET', '/public/{file:.+}', function ($args) {
+            $routes->addRoute('GET', '/public/{file:.+}', function ($args): void {
                 $ext = explode('.', $args['file']);
                 $ext = $ext[array_key_last($ext)];
 

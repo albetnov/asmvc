@@ -19,7 +19,6 @@ class Requests
 
     /**
      * Get an input field value
-     * @param string $field
      * @param bool $escape
      * @return string|array
      */
@@ -38,7 +37,6 @@ class Requests
 
     /**
      * Get user's current URL
-     * @return string
      */
     public function getCurrentUrl(): string
     {
@@ -47,8 +45,6 @@ class Requests
 
     /**
      * Get form file uploads
-     * @param string $name
-     * @return mixed
      */
     public function getUpload(string $name): mixed
     {
@@ -61,8 +57,6 @@ class Requests
 
     /**
      * Get url query parameter values
-     * @param string $name
-     * @return string|bool
      */
     public function getQuery(string $name): string | bool
     {
@@ -85,6 +79,9 @@ class Requests
      */
     public function wantsJson(): bool
     {
-        return $this->request->hasHeader('Content-Type') && $this->request->getHeader('Content-Type') === "application/json";
+        if (!$this->request->hasHeader('Content-Type')) {
+            return false;
+        }
+        return $this->request->getHeader('Content-Type') === "application/json";
     }
 }

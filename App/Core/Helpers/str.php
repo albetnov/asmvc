@@ -3,9 +3,6 @@
 if (!function_exists('getStringAfter')) {
     /**
      * Function to get a string after specific character.
-     * @param string $char
-     * @param string $string
-     * @return string
      */
     function getStringAfter(string $char, string $string): string
     {
@@ -16,8 +13,6 @@ if (!function_exists('getStringAfter')) {
 if (!function_exists('dotSupport')) {
     /**
      * Function to change '.' to '/'.
-     * @param string $text
-     * @return string
      */
     function dotSupport(string $text): string
     {
@@ -31,9 +26,6 @@ if (!function_exists('dotSupport')) {
 if (!function_exists('getStringBefore')) {
     /**
      * Function to get a string before specific character
-     * @param string $char
-     * @param string $string
-     * @return string
      */
     function getStringBefore(string $char, string $string): string
     {
@@ -45,10 +37,6 @@ if (!function_exists('getStringBefore')) {
 if (!function_exists('getStringBetween')) {
     /**
      * Function to get a string between characters
-     * @param string $string 
-     * @param string $start 
-     * @param string $end
-     * @return string
      */
     function getStringBetween(string $string, string $start, string $end): string
     {
@@ -65,8 +53,6 @@ if (!function_exists('mkPass')) {
     /**
      * Encrypt a string to given constant.
      * @param $constant
-     * @param string $string
-     * @return string
      */
     function mkPass(string $constant, string $string): string
     {
@@ -77,9 +63,6 @@ if (!function_exists('mkPass')) {
 if (!function_exists('comparePass')) {
     /**
      * Compare an encryption.
-     * @param string $first
-     * @param string $second
-     * @return bool
      */
     function comparePass(string $first, string $second): bool
     {

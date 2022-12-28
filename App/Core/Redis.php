@@ -27,14 +27,12 @@ class Redis
 
     /**
      * Function to check whenever key is exist or not.
-     * @param string $key
-     * @param bool $get
      * @return mixed
      */
     public function checkKey(string $key, bool $get = false): string | bool
     {
         $redis = $this->connect();
-        if ($redis->exists($key)) {
+        if ($redis->exists($key) !== 0) {
             if ($get) {
                 return $redis->get($key);
             }
@@ -46,10 +44,6 @@ class Redis
 
     /**
      * Function to set and get redis key
-     * @param string $key
-     * @param mixed $value
-     * @param boolean $list
-     * @param int $expire
      * @return mixed
      */
     public function redisKey(string $key, mixed $value = null, bool $list = false, int $expire = null): bool
@@ -61,25 +55,15 @@ class Redis
             }
             return $this->checkKey($key, true);
         }
-        if ($list) {
-            $attempt = $redis->lpush($key, $value);
-        } else {
-            $attempt = $redis->set($key, $value);
-        }
+        $attempt = $list ? $redis->lpush($key, $value) : $redis->set($key, $value);
         if (!is_null($expire)) {
             $redis->expire($key, $expire);
         }
-        if ($attempt) {
-            return true;
-        }
-
-        return false;
+        return (bool) $attempt;
     }
 
     /**
      * Get key expires
-     * @param string $key
-     * @return int
      */
     public function getExpires(string $key): int
     {
@@ -90,7 +74,6 @@ class Redis
     /**
      * Delete a key
      * @param mixed $key
-     * @return bool
      */
     public function flush(?string $key = null): bool
     {
@@ -99,9 +82,9 @@ class Redis
             if ($redis) {
                 return true;
             }
-        } else if (!is_null($key)) {
+        } elseif (!is_null($key)) {
             $redis = $this->connect()->del($key);
-            if ($redis) {
+            if ($redis !== 0) {
                 return true;
             }
         }

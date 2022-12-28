@@ -27,11 +27,7 @@ abstract class Seeders
      */
     protected function fake(int $count, Closure $faker): self
     {
-        if ($this->lang) {
-            $seeder = $faker((new Factory())->create($this->lang));
-        } else {
-            $seeder = $faker((new Factory())->create());
-        }
+        $seeder = $this->lang ? $faker((new Factory())->create($this->lang)) : $faker((new Factory())->create());
 
         $payload = [];
 

@@ -4,12 +4,6 @@ namespace App\Asmvc\Core;
 
 class SessionManager
 {
-    /**
-     * @var string $type
-     * @var boolean $ip
-     * @var boolean $validate
-     * @var boolean $secure
-     */
     private string $type;
     private bool $ip = false, $validate = false, $secure = false;
 
@@ -74,7 +68,7 @@ class SessionManager
             $redisPass = env('REDIS_AUTH_PASS');
             if (!empty($redisUser) && !empty($redisPass)) {
                 ini_set('session.save_path', "tcp://{$redisHost}:{$redisPort}?database={$redisDb}&auth=[{$redisUser}, {$redisPass}]");
-            } else if (empty($redisUser) && !empty($redisPass)) {
+            } elseif (empty($redisUser) && !empty($redisPass)) {
                 ini_set('session.save_path', "tcp://{$redisHost}:{$redisPort}?database={$redisDb}&auth={$redisPass}");
             } else {
                 ini_set('session.save_path', "tcp://{$redisHost}:{$redisPort}?database={$redisDb}");
@@ -124,9 +118,6 @@ class SessionManager
 
     /**
      * Put into session.
-     * 
-     * @param string $name
-     * @param mixed $content
      */
     public function put(string $name, mixed $content): void
     {
@@ -135,8 +126,6 @@ class SessionManager
 
     /**
      * Erase a session
-     * 
-     * @param string $name
      */
     public function erase(string $name): void
     {
@@ -156,7 +145,7 @@ class SessionManager
      */
     public static function back(): ?string
     {
-        if (count(session('_previousRoute')) <= 1) {
+        if ((is_countable(session('_previousRoute')) ? count(session('_previousRoute')) : 0) <= 1) {
             return null;
         }
 
@@ -166,9 +155,9 @@ class SessionManager
     /**
      * Register a previous url
      */
-    private static function registerPrevious(string $url)
+    private static function registerPrevious(string $url): void
     {
-        if (count(session('_previousRoute')) > 2) {
+        if ((is_countable(session('_previousRoute')) ? count(session('_previousRoute')) : 0) > 2) {
             unset(session('_previousRoute')[array_key_last(session('_previousRoute'))]);
         }
 

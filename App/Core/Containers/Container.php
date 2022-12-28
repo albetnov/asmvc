@@ -25,8 +25,7 @@ class Container
         }
         unset($config['CheckPerformance']); // emit CheckPerformance so it won't get compiled
         $containerBuilder->addDefinitions($config);
-        $container = $containerBuilder->build();
-        self::$container = $container;
+        self::$container = $containerBuilder->build();
     }
 
     /**
@@ -42,7 +41,7 @@ class Container
      */
     private static function checkForInstance()
     {
-        if (!self::$container) {
+        if (self::$container === null) {
             throw new ContainerNotBootedException();
         }
     }

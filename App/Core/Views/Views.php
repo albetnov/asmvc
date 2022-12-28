@@ -13,11 +13,10 @@ class Views
      * @var string $path
      */
     private static $sectionList = [], $currentSection, $section = [];
-    private static $path;
+    private static ?string $path = null;
 
     /**
      * Function to define a section
-     * @param string $name
      * @var string $content
      */
     public function section(string $name, string $content = null): void
@@ -51,7 +50,6 @@ class Views
 
     /**
      * Function to get a section
-     * @param string $name
      */
     public function getSection(string $name): void
     {
@@ -69,7 +67,6 @@ class Views
 
     /**
      * Function to extends another views. A section calling is required to make sure everything run just fine.
-     * @param string $path
      */
     public function extends(string $path): void
     {
@@ -83,7 +80,6 @@ class Views
 
     /**
      * Function to include a view
-     * @param string $path
      */
     public function include(string $path): void
     {
@@ -93,18 +89,14 @@ class Views
     /**
      * Function to matching user's url and server expected url then
      * if match return following classname.
-     * @param string $expected
-     * @param string $classname
-     * @return string
      */
     public function match(string $expected, string $classname): string
     {
         $expected = url() . $expected;
-        if ($expected == getCurrentUrl()) {
+        if ($expected === getCurrentUrl()) {
             return $classname;
-        } else {
-            return '';
         }
+        return '';
     }
 
     private function latteDriver(string $path, array $data): mixed
@@ -121,25 +113,15 @@ class Views
             $latte->setAutoRefresh(false);
         }
 
-        $latte->addFunction('csrf', function ($route = null) {
-            return new \Latte\Runtime\Html(csrf_field($route));
-        });
+        $latte->addFunction('csrf', fn($route = null): \Latte\Runtime\Html => new \Latte\Runtime\Html(csrf_field($route)));
 
-        $latte->addFunction('getErrorMsg', function ($field) {
-            return new \Latte\Runtime\Html(getErrorMsg($field));
-        });
+        $latte->addFunction('getErrorMsg', fn($field): \Latte\Runtime\Html => new \Latte\Runtime\Html(getErrorMsg($field)));
 
-        $latte->addFunction('flash', function () {
-            return new Flash;
-        });
+        $latte->addFunction('flash', fn(): \App\Asmvc\Core\Flash => new Flash);
 
-        $latte->addFunction('match', function ($url, $htmlclass) {
-            return (new Views)->match($url, $htmlclass);
-        });
+        $latte->addFunction('match', fn($url, $htmlclass): string => (new Views)->match($url, $htmlclass));
 
-        $latte->addFunction('url', function ($url) {
-            return url($url);
-        });
+        $latte->addFunction('url', fn($url): string => url($url));
 
         $view = dotSupport($path);
         return $latte->render(__DIR__ . '/../../Views/' . $view . '.latte', $data);

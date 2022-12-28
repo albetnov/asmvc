@@ -46,11 +46,11 @@ if (!defined('ASMVC_CLI_START')) {
             $whoops->pushHandler(new PrettyPageHandler);
         }
     } else {
-        $whoops->pushHandler(function ($e) {
+        $whoops->pushHandler(function ($e): void {
             returnErrorPage(500);
         });
     }
-    $whoops->pushHandler(function ($e) {
+    $whoops->pushHandler(function ($e): void {
         if ($e instanceof DetailableException) {
             Logger::error($e->getMessage(), ['detail' => $e->getDetail(), 'trace' => $e->getTrace()]);
         } else {
@@ -76,7 +76,7 @@ Container::make();
  * Boot route bootstrapper.
  */
 if (!function_exists('bootRoutes')) {
-    function bootRoutes()
+    function bootRoutes(): void
     {
         if (provider_config()['router'] === "new") {
             Route::map()->triggerRoute();

@@ -8,7 +8,6 @@ class Validator
 {
     /**
      * Put error to session.
-     * @param object $array
      */
     private static function put(object $array): void
     {
@@ -19,10 +18,6 @@ class Validator
 
     /**
      * Make a validation.
-     * @param array $validate
-     * @param array $customMsg
-     * @param bool $redirect
-     * @return bool
      */
     public static function make(array $validate, array $customMsg = [], bool $redirect = false): bool
     {
@@ -44,18 +39,13 @@ class Validator
                 return redirect(back(), false);
             }
             return false;
-        } else {
-            flush_old();
-            return true;
         }
+        flush_old();
+        return true;
     }
 
     /**
      * Get a message validation
-     * @param string $field
-     * @param string $class
-     * @param string $liclass
-     * @return string
      */
     public static function validMsg(string $field, string $class = null, string $liclass = null): string
     {
@@ -72,22 +62,15 @@ class Validator
                 $string .= "<li>{$error}</li>";
             }
         }
-        $string .= "</ul>";
         unset($_SESSION['validation'][$field]);
-        return $string;
+        return $string . "</ul>";
     }
 
     /**
      * Check if error in validation is exist.
-     * @param string $field
-     * @return bool
      */
     public static function checkError(string $field): bool
     {
-        if (isset($_SESSION['validation'][$field])) {
-            return true;
-        } else {
-            return false;
-        }
+        return isset($_SESSION['validation'][$field]);
     }
 }

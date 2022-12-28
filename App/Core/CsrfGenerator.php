@@ -17,7 +17,6 @@ class CsrfGenerator
 
     /**
      * Validate the csrf
-     * @return bool
      */
     public function validateCsrf(): bool
     {
@@ -30,8 +29,6 @@ class CsrfGenerator
 
     /**
      * Echo a csrf field html
-     * @param string $uniqueId
-     * @return string
      */
     public function field(?string $uniqueId = null): string
     {

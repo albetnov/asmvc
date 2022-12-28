@@ -2,7 +2,6 @@
 
 namespace App\Asmvc\Core\Console\Commands;
 
-use App\Asmvc\Core\Console\Contracts\BadgeColor;
 use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
 use App\Asmvc\Core\Console\FluentParamBuilder;
@@ -16,7 +15,7 @@ class ExportCore extends Command
         return $builder->setName("export:core")
             ->setDesc("Export cores file")
             ->addParam(
-                fn (FluentParamBuilder $pb) => $pb
+                fn (FluentParamBuilder $pb): FluentParamBuilder => $pb
                     ->setName("type")
                     ->setDesc("Core Type to export")
                     ->setInputTypeRequired()
@@ -30,7 +29,7 @@ class ExportCore extends Command
         $whiteListedCore = ["errorPages"];
 
         if (!in_array($type, $whiteListedCore)) {
-            $this->error("Invalid core files. Supported: " . join(",", $whiteListedCore));
+            $this->error("Invalid core files. Supported: " . implode(",", $whiteListedCore));
             return Command::FAILURE;
         }
 
@@ -38,7 +37,7 @@ class ExportCore extends Command
         $list = array_diff(scandir(base_path() . 'App/Core/Errors/'), ['.', '..']);
         foreach ($list as $file) {
             copy(base_path() . 'App/Core/Errors/' . $file, base_path() . 'App/Views/Errors/' . $file);
-            $this->badgeInfo("Copied: $file", "INFO:", BadgeColor::Blue);
+            $this->badgeInfo("Copied: $file");
         }
 
         $this->success("Exported Successfully!");

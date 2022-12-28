@@ -25,7 +25,7 @@ class Logger
     /**
      * Initiate the log
      */
-    public static function make()
+    public static function make(): void
     {
         self::$log = new MonologLogger('asmvc');
 
@@ -41,7 +41,7 @@ class Logger
     /**
      * Add log with info as it's level
      */
-    public static function info(string $message, array $context = [])
+    public static function info(string $message, array $context = []): void
     {
         if (self::checkForLog()) return;
         self::$log->info($message, $context);
@@ -50,7 +50,7 @@ class Logger
     /**
      * Add log with debug as it's level
      */
-    public static function debug(string $message, array $context = [])
+    public static function debug(string $message, array $context = []): void
     {
         if (self::checkForLog()) return;
         self::$log->debug($message, $context);
@@ -59,7 +59,7 @@ class Logger
     /**
      * Add log with warning as it's level
      */
-    public static function warning(string $message, array $context = [])
+    public static function warning(string $message, array $context = []): void
     {
         if (self::checkForLog()) return;
         self::$log->warning($message, $context);
@@ -68,7 +68,7 @@ class Logger
     /**
      * Add log with error as it's level
      */
-    public static function error(string $message, array $context = [])
+    public static function error(string $message, array $context = []): void
     {
         if (self::checkForLog()) return;
         self::$log->error($message, $context);
