@@ -19,9 +19,9 @@ class CreateMigration extends Command
         $fileContent = <<<content
         <?php
 
-        namespace Albet\\Asmvc\\Database\\Migrations;
+        namespace App\\Asmvc\\Database\\Migrations;
 
-        use Albet\\Asmvc\\Core\\Migration;
+        use App\\Asmvc\\Core\\Migration;
         use Illuminate\\Database\\Schema\\Blueprint;
 
         return new class extends Migration

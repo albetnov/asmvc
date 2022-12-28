@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Asmvc\Core;
+namespace App\Asmvc\Core\Eloquent;
 
 use App\Asmvc\Core\Eloquent\EloquentDB;
 use App\Asmvc\Core\Eloquent\ModelDriverException;

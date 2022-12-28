@@ -47,6 +47,8 @@ class CreateTest extends Command
             content;
         }
 
-        return $this->buildFile("App/Database/Seeders/" . $checkContainsTest ? $fileName : "{$fileName}Test", $fileContent);
+        $parsedName = $checkContainsTest ? $fileName : "{$fileName}Test";
+
+        return $this->buildFile("App/Tests/$parsedName", $fileContent);
     }
 }
