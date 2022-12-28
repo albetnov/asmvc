@@ -30,6 +30,8 @@ if (is_dir(__DIR__ . '/vendor/')) {
         exit;
     }
     exec("composer install");
+    echo "Installation done!\n";
+    exit;
 }
 
 /**
