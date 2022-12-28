@@ -174,9 +174,8 @@ if (!function_exists('noSelfChained')) {
      * Function to tell developer if there's a method being chained more than one.
      * @param $mark, string $method, string $custom_msg
      * @throws Exception
-     * @return void
      */
-    function noSelfChained(bool $mark, string $method, ?string $custom_msg = null): never
+    function noSelfChained(bool $mark, string $method, ?string $custom_msg = null)
     {
         if ($mark) {
             if (!is_null($custom_msg)) {

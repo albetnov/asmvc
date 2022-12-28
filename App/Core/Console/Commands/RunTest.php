@@ -31,13 +31,15 @@ class RunTest extends Command
             $fileName = $inputInterface->getOption('fileName');
             if (!function_exists('system')) {
                 $this->badgeError('system function is inaccesible.');
-                return COmmand::FAILURE;
+                return Command::FAILURE;
             }
             system("{$path} --configuration phpunit.xml App/Tests/{$fileName}.php", $result);
-            echo $result;
+            $this->info($result);
         } else {
             system("{$path} --configuration phpunit.xml", $result);
-            echo $result;
+            $this->info($result);
         }
+
+        return Command::SUCCESS;
     }
 }

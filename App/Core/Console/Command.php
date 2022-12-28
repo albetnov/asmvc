@@ -17,55 +17,55 @@ abstract class Command extends SymfonyCommand
     protected array $aliases = [];
     protected string $desc = "";
 
-    protected function render(string $html)
+    protected function render(string $html): void
     {
-        return render($html);
+        render($html);
     }
 
-    protected function info(string $message)
+    protected function info(string $message): void
     {
-        return  $this->render(<<<html
+        $this->render(<<<html
         <div class="p-10 bg-sky-500 font-bold text-white m-1">{$message}</div>   
         html);
     }
 
-    protected function error(string $message)
+    protected function error(string $message): void
     {
-        return $this->render(<<<html
+        $this->render(<<<html
         <div class="p-10 bg-rose-500 font-bold text-white m-1">{$message}</div>
         html);
     }
 
-    protected function success(string $message)
+    protected function success(string $message): void
     {
-        return $this->render(<<<html
+        $this->render(<<<html
             <div class="p-10 bg-lime-500 font-bold text-white m-1">{$message}</div>
         html);
     }
 
-    protected function badgeWarn(string $message)
+    protected function badgeWarn(string $message): void
     {
-        return $this->badge($message, "WARN:", BadgeColor::Yellow);
+        $this->badge($message, "WARN:", BadgeColor::Yellow);
     }
 
-    protected function badgeSuccess(string $message)
+    protected function badgeSuccess(string $message): void
     {
-        return $this->badge($message, 'SUCCESS:', BadgeColor::Green);
+        $this->badge($message, 'SUCCESS:', BadgeColor::Green);
     }
 
-    protected function badgeError(string $message)
+    protected function badgeError(string $message): void
     {
-        return $this->badge($message, 'ERROR:', BadgeColor::Red);
+        $this->badge($message, 'ERROR:', BadgeColor::Red);
     }
 
-    protected function badgeInfo(string $message)
+    protected function badgeInfo(string $message): void
     {
-        return $this->badge($message, 'INFO:', BadgeColor::Blue);
+        $this->badge($message, 'INFO:', BadgeColor::Blue);
     }
 
-    protected function badge(string $message, string $badgeTitle, BadgeColor $color = BadgeColor::Green)
+    protected function badge(string $message, string $badgeTitle, BadgeColor $color = BadgeColor::Green): void
     {
-        return $this->render(<<<html
+        $this->render(<<<html
             <p><span class="px-3 {$color->value} text-white font-bold uppercase">{$badgeTitle}</span> {$message}</p>
         html);
     }

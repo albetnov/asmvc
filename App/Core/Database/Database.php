@@ -375,6 +375,7 @@ class Database
         if ($attempt) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -406,6 +407,7 @@ class Database
         if ($attempt) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -420,6 +422,7 @@ class Database
         if ($attempt) {
             return true;
         }
+        return false;
     }
 
     /**

@@ -38,6 +38,7 @@
     "symfony/var-dumper": "^6.2",
     "phpunit/phpunit": "^9.5",
     "filp/whoops": "^2.14",
-    "nunomaduro/collision": "^6.3"
+    "nunomaduro/collision": "^6.3",
+    "phpstan/phpstan": "^1.9"
   }
 }

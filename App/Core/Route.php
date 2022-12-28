@@ -211,7 +211,7 @@ class Route
                     throw new \Exception("Request {$_SERVER['REQUEST_METHOD']} is not support for this url. Instead use {$route['http_method']}!");
                 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (!csrf()->validateCsrf()) {
-                        return returnErrorPage(500, "Csrf Not Valid.");
+                        returnErrorPage(500, "Csrf Not Valid.");
                     };
                 }
                 self::registerPrevious();

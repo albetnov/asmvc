@@ -39,9 +39,9 @@ class Redis
                 return $redis->get($key);
             }
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -72,6 +72,8 @@ class Redis
         if ($attempt) {
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -103,5 +105,7 @@ class Redis
                 return true;
             }
         }
+
+        return false;
     }
 }

@@ -9,7 +9,7 @@ if (!function_exists('old')) {
      * @param string $data
      * @return string
      */
-    function old(string $field_name, ?string $data = null): string
+    function old(string $field_name, ?string $data = null): ?string
     {
         if (isset($_SESSION['old'][$field_name])) {
             $return = $_SESSION['old'][$field_name];
@@ -18,6 +18,8 @@ if (!function_exists('old')) {
         } else if (!is_null($data)) {
             return $data;
         }
+
+        return null;
     }
 }
 
