@@ -33,7 +33,9 @@
     "symfony/console": "^6.2",
     "doctrine/collections": "^2.1",
     "nunomaduro/termwind": "^1.15",
-    "symfony/translation": "^6.2"
+    "symfony/translation": "^6.2",
+    "spatie/once": "^3.1",
+    "phpfastcache/phpfastcache": "^9.1"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.2",

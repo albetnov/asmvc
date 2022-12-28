@@ -5,6 +5,7 @@
  * Powered by Composer's PSR4
  */
 
+use App\Asmvc\Core\Cache;
 use App\Asmvc\Core\Containers\Container;
 use App\Asmvc\Core\Eloquent\EloquentDB;
 use App\Asmvc\Core\Exceptions\DetailableException;
@@ -91,5 +92,9 @@ if (!function_exists('bootRoutes')) {
 /**
  * Register Translation Service
  */
-
 Translation::boot();
+
+/**
+ * Register Cache Service
+ */
+Cache::boot();

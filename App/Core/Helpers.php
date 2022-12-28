@@ -11,6 +11,7 @@ require_once __DIR__ . '/Helpers/config.php';
 
 // use App\Asmvc\Core\Route;
 
+use App\Asmvc\Core\Cache;
 use App\Asmvc\Core\Database\Connection;
 use App\Asmvc\Core\Exceptions\InvalidHttpCodePageException;
 use App\Asmvc\Core\Requests;
@@ -299,8 +300,33 @@ if (!function_exists('collect')) {
 }
 
 if (!function_exists('__')) {
+    /**
+     * Function to translate a string
+     * from given key.
+     * 
+     * Set the locale using Translation::setLocale().
+     */
     function __(string $key, ?string $locale = "en")
     {
         return (new Translation)->trans($key, $locale);
+    }
+}
+
+
+if (!function_exists('cache')) {
+    /**
+     * A helper function to get instance of cache
+     */
+    function cache(?string $key = null, ?string $value = null)
+    {
+        if (!$key) {
+            return new Cache();
+        }
+
+        if ($key && $value) {
+            return (new Cache)->cache($key, $value);
+        }
+
+        return (new Cache)->cache($key);
     }
 }
