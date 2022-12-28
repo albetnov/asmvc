@@ -32,10 +32,11 @@ class Cli
             $this->app->add(Container::fulfill($internalCommand)->parse());
         }
 
-        // // Register user defined command
-        // foreach ($this->userLoader() as $userCommand) {
-        //     $this->app->register(Container::fulfill($userCommand)->parse());
-        // }
+        $userLoader = collect($this->userLoader())->map(fn ($item) => 'App\\Asmvc\\Commands\\' . explode('.', $item)[0]);
+        // Register user defined command
+        foreach ($userLoader as $userCommand) {
+            $this->app->add(Container::fulfill($userCommand)->parse());
+        }
 
         return $this;
     }

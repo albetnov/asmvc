@@ -19,7 +19,7 @@ class CreateCommand extends Command
         $fileContent = <<<content
         <?php
 
-        namespace App\Asmvc\Core\Console\Commands;
+        namespace App\Asmvc\Commands;
         
         use App\Asmvc\Core\Console\Command;
         use App\Asmvc\Core\Console\FluentCommandBuilder;

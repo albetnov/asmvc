@@ -39,5 +39,5 @@ if (PHP_SAPI !== 'cli') {
     exit('ASMVC Only limited to run in CLI Environment Only' . PHP_EOL);
 }
 
-
+(new \NunoMaduro\Collision\Provider)->register();
 (new Cli())->register()->load();
