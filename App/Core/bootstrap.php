@@ -11,6 +11,7 @@ use App\Asmvc\Core\Exceptions\DetailableException;
 use App\Asmvc\Core\Logger\Logger;
 use App\Asmvc\Core\Route as OldRouter;
 use App\Asmvc\Core\Routing\Route;
+use App\Asmvc\Core\Translation;
 use Dotenv\Dotenv;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -86,3 +87,9 @@ if (!function_exists('bootRoutes')) {
         }
     }
 }
+
+/**
+ * Register Translation Service
+ */
+
+Translation::boot();

@@ -15,6 +15,7 @@ use App\Asmvc\Core\Database\Connection;
 use App\Asmvc\Core\Exceptions\InvalidHttpCodePageException;
 use App\Asmvc\Core\Requests;
 use App\Asmvc\Core\SessionManager;
+use App\Asmvc\Core\Translation;
 use App\Asmvc\Core\Views\Views;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -294,5 +295,12 @@ if (!function_exists('collect')) {
     function collect(array $data): \Doctrine\Common\Collections\ArrayCollection
     {
         return new ArrayCollection($data);
+    }
+}
+
+if (!function_exists('__')) {
+    function __(string $key, ?string $locale = "en")
+    {
+        return (new Translation)->trans($key, $locale);
     }
 }

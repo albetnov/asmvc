@@ -10,9 +10,6 @@ use Rector\Set\ValueObject\SetList;
 return static function (RectorConfig $rectorConfig): void {
     $paths = array_map(fn ($item) => __DIR__ . "/App/" . $item, array_values(array_diff(scandir(__DIR__ . '/App'), ['.', '..', 'Core'])));
 
-    // var_dump($paths);
-
-
     $rectorConfig->paths(array_merge($paths, [__DIR__ . "/public/"]));
 
     // register a single rule
