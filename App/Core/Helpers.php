@@ -58,17 +58,6 @@ if (!function_exists('rawDB')) {
     }
 }
 
-if (!function_exists('vdd')) {
-    /**
-     * Function to do var_dump then die.
-     * @param $dump
-     */
-    function vdd(mixed ...$dump): never
-    {
-        die(dump(...$dump));
-    }
-}
-
 if (!function_exists('get_http_protocol')) {
     /**
      * Function to get if server is running on HTTPS or HTTP.

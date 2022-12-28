@@ -17,7 +17,6 @@ use App\Asmvc\Core\Views\ViewRouteBuilder;
 return function (Route $router, MiddlewareRouteBuilder $mwBuilder) {
     $router->get('/', [HomeController::class, 'index'])
         ->get('/examine', function () {
-            echo "closure handler not working anjay";
-            // vdd("okelah", [1, 2, 3]);
+            dd("Hello", "world!");
         });
 };

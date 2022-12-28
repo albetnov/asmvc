@@ -9,7 +9,7 @@
  * Contribution: https://github.com/albetnov/simple-php-mvc
  */
 
-// use App\Asmvc\Core\CliParser;
+use App\Asmvc\Core\Console\Cli;
 
 /**
  * Define that ASMVC Cli is started.
@@ -38,3 +38,6 @@ if (is_dir(__DIR__ . '/vendor/')) {
 if (PHP_SAPI !== 'cli') {
     exit('ASMVC Only limited to run in CLI Environment Only' . PHP_EOL);
 }
+
+
+(new Cli())->register()->load();

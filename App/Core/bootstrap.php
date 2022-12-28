@@ -5,7 +5,6 @@
  * Powered by Composer's PSR4
  */
 
-use App\Asmvc\Core\Console\Cli;
 use App\Asmvc\Core\Containers\Container;
 use App\Asmvc\Core\Eloquent\EloquentDB;
 use App\Asmvc\Core\Exceptions\DetailableException;
@@ -86,8 +85,4 @@ if (!function_exists('bootRoutes')) {
             OldRouter::triggerRouter();
         }
     }
-}
-
-if (PHP_SAPI === "cli") {
-    (new Cli())->register()->load();
 }

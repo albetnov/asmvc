@@ -2,6 +2,7 @@
 
 namespace App\Asmvc\Core\Console\Commands;
 
+use App\Asmvc\Core\Console\BadgeColor;
 use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
 
@@ -19,9 +20,7 @@ class Version extends Command
     {
         $ver = ASMVC_VERSION;
         $state = ASMVC_STATE;
-        $this->render(<<<html
-            <div class="p-10 bg-sky-500 font-bold text-white font-bold m-1">ASMVC Version $ver : $state</div>   
-        html);
+        $this->info("ASMVC Version $ver : $state");
         return Command::SUCCESS;
     }
 }

@@ -29,9 +29,7 @@ class Serve extends Command
             echo "Forwanding to (:{$port})\n";
             fclose($default);
         }
-        $this->render(<<<html
-        <div class="p-10 bg-sky-500 font-bold text-white font-bold m-1">Serving your application at (http://localhost:{$port})</div>   
-        html);
+        $this->info("Serving your application at (http://localhost:{$port})</div>");
         exec('php -S localhost:' . $port . ' public/index.php');
         return Command::SUCCESS;
     }
