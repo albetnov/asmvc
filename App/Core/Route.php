@@ -216,20 +216,21 @@ class Route
                     $resolver = new DependencyResolver;
                     return $resolver->methodResolver($route['controller'], $method, ...$variables);
                 }
-        }
-        if (self::$pagenotfound) {
-            if (php_sapi_name() == 'cli-server') {
-                $file = $_SERVER['REQUEST_URI'];
-                $requestPath = explode('/', $_SERVER['REQUEST_URI']);
-                $prefetchExt = explode('.', end($requestPath));
-                $extension = end($prefetchExt);
-                if ($extension === 'css' || $extension === 'js' && file_exists($file)) {
-                    header("Content-Type: text/{$extension}");
-                    readfile(__DIR__ . '/../..' . $file);
-                    exit;
-                }
             }
-            return returnErrorPage(404);
+            if (self::$pagenotfound) {
+                if (php_sapi_name() == 'cli-server') {
+                    $file = $_SERVER['REQUEST_URI'];
+                    $requestPath = explode('/', $_SERVER['REQUEST_URI']);
+                    $prefetchExt = explode('.', end($requestPath));
+                    $extension = end($prefetchExt);
+                    if ($extension === 'css' || $extension === 'js' && file_exists($file)) {
+                        header("Content-Type: text/{$extension}");
+                        readfile(__DIR__ . '/../..' . $file);
+                        exit;
+                    }
+                }
+                return returnErrorPage(404);
+            }
         }
     }
 }

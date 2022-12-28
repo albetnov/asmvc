@@ -22,7 +22,7 @@ class SessionManager
     public static function __callStatic($method, $parameters)
     {
         if ($method === "registerPrevious") {
-            return self::registerPrevious(...$parameters);
+            self::registerPrevious(...$parameters);
         }
     }
 

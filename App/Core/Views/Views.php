@@ -113,15 +113,15 @@ class Views
             $latte->setAutoRefresh(false);
         }
 
-        $latte->addFunction('csrf', fn($route = null): \Latte\Runtime\Html => new \Latte\Runtime\Html(csrf_field($route)));
+        $latte->addFunction('csrf', fn ($route = null): \Latte\Runtime\Html => new \Latte\Runtime\Html(csrf_field($route)));
 
-        $latte->addFunction('getErrorMsg', fn($field): \Latte\Runtime\Html => new \Latte\Runtime\Html(getErrorMsg($field)));
+        $latte->addFunction('getErrorMsg', fn ($field): \Latte\Runtime\Html => new \Latte\Runtime\Html(getErrorMsg($field)));
 
-        $latte->addFunction('flash', fn(): \App\Asmvc\Core\Flash => new Flash);
+        $latte->addFunction('flash', fn (): \App\Asmvc\Core\Flash => new Flash);
 
-        $latte->addFunction('match', fn($url, $htmlclass): string => (new Views)->match($url, $htmlclass));
+        $latte->addFunction('match', fn ($url, $htmlclass): string => (new Views)->match($url, $htmlclass));
 
-        $latte->addFunction('url', fn($url): string => url($url));
+        $latte->addFunction('url', fn ($url): string => url($url));
 
         $view = dotSupport($path);
         return $latte->render(__DIR__ . '/../../Views/' . $view . '.latte', $data);
@@ -130,7 +130,7 @@ class Views
     /**
      * Import a view
      */
-    public function include_view(string $path, array $data): mixed
+    public function include_view(string $path, array $data): void
     {
         if (provider_config()['view'] == 'latte') {
             return $this->latteDriver($path, $data);
