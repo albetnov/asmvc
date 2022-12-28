@@ -18,6 +18,12 @@ if (!function_exists('config')) {
      */
     function config(string $fileName): array
     {
+        // Check if the cached config exist, If it's exist use cached config.
+        if (file_exists(cache_path($fileName . '.php'))) {
+            $config = require cache_path($fileName . '.php');
+            return ((array) $config);
+        }
+
         $config = require config_path($fileName . '.php');
         return ((array) $config);
     }

@@ -130,7 +130,7 @@ class Views
     /**
      * Import a view
      */
-    public function include_view(string $path, array $data): void
+    public function include_view(string $path, array $data): mixed
     {
         if (provider_config()['view'] == 'latte') {
             return $this->latteDriver($path, $data);
