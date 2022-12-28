@@ -14,6 +14,6 @@ use App\Asmvc\Core\Routing\Route;
 use App\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
 use App\Asmvc\Core\Views\ViewRouteBuilder;
 
-return function (Route $router, MiddlewareRouteBuilder $mwBuilder): void {
+return static function (Route $router, MiddlewareRouteBuilder $mwBuilder): void {
     $router->get('/', [HomeController::class, 'index']);
 };

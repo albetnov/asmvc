@@ -62,7 +62,7 @@ class RollbackMigration extends Command
             }
         }
 
-        if ($inputInterface->hasOption('clear')) {
+        if ($inputInterface->getOption('clear')) {
             $this->clearHistory();
         }
 

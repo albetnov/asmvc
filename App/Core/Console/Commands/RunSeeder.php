@@ -34,7 +34,7 @@ class RunSeeder extends Command
 
     public function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int
     {
-        if ($inputInterface->hasOption('class')) {
+        if ($inputInterface->getOption('class')) {
             $className = $inputInterface->getOption('class');
             $class = "\\Albet\\Asmvc\\Database\\Seeders\\{$className}";
             (new $class())->run();

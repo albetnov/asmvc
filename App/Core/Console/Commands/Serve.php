@@ -5,6 +5,7 @@ namespace App\Asmvc\Core\Console\Commands;
 use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\ExecDisabledException;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
+use App\Asmvc\Core\Console\FluentOptionalParamBuilder;
 
 class Serve extends Command
 {
@@ -12,16 +13,19 @@ class Serve extends Command
     {
         return $builder
             ->setName('serve')
-            ->setDesc('Serve the web application');
+            ->setDesc('Serve the web application')
+            ->addOptionalParam(fn (FluentOptionalParamBuilder $opb) => $opb->setName('port')
+                ->setDesc("Customise the Port where server going to served.")
+                ->setInputTypeRequired());
     }
 
     public function handler($input, $output): int
     {
-
         if (!function_exists('exec')) {
             throw new ExecDisabledException();
         }
-        $port = 9090;
+
+        $port = $input->getOption('port') ? $input->getOption('port') : 9090;
         $default = @fsockopen('localhost', $port);
         while (is_resource($default)) {
             echo "Port in use. (:{$port})\n";

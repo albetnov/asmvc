@@ -23,7 +23,7 @@ class RunTest extends Command
     public function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int
     {
         $path = PHP_OS_FAMILY == 'windows' ? 'vendor\\bin\\phpunit' : 'vendor/bin/phpunit';
-        if ($inputInterface->hasOption('fileName')) {
+        if ($inputInterface->getOption('fileName')) {
             $fileName = $inputInterface->getOption('fileName');
             if (!function_exists('system')) {
                 $this->badgeError('system function is inaccesible.');

@@ -70,7 +70,7 @@ class RunMigration extends Command
 
     public function handler(InputInterface $inputInterface, OutputInterface $outputInterface): int
     {
-        if ($inputInterface->hasOption('fresh')) {
+        if ($inputInterface->getOption('fresh')) {
             (new EloquentDB)->schema()->dropAllTables();
             $this->badgeSuccess("Tables dropped successfully.");
         }
