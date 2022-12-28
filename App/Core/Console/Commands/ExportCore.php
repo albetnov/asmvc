@@ -2,7 +2,7 @@
 
 namespace App\Asmvc\Core\Console\Commands;
 
-use App\Asmvc\Core\Console\BadgeColor;
+use App\Asmvc\Core\Console\Contracts\BadgeColor;
 use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
 use App\Asmvc\Core\Console\FluentParamBuilder;

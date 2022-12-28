@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Asmvc\Core\Console;
+namespace App\Asmvc\Core\Console\Contracts;
 
 enum BadgeColor: string
 {

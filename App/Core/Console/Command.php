@@ -2,6 +2,8 @@
 
 namespace App\Asmvc\Core\Console;
 
+use App\Asmvc\Core\Console\Contracts\BadgeColor;
+use App\Asmvc\Core\Console\Contracts\PromptableValue;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,7 +63,27 @@ abstract class Command extends SymfonyCommand
         $answer = ask($question, $autoComplete);
 
         if (!$answer && $defaultValue) return $defaultValue;
-        return false;
+        else if (!$answer) return false;
+        else return $answer;
+    }
+
+    protected function prompt(string $question, PromptableValue $defaultValue = PromptableValue::YES): PromptableValue|bool
+    {
+        $yes = ['y', 'yes', 1];
+        $no = ['n', 'no', 0];
+        $possibleAnswer = array_merge($yes, $no);
+        $answer = strtolower($this->ask($question, $possibleAnswer, $defaultValue->value === 1 ? "yes" : "no"));
+
+        if (!in_array($answer, $possibleAnswer)) {
+            $this->error("Unrecognized answer.");
+            return false;
+        }
+
+        if (in_array($answer, $no)) {
+            return PromptableValue::NO;
+        }
+
+        return PromptableValue::YES;
     }
 
     public function __call($method, $parameters)
