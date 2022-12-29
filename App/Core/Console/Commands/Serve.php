@@ -28,9 +28,9 @@ class Serve extends Command
         $port = $input->getOption('port') ? $input->getOption('port') : 9090;
         $default = @fsockopen('localhost', $port);
         while (is_resource($default)) {
-            echo "Port in use. (:{$port})\n";
+            $this->badgeWarn("Port in use. (:{$port})\n");
             $port++;
-            echo "Forwanding to (:{$port})\n";
+            $this->badgeInfo("Forwanding to (:{$port})\n");
             fclose($default);
         }
         $this->info("Serving your application at (http://localhost:{$port})</div>");
