@@ -11,7 +11,7 @@ class Cli
 
     public function __construct()
     {
-        $this->app = new Application();
+        $this->app = new Application("ASMVC", ASMVC_VERSION);
     }
 
     private function internalLoader(): array
