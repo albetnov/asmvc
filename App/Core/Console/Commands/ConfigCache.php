@@ -28,10 +28,19 @@ class ConfigCache extends Command
             // LIMITATIONS: Only able to evaluate a helpers function or something that not use namespace alias.
             $parsed = "";
 
+            if ((count($configs) <= 0)) {
+                continue; // skip this
+            }
 
             foreach ($configs as $key => $value) {
-                if ($value === true) {
-                    $parsed .= "\t'$key' => true, \n";
+                if (is_bool($value)) {
+                    $value = $value ? "true" : "false";
+                    $parsed .= "\t'$key' => $value, \n";
+                } else if (is_int($value)) {
+                    $parsed .= "\t'$key' => $value, \n";
+                } else if (is_array($value)) {
+                    $joined = implode(",", $value);
+                    $parsed .= "\t '$key' => ['$joined'],";
                 } else {
                     $parsed .= "\t'$key' => '$value',\n";
                 }

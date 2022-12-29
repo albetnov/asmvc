@@ -67,6 +67,11 @@ class RoutesCollection
         returnErrorPage(500, "CSRF validation failed");
     }
 
+    private function checkForCors()
+    {
+        
+    }
+
     private function viewHandler(?MiddlewareRouteBuilder $middleware, string|\Closure|array $handler)
     {
         return function ($args) use ($middleware, $handler) {

@@ -238,12 +238,28 @@ class Route
             case Dispatcher::NOT_FOUND:
                 Logger::info("Route not found.", ['url' => $request->getCurrentUrl()]);
                 $this->registerPrevious($request);
-                returnErrorPage(404);
+                if ($request->wantsJson()) {
+                    (new Rest)->json([
+                        'error' => 'not found!',
+                        'message' => "Path: {$request->getAll()->getUri()->getPath()} not found.",
+                        'statusCode' => 404
+                    ], 404);
+                } else {
+                    returnErrorPage(404);
+                }
+
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 Logger::info("Method not allowed.", ['url' => $request->getCurrentUrl()]);
                 $this->registerPrevious($request);
-                throw new MethodNotAllowedException($request->getAll()->getMethod());
+                if (env('APP_ENV', "development") === "production") {
+                    return (new Rest)->json([
+                        'error' => 'bad request!',
+                        'statusCode' => 400
+                    ], 400);
+                } else {
+                    throw new MethodNotAllowedException($request->getAll()->getMethod());
+                }
             case Dispatcher::FOUND:
                 Logger::info("Route found.", ['url' => $request->getCurrentUrl()]);
                 $handler = $routeInfo[1];
@@ -251,7 +267,7 @@ class Route
                 $this->registerPrevious($request);
 
                 // Parse to json if request want it's json.
-                if (request()->wantsJson() || str_contains($request->getCurrentUrl(), "api")) {
+                if ($request->wantsJson() || str_contains($request->getCurrentUrl(), "api")) {
                     $result = $handler($vars);
                     // Only accept array or object type. If void given, ASMVC will assume it's a rendered view.
                     if (is_array($result) || is_object($result)) {
