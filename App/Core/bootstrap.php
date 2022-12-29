@@ -37,7 +37,6 @@ $dotenv->safeLoad();
  * Initiate logger
  */
 Logger::make();
-Logger::info("Application booting", ['src' => 'Core/boostrap.php']);
 
 /**
  * Load Whoops error handler.

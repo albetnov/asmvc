@@ -2,6 +2,7 @@
 
 namespace App\Asmvc\Core;
 
+use App\Asmvc\Core\Logger\Logger;
 use App\Asmvc\Core\Middleware\Middleware;
 use Closure;
 
@@ -26,6 +27,7 @@ class Route
                 Route::add('/', [HomeController::class, 'index']);
                 
                 RouteFile);
+                Logger::info("Crafted: url.php", [self::class]);
             }
             require_once $path;
         }
