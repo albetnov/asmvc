@@ -79,9 +79,9 @@ class Requests
      */
     public function wantsJson(): bool
     {
-        if (!$this->request->hasHeader('Content-Type')) {
+        if (!$this->request->hasHeader('Accept')) {
             return false;
         }
-        return $this->request->getHeader('Content-Type') === "application/json";
+        return $this->request->getHeader('Accept')[0] === "application/json";
     }
 }

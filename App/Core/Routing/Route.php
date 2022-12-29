@@ -6,6 +6,7 @@ use App\Asmvc\Core\Exceptions\CallingToUndefinedMethod;
 use App\Asmvc\Core\Logger\Logger;
 use App\Asmvc\Core\Middleware\MiddlewareRouteBuilder;
 use App\Asmvc\Core\Requests;
+use App\Asmvc\Core\REST\Rest;
 use App\Asmvc\Core\SessionManager;
 use App\Asmvc\Core\Views\ViewRouteBuilder;
 use Closure;
@@ -17,6 +18,8 @@ use function FastRoute\simpleDispatcher;
 class Route
 {
     private RoutesCollection $definedRouteCollection;
+    private array $webRoutes = [];
+    private array $apiRoutes = [];
 
     /**
      * Create Routes Collection
@@ -63,7 +66,22 @@ class Route
             throw new RouteFileInvalidException();
         }
 
+        $apiRouteFile = base_path('App/Routes/api.php');
+        if (!file_exists($apiRouteFile)) {
+            throw new NoRouteFileException("Api Route file missing.");
+        }
+
+        $apiRoutes = require_once $apiRouteFile;
+        if (!($apiRoutes instanceof Closure)) {
+            throw new RouteFileInvalidException("Api route file invalid!");
+        }
+
+        $this->definedRouteCollection->setAsApi(false);
         $routes($this, new MiddlewareRouteBuilder());
+        $this->webRoutes = $this->definedRouteCollection->getRoutes();
+        $this->definedRouteCollection->clear()->setAsApi();
+        $apiRoutes($this, new MiddlewareRouteBuilder);
+        $this->apiRoutes = $this->definedRouteCollection->getRoutes();
         return $this;
     }
 
@@ -186,11 +204,14 @@ class Route
      */
     private function triggerRoute()
     {
-        $dispatcher = simpleDispatcher(function (RouteCollector $routes): void {
-            $routeCollection = $this->definedRouteCollection->getRoutes();
-            foreach ($routeCollection as $route) {
+        $dispatcher = simpleDispatcher(function (RouteCollector $routes): void {;
+            $routesCollection = array_merge($this->webRoutes, $this->apiRoutes);
+
+
+            foreach ($routesCollection as $route) {
                 $routes->addRoute($route['httpMethod'], $route['path'], $route['handler']);
             }
+
             $routes->addRoute('GET', '/public/{file:.+}', function ($args): void {
                 $ext = explode('.', $args['file']);
                 $ext = $ext[array_key_last($ext)];
@@ -228,7 +249,18 @@ class Route
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 $this->registerPrevious($request);
-                $handler($vars);
+
+                // Parse to json if request want it's json.
+                if (request()->wantsJson() || str_contains($request->getCurrentUrl(), "api")) {
+                    $result = $handler($vars);
+                    // Only accept array or object type. If void given, ASMVC will assume it's a rendered view.
+                    if (is_array($result) || is_object($result)) {
+                        (new Rest)->json($result);
+                    }
+                } else {
+                    $handler($vars);
+                }
+
                 break;
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Asmvc\Controllers;
 
 use App\Asmvc\Core\Requests;
+use App\Asmvc\Core\REST\Rest;
 
 class HomeController
 {
