@@ -252,7 +252,7 @@ class Route
             case Dispatcher::METHOD_NOT_ALLOWED:
                 Logger::info("Method not allowed.", ['url' => $request->getCurrentUrl()]);
                 $this->registerPrevious($request);
-                if (env('APP_ENV', "development") === "production") {
+                if (config('app')['ENV'] === "production") {
                     return (new Rest)->json([
                         'error' => 'bad request!',
                         'statusCode' => 400

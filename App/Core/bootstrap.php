@@ -20,10 +20,13 @@ use Whoops\Handler\PrettyPageHandler;
 require_once __DIR__ . '/Helpers.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+// Load the app config
+$app = config('app');
+
 /**
  * Load DotEnv Library
  */
-if (env('APP_ENV') == 'testing') {
+if ($app['ENV'] == 'testing') {
     $dotenv = Dotenv::createImmutable(base_path(), '.env.testing');
 } else {
     $dotenv = Dotenv::createImmutable(base_path());
@@ -41,7 +44,7 @@ Logger::info("Application booting", ['src' => 'Core/boostrap.php']);
  */
 if (!defined('ASMVC_CLI_START')) {
     $whoops = new \Whoops\Run;
-    if (env('APP_ENV', 'development') != 'production') {
+    if ($app['ENV'] != 'production') {
         if (request()->wantsJson()) {
             $whoops->pushHandler(new JsonResponseHandler); // return this is request wants json.
         } else {

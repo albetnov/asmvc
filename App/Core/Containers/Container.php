@@ -16,7 +16,7 @@ class Container
     {
         $containerBuilder = new ContainerBuilder();
         $config = config('container');
-        if (env("APP_ENV", "development") === "production") {
+        if (config('app')['ENV'] === "production") {
 
             if (count($config) <= 1 && $config['CheckPerformance']) {
                 throw new OptimizationRequiredException();

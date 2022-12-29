@@ -109,7 +109,7 @@ class Views
         }
 
         $latte->setTempDirectory($tmpPath);
-        if (env('APP_ENV') == 'production') {
+        if (config('app')['ENV'] == 'production') {
             $latte->setAutoRefresh(false);
         }
 

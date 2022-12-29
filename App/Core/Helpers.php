@@ -233,7 +233,7 @@ if (!function_exists('env')) {
      * Function to get an env, If there's no env you can put
      * optional value.
      */
-    function env(string $name, mixed $default = null): string|bool
+    function env(string $name, mixed $default = null): mixed
     {
         if (isset($_ENV[$name])) {
             return $_ENV[$name];

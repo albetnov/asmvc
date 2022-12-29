@@ -25,7 +25,8 @@ class ConfigCache extends Command
             $configs = config($name);
 
             // evaluate all possible expression that has in array
-            // LIMITATIONS: Only able to evaluate a helpers function or something that not use namespace alias.
+            // LIMITATIONS: Any expression will be evaluated, However those expression must return either bool, int, string, or array
+            // Other value will result in error.
             $parsed = "";
 
             if ((count($configs) <= 0)) {
@@ -35,12 +36,12 @@ class ConfigCache extends Command
             foreach ($configs as $key => $value) {
                 if (is_bool($value)) {
                     $value = $value ? "true" : "false";
-                    $parsed .= "\t'$key' => $value, \n";
+                    $parsed .= "\t'$key' => $value,\n";
                 } else if (is_int($value)) {
-                    $parsed .= "\t'$key' => $value, \n";
+                    $parsed .= "\t'$key' => $value,\n";
                 } else if (is_array($value)) {
                     $joined = implode(",", $value);
-                    $parsed .= "\t '$key' => ['$joined'],";
+                    $parsed .= "\t '$key' => ['$joined'],\n";
                 } else {
                     $parsed .= "\t'$key' => '$value',\n";
                 }

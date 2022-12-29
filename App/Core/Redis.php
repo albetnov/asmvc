@@ -11,17 +11,18 @@ class Redis
      */
     public function connect(): Client
     {
+        $redisCfg = config('redis');
         $redis = new Client([
             'scheme' => 'tcp',
-            'host' => env('REDIS_SERVER', '127.0.0.1'),
-            'port' => env("REDIS_PORT", '6379')
+            'host' => $redisCfg['REDIS_HOST'],
+            'port' => $redisCfg['REDIS_PORT']
         ]);
         $redis->connect();
-        $redisPass = env('REDIS_AUTH_PASS');
+        $redisPass = $redisCfg['REDIS_AUTH_PASS'];
         if (!empty($redisPass)) {
             $redis->auth($redisPass);
         }
-        $redis->select(env('REDIS_DB', 0));
+        $redis->select($redisCfg['REDIS_DATABASE']);
         return $redis;
     }
 
