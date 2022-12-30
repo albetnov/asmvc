@@ -19,7 +19,7 @@ class Validator
     /**
      * Make a validation.
      */
-    public static function make(array $validate, array $customMsg = [], bool $redirect = false): bool
+    public static function make(array $validate, array $customMsg = [], bool $redirect = true): bool
     {
         $validator = new RakitValidator();
         $validation = $validator->make(request()->getInput("*"), $validate);
