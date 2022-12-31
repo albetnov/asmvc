@@ -70,7 +70,6 @@ class CryptJwt
     public function encrypt(array $data)
     {
         $data = $this->parseData($data);
-        dd($data);
         return JWT::encode($data, $this->hash, $this->type);
     }
 

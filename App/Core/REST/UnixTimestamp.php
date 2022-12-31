@@ -16,7 +16,6 @@ class UnixTimestamp
         }
 
         $date = date('m-d-Y', $timestamp);
-        dd($date);
         list($month, $day, $year) = explode('-', $date);
 
         if (!checkdate($month, $day, $year)) {
