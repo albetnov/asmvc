@@ -5,6 +5,7 @@ namespace App\Asmvc\Core\Console\Commands;
 use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
 use App\Asmvc\Core\Console\FluentOptionalParamBuilder;
+use App\Asmvc\Database\Sorter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,6 +22,11 @@ class RunSeeder extends Command
                     ->setInputTypeRequired()
                     ->setShortcut('c')
                     ->setDesc('File class name')
+            )->addOptionalParam(
+                fn (FluentOptionalParamBuilder $opb) => $opb->setName('no-sort')
+                    ->setDesc('Ignore Sorter.php')
+                    ->setInputTypeNone()
+                    ->setShortcut('ns')
             );
     }
 
@@ -43,6 +49,13 @@ class RunSeeder extends Command
         }
 
         $diffed = array_diff(scandir(base_path() . "/App/Database/Seeders"), ['.', '..', '.gitkeep']);
+
+        $sorter = new Sorter();
+
+        if ($sorter->migrations() && !$inputInterface->getOption('no-sort')) {
+            $diffed = collect($sorter->seeders())->map(fn ($item) => "{$item}.php");
+        }
+
         $dirtho = [];
         foreach ($diffed as $diffed) {
             if (!str_contains($diffed, '.')) {

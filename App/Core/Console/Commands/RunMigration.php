@@ -6,6 +6,7 @@ use App\Asmvc\Core\Console\Command;
 use App\Asmvc\Core\Console\FluentCommandBuilder;
 use App\Asmvc\Core\Console\FluentOptionalParamBuilder;
 use App\Asmvc\Core\Eloquent\EloquentDB;
+use App\Asmvc\Database\Sorter;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +24,11 @@ class RunMigration extends Command
                     ->setInputTypeNone()
                     ->setDesc('Refresh your migration')
                     ->setShortcut('f')
+            )->addOptionalParam(
+                fn (FluentOptionalParamBuilder $opb) => $opb->setName('no-sort')
+                    ->setDesc('Ignore Sorter.php')
+                    ->setInputTypeNone()
+                    ->setShortcut('ns')
             );
     }
 
@@ -78,6 +84,13 @@ class RunMigration extends Command
         $this->badgeInfo("Starting migration...");
 
         $diffed = array_diff(scandir(base_path() . "/App/Database/Migrations"), ['.', '..', '.gitkeep']);
+
+        $sorter = new Sorter();
+
+        if ($sorter->migrations() && !$inputInterface->getOption('no-sort')) {
+            $diffed = collect($sorter->migrations())->map(fn ($item) => "{$item}.php");
+        }
+
         $dirtho = [];
         foreach ($diffed as $diffed) {
             if (!str_contains($diffed, '.')) {
