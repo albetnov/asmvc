@@ -2,20 +2,31 @@
 
 namespace App\Asmvc\Core\REST;
 
-use DateTime;
-use Exception;
+use App\Asmvc\Core\Logger\Logger;
 
 class UnixTimestamp
 {
     private int $timestamp;
 
-    public function validate(?int $timestamp = null)
+    public function __construct($time)
     {
-        if (!$timestamp) {
-            $timestamp = $this->timestamp;
+        if ($time instanceof \DateTimeImmutable) {
+            $this->timestamp = $time->getTimestamp();
         }
 
-        $date = date('m-d-Y', $timestamp);
+        try {
+            $time = new \DateTimeImmutable($time);
+            $this->timestamp = $time->getTimestamp();
+        } catch (\Exception $e) {
+            Logger::error('Time conversion failed.', ['exception' => $e]);
+        }
+
+        $this->validate();
+    }
+
+    public function validate()
+    {
+        $date = date('m-d-Y', $this->timestamp);
         list($month, $day, $year) = explode('-', $date);
 
         if (!checkdate($month, $day, $year)) {
@@ -25,15 +36,13 @@ class UnixTimestamp
         return true;
     }
 
-    public function put(int $timestamp): self
+    public function get(): \DateTimeImmutable
     {
-        $this->validate($timestamp);
-        $this->timestamp = $timestamp;
-        return $this;
+        return new \DateTimeImmutable($this->timestamp);
     }
 
-    public function get(): int
+    public function now(): \DateTimeImmutable
     {
-        return $this->timestamp;
+        return new \DateTimeImmutable();
     }
 }
