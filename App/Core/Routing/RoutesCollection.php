@@ -15,6 +15,8 @@ class RoutesCollection
     private bool $isClosure = false;
     private bool $isApi = false;
 
+    const SUPPORTED_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
+
     public function setAsView(bool $isView = true): self
     {
         $this->isView = $isView;
@@ -67,9 +69,81 @@ class RoutesCollection
         returnErrorPage(500, "CSRF validation failed");
     }
 
-    private function checkForCors()
+    private function asteriskParser(string $header, array $item): bool
     {
-        
+        if ($item[0] == "*") {
+            header($header . " *");
+            return true;
+        }
+        return false;
+    }
+
+    private function commonHeaderParser(string $header, array $config)
+    {
+        if (count($config) > 0) {
+            if ($this->asteriskParser($header, $config)) {
+                return;
+            }
+            $values = implode(', ', $config);
+            header("{$header}{$values}");
+        }
+    }
+
+    private function validateCorsConfig(array $config)
+    {
+        if (!isset($config['allowedMethods']) || !is_array($config['allowedMethods'])) {
+            throw new InvalidConfigException("allowedMethods");
+        }
+
+        $methodLists = collect($config['allowedMethods'])->filter(fn ($item) => !in_array(strtoupper($item), self::SUPPORTED_METHODS));
+
+        if ($methodLists->count() > 0) {
+            throw new InvalidConfigException("allowedMethods", self::SUPPORTED_METHODS);
+        }
+
+        if (!isset($config['allowedHeaders']) || !is_array($config['allowedHeaders'])) {
+            throw new InvalidConfigException("allowedHeaders");
+        }
+
+        if (!isset($config['allowedOrigins']) || !is_array($config['allowedOrigins'])) {
+            throw new InvalidConfigException("allowedOrigins");
+        }
+
+        if (!isset($config['maxAge']) || !is_int($config['maxAge'])) {
+            throw new InvalidConfigException("maxAge");
+        }
+    }
+
+    private function checkForCors(string $method)
+    {
+        if (!in_array($method, self::SUPPORTED_METHODS)) {
+            throw new MethodNotAllowedException($method);
+        }
+
+        $corsConfig = config('cors');
+        $this->validateCorsConfig($corsConfig);
+
+        if (count($corsConfig['allowedMethods']) > 0) {
+            $allowedMethodHeader = "Access-Control-Allow-Methods: ";
+            if ($this->asteriskParser($allowedMethodHeader, $corsConfig['allowedMethods'])) {
+                return;
+            }
+            $headerMethod = '';
+            if ($corsConfig['allowedMethods'][0] == 'route') {
+                $headerMethod = $method;
+            } else {
+                $headerMethod = implode(', ', $corsConfig['allowedMethods']);
+            }
+            $headerMethod = strtoupper($headerMethod);
+            header("{$allowedMethodHeader}{$headerMethod}");
+        }
+
+        $this->commonHeaderParser("Access-Control-Allow-Headers: ", $corsConfig['allowedHeaders']);
+        $this->commonHeaderParser("Access-Control-Allow-Origin: ", $corsConfig['allowedOrigins']);
+
+        if ($corsConfig['maxAge'] > 0) {
+            header('Access-Control-Max-Age: ', $corsConfig['maxAge']);
+        }
     }
 
     private function viewHandler(?MiddlewareRouteBuilder $middleware, string|\Closure|array $handler)
@@ -83,7 +157,8 @@ class RoutesCollection
     private function closureHandler(string $method, ?MiddlewareRouteBuilder $middleware, string|\Closure|array $handler)
     {
         if ($this->isApi) {
-            return function ($args) use ($middleware, $handler) {
+            return function ($args) use ($middleware, $handler, $method) {
+                $this->checkForCors($method);
                 $this->checkForMiddleware($middleware);
 
                 return $handler($args);
@@ -101,7 +176,8 @@ class RoutesCollection
     private function controllerHandler(string $method, ?MiddlewareRouteBuilder $middleware, \Closure|array $handler)
     {
         if ($this->isApi) {
-            return function ($args) use ($middleware, $handler) {
+            return function ($args) use ($middleware, $handler, $method) {
+                $this->checkForCors($method);
                 $this->checkForMiddleware($middleware);
 
                 return Container::inject([$handler[0], $handler[1]], $args);
@@ -128,7 +204,7 @@ class RoutesCollection
 
         $api = "";
 
-        if ($this->isApi) {
+        if ($this->isApi && !str_starts_with($path, "/api")) {
             if (str_starts_with($path, "/")) {
                 $api .= "/api";
             } else {
