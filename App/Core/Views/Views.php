@@ -123,6 +123,10 @@ class Views
 
         $latte->addFunction('url', fn ($url): string => url($url));
 
+        $latte->addFunction('checkError', fn ($field) => checkError($field));
+
+        $latte->addFunction('getErrorMsg', fn ($field) => getErrorMsg($field));
+
         $view = dotSupport($path);
         return $latte->render(__DIR__ . '/../../Views/' . $view . '.latte', $data);
     }
