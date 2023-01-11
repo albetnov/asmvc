@@ -12,7 +12,7 @@ if (!function_exists('old')) {
             return $data;
         }
 
-        return null;
+        return $_SESSION[$field_name];
     }
 }
 
