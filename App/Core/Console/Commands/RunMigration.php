@@ -88,11 +88,15 @@ class RunMigration extends Command
         $sorter = new Sorter();
 
         if (!$inputInterface->getOption('no-sort')) {
-            $appender = base_path() . "/App/Database/Migrations/";
             if ($sorter->migrations()) {
-                $diffed = collect($sorter->migrations())->map(fn ($item) => "{$appender}{$item}.php");
-            } else if ($sorter->exceptMigration()) {
-                $diffed = collect($diffed)->filter(function ($item) use ($sorter) {
+                $diffed = collect($sorter->migrations())->map(fn ($item) => "{$item}.php");
+            } 
+            
+            if ($sorter->exceptMigration()) {
+                if(is_array($diffed)) {
+                    $diffed = collect($diffed);
+                }
+                $diffed = $diffed->filter(function ($item) use ($sorter) {
                     foreach ($sorter->exceptMigration() as $except) {
                         if (str_ends_with($item, $except . ".php")) {
                             return false;
