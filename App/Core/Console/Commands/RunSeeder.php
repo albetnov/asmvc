@@ -52,8 +52,20 @@ class RunSeeder extends Command
 
         $sorter = new Sorter();
 
-        if ($sorter->migrations() && !$inputInterface->getOption('no-sort')) {
-            $diffed = collect($sorter->seeders())->map(fn ($item) => base_path() . "/App/Database/Seeders/{$item}.php");
+        if (!$inputInterface->getOption('no-sort')) {
+            $appender = base_path() . "/App/Database/Seeders/";
+            if ($sorter->seeders()) {
+                $diffed = collect($sorter->seeders())->map(fn ($item) => "{$appender}{$item}.php");
+            } else if ($sorter->exceptSeeder()) {
+                $diffed = collect($diffed)->filter(function ($item) use ($sorter) {
+                    foreach ($sorter->exceptSeeder() as $except) {
+                        if (str_ends_with($item, $except . ".php")) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            }
         }
 
         $dirtho = [];

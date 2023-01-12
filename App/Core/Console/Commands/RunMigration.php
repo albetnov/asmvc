@@ -87,8 +87,20 @@ class RunMigration extends Command
 
         $sorter = new Sorter();
 
-        if ($sorter->migrations() && !$inputInterface->getOption('no-sort')) {
-            $diffed = collect($sorter->migrations())->map(fn ($item) => base_path() . "/App/Database/Migrations/{$item}.php");
+        if (!$inputInterface->getOption('no-sort')) {
+            $appender = base_path() . "/App/Database/Migrations/";
+            if ($sorter->migrations()) {
+                $diffed = collect($sorter->migrations())->map(fn ($item) => "{$appender}{$item}.php");
+            } else if ($sorter->exceptMigration()) {
+                $diffed = collect($diffed)->filter(function ($item) use ($sorter) {
+                    foreach ($sorter->exceptMigration() as $except) {
+                        if (str_ends_with($item, $except . ".php")) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            }
         }
 
         $dirtho = [];
