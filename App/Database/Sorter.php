@@ -2,7 +2,9 @@
 
 namespace App\Asmvc\Database;
 
-class Sorter
+use App\Asmvc\Core\Database\SorterContract;
+
+class Sorter implements SorterContract
 {
     public function migrations(): ?array
     {
