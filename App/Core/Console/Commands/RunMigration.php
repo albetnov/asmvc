@@ -88,7 +88,7 @@ class RunMigration extends Command
         $sorter = new Sorter();
 
         if ($sorter->migrations() && !$inputInterface->getOption('no-sort')) {
-            $diffed = collect($sorter->migrations())->map(fn ($item) => "{$item}.php");
+            $diffed = collect($sorter->migrations())->map(fn ($item) => base_path() . "/App/Database/Migrations/{$item}.php");
         }
 
         $dirtho = [];

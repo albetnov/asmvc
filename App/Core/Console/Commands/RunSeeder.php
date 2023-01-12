@@ -53,7 +53,7 @@ class RunSeeder extends Command
         $sorter = new Sorter();
 
         if ($sorter->migrations() && !$inputInterface->getOption('no-sort')) {
-            $diffed = collect($sorter->seeders())->map(fn ($item) => "{$item}.php");
+            $diffed = collect($sorter->seeders())->map(fn ($item) => base_path() . "/App/Database/Seeders/{$item}.php");
         }
 
         $dirtho = [];
