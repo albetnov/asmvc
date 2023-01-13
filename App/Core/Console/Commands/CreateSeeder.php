@@ -37,10 +37,11 @@ class CreateSeeder extends Command
                  * 
                  **/
                     
-                \$this->fake(1, fn(Generator \$fake) => [
+                \$this->setTable(\$tableName)
+                    ->fake(1, fn(Generator \$fake) => [
                     'key' => \$fake->name()
-                ])
-                ->done(); // mark as finish 
+                    ])
+                    ->done(); // mark as finish 
             }
         }
       
