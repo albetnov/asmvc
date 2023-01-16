@@ -13,12 +13,12 @@ class Cache
         self::$cacheDriver = new Psr16Adapter($adapter);
     }
 
-    public function exist(string $key): bool
+    public static function exist(string $key): bool
     {
         return self::$cacheDriver->has($key);
     }
 
-    public function cache(string $key, ?string $value = null)
+    public static function cache(string $key, ?string $value = null)
     {
         if ($value) {
             return self::$cacheDriver->set($key, $value);
@@ -27,7 +27,7 @@ class Cache
         return self::$cacheDriver->get($key);
     }
 
-    public function getCacheInstance()
+    public static function getCacheInstance()
     {
         return self::$cacheDriver;
     }
